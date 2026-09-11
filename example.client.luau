@@ -1,5 +1,5 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Rayfield = require(ReplicatedStorage.Rayfield)
+local Slate = require(ReplicatedStorage:FindFirstChild("Slate") or ReplicatedStorage:FindFirstChild("Rayfield"))
 
 -- Let the viewport settle before opening, so the window fits to the full screen size.
 task.wait(2)
@@ -25,15 +25,15 @@ local translations = {
     },
 }
 
-local window = Rayfield:CreateWindow({
-    name = "Example",
-    subtitle = "Rayfield Gen2",
+local window = Slate:CreateWindow({
+    name = "Slate",
+    subtitle = "Monochrome Edition",
     translations = translations,
     sidebarLayout = true, -- flip this for tabs across the top instead of down the left
     configuration = {
         autoSave = true,
         autoLoad = true,
-        fileName = "ExampleConfigFile",
+        fileName = "SlateConfigFile",
     },
 })
 

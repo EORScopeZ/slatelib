@@ -1,10 +1,10 @@
 {
-  "name": "Rayfield Gen2",
+  "name": "Slate UI",
   "tree": {
     "$className": "DataModel",
 
     "ReplicatedStorage": {
-      "Rayfield": {
+      "Slate": {
         "$path": "src"
       }
     },
