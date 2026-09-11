@@ -1,192 +1,231 @@
---[[
-    ╔═══════════════════════════════════════════════════════════════════╗
-    ║                         SLATE UI LIBRARY                          ║
-    ║                         EXAMPLE SCRIPT                            ║
-    ╚═══════════════════════════════════════════════════════════════════╝
-]]
+﻿local slate = loadstring(game:HttpGet("https://raw.githubusercontent.com/EORScopeZ/slatelib/main/Slate.lua"))()
 
--- Load Slate UI Library (Direct require or HttpGet)
-local Slate = loadfile and loadfile("Slate.lua")() or require(script.Parent.Slate)
-
--- Create Window with Black & White Slate theme
-local Window = Slate:CreateWindow({
-    Title = "Slate",
-    Subtitle = "Monochrome Edition",
-    Size = UDim2.fromOffset(640, 440),
-    ToggleKey = Enum.KeyCode.RightControl,
-    Theme = "Slate", -- "Slate", "Obsidian", "Silver", "Ghost"
-    AutoSave = true,
-    configuration = {
-        fileName = "SlateDemoConfig"
-    }
+local window = slate:CreateWindow({
+    name = "slate",
+    subtitle = "full showcase",
+    icon = 136661212895058,
+    theme = "Default",
+    sidebarLayout = false,
 })
 
--- Welcome Notification
-Slate:Notify({
-    Title = "Slate Initialized",
-    Content = "Welcome to Slate UI Framework. Press RightControl to toggle visibility.",
-    Duration = 4,
-    Icon = "bell"
+local main_tab = window:CreateTab({
+    name = "main",
+    icon = 136661212895058,
 })
 
--- ==============================================================================
--- TAB 1: MAIN / COMBAT
--- ==============================================================================
-local MainTab = Window:CreateTab({
-    Name = "Main",
-    Icon = "home"
+local elements_tab = window:CreateTab({
+    name = "elements",
+    icon = 136661212895058,
 })
 
-MainTab:CreateSection("Combat & Mechanics")
-
-local AutoParryToggle = MainTab:CreateToggle({
-    Name = "Auto Parry",
-    Description = "Automatically timing parry actions based on target velocity.",
-    Default = true,
-    Flag = "AutoParry",
-    Callback = function(state)
-        print("[Slate] Auto Parry:", state)
-    end
+local display_tab = window:CreateTab({
+    name = "display",
+    icon = 136661212895058,
 })
 
-local SilentAimToggle = MainTab:CreateToggle({
-    Name = "Silent Aim",
-    Default = false,
-    Flag = "SilentAim",
-    Callback = function(state)
-        print("[Slate] Silent Aim:", state)
-    end
+local misc_tab = window:CreateTab({
+    name = "misc",
+    icon = 136661212895058,
 })
 
-local FOVSlider = MainTab:CreateSlider({
-    Name = "Field Of View",
-    Range = { 70, 120 },
-    Increment = 1,
-    Default = 90,
-    Suffix = "°",
-    Flag = "FOVValue",
-    Callback = function(val)
-        if workspace.CurrentCamera then
-            workspace.CurrentCamera.FieldOfView = val
-        end
-    end
+main_tab:CreateSection({
+    name = "basic controls",
 })
 
-local WalkSpeedSlider = MainTab:CreateSlider({
-    Name = "Walk Speed",
-    Range = { 16, 150 },
-    Increment = 2,
-    Default = 16,
-    Suffix = " studs/s",
-    Flag = "WalkSpeed",
-    Callback = function(val)
-        local lp = game:GetService("Players").LocalPlayer
-        if lp and lp.Character and lp.Character:FindFirstChild("Humanoid") then
-            lp.Character.Humanoid.WalkSpeed = val
-        end
-    end
-})
-
-MainTab:CreateDivider()
-MainTab:CreateSection("Actions")
-
-MainTab:CreateButton({
-    Name = "Trigger Instant Dash",
-    Icon = "terminal",
-    Callback = function()
-        Slate:Notify({
-            Title = "Action Executed",
-            Content = "Instant Dash successfully fired.",
-            Duration = 2.5,
-            Icon = "check"
+main_tab:CreateButton({
+    name = "send notification",
+    description = "triggers a popup notification",
+    callback = function()
+        window:Notify({
+            title = "slate",
+            content = "notification triggered",
+            duration = 3,
         })
-    end
+    end,
 })
 
--- ==============================================================================
--- TAB 2: VISUALS / ESP
--- ==============================================================================
-local VisualsTab = Window:CreateTab({
-    Name = "Visuals",
-    Icon = "eye"
+main_tab:CreateToggle({
+    name = "auto farm",
+    description = "enables automated farming",
+    flag = "auto_farm",
+    value = false,
+    callback = function(val)
+        print("auto farm:", val)
+    end,
 })
 
-VisualsTab:CreateSection("ESP Options")
-
-VisualsTab:CreateToggle({
-    Name = "Box ESP",
-    Description = "Render high-contrast 2D bounding boxes on targets.",
-    Default = true,
-    Flag = "BoxESP",
-    Callback = function(state)
-        print("[Slate] Box ESP:", state)
-    end
+main_tab:CreateSlider({
+    name = "speed multiplier",
+    description = "adjust movement speed",
+    flag = "speed_mult",
+    range = {16, 200},
+    increment = 1,
+    value = 16,
+    suffix = " studs/s",
+    callback = function(val)
+        print("speed:", val)
+    end,
 })
 
-VisualsTab:CreateToggle({
-    Name = "Tracer Lines",
-    Default = false,
-    Flag = "Tracers",
-    Callback = function(state)
-        print("[Slate] Tracers:", state)
-    end
+main_tab:CreateDropdown({
+    name = "select target",
+    description = "choose single target",
+    flag = "target_select",
+    options = {"closest", "lowest health", "highest priority", "random"},
+    value = "closest",
+    multiSelect = false,
+    callback = function(val)
+        print("selected target:", val)
+    end,
 })
 
-VisualsTab:CreateColorPicker({
-    Name = "ESP Accent Color",
-    Color = Color3.fromRGB(255, 255, 255),
-    Flag = "ESPColor",
-    Callback = function(color)
-        print("[Slate] New ESP Color:", color)
-    end
+main_tab:CreateDropdown({
+    name = "filter options",
+    description = "multi-select dropdown",
+    flag = "filter_options",
+    options = {"players", "npcs", "items", "chests"},
+    value = {"players", "chests"},
+    multiSelect = true,
+    callback = function(val)
+        print("selected filters:", table.concat(val, ", "))
+    end,
 })
 
--- ==============================================================================
--- TAB 3: SETTINGS & CONFIG
--- ==============================================================================
-local SettingsTab = Window:CreateTab({
-    Name = "Settings",
-    Icon = "settings"
+elements_tab:CreateSection({
+    name = "inputs & keys",
 })
 
-SettingsTab:CreateSection("Configuration")
+elements_tab:CreateInput({
+    name = "player username",
+    description = "target player by name",
+    flag = "target_name",
+    placeholder = "enter username...",
+    value = "",
+    clearOnFocus = false,
+    callback = function(text)
+        print("entered text:", text)
+    end,
+})
 
-SettingsTab:CreateDropdown({
-    Name = "Theme Preset",
-    Options = { "Slate", "Obsidian", "Silver", "Ghost" },
-    Default = "Slate",
-    Flag = "SelectedTheme",
-    Callback = function(selectedTheme)
-        Slate.SelectedTheme = selectedTheme
-        Slate:Notify({
-            Title = "Theme Changed",
-            Content = "Applied monochrome theme: " .. tostring(selectedTheme),
-            Duration = 3,
-            Icon = "check"
+elements_tab:CreateInput({
+    name = "teleport amount",
+    description = "numeric input filter",
+    flag = "tp_amount",
+    placeholder = "100",
+    value = "100",
+    numeric = true,
+    callback = function(val)
+        print("amount:", val)
+    end,
+})
+
+elements_tab:CreateKeybind({
+    name = "menu keybind",
+    description = "bind key to toggle feature",
+    flag = "menu_bind",
+    value = Enum.KeyCode.RightShift,
+    hold = false,
+    callback = function()
+        print("keybind pressed")
+    end,
+})
+
+elements_tab:CreateColorPicker({
+    name = "esp color",
+    description = "change highlight color",
+    flag = "esp_color",
+    color = Color3.fromRGB(255, 255, 255),
+    alpha = 1,
+    callback = function(col, a)
+        print("color updated:", col, "alpha:", a)
+    end,
+})
+
+display_tab:CreateSection({
+    name = "data & progress",
+})
+
+local stat_box = display_tab:CreateStat({
+    name = "coins earned",
+    description = "session balance tracker",
+    prefix = "$",
+    suffix = " coins",
+    value = 1250,
+})
+
+local progress_bar = display_tab:CreateProgress({
+    name = "level progress",
+    description = "current exp to next level",
+    range = {0, 100},
+    value = 65,
+    showValue = true,
+})
+
+local console_box = display_tab:CreateConsole({
+    name = "debug output",
+    description = "live script logs",
+    text = "system initialized.\nslate ui loaded successfully.",
+    height = 120,
+})
+
+misc_tab:CreateSection({
+    name = "dialogs & utilities",
+})
+
+misc_tab:CreateText({
+    name = "status info",
+    text = "slate ui framework is running smoothly.",
+})
+
+misc_tab:CreateDivider({
+    text = "prompts",
+    line = true,
+})
+
+misc_tab:CreateButton({
+    name = "show toast",
+    description = "displays bottom toast alert",
+    callback = function()
+        window:Toast({
+            title = "alert",
+            subtitle = "action completed successfully",
+            duration = 3,
         })
-    end
+    end,
 })
 
-SettingsTab:CreateKeybind({
-    Name = "Menu Toggle Key",
-    Default = Enum.KeyCode.RightControl,
-    Flag = "MenuToggleKey",
-    Callback = function()
-        print("[Slate] Menu keybind triggered")
-    end
+misc_tab:CreateButton({
+    name = "show popup modal",
+    description = "displays interactive popup",
+    callback = function()
+        window:Popup({
+            title = "confirm action",
+            subtitle = "modal dialog",
+            content = "are you sure you want to proceed?",
+            options = {
+                {
+                    text = "confirm",
+                    style = "Primary",
+                    callback = function()
+                        print("confirmed")
+                    end,
+                },
+                {
+                    text = "cancel",
+                    style = "Secondary",
+                    callback = function()
+                        print("cancelled")
+                    end,
+                },
+            },
+        })
+    end,
 })
 
-SettingsTab:CreateInput({
-    Name = "Custom Tag Label",
-    PlaceholderText = "Enter custom prefix...",
-    Default = "Slate VIP",
-    Flag = "CustomTag",
-    Callback = function(text)
-        print("[Slate] Custom Tag set to:", text)
-    end
-})
-
-SettingsTab:CreateParagraph({
-    Title = "About Slate UI",
-    Content = "Slate is a modern, ultra-clean monochrome UI library built for Luau / Roblox with refined spring physics, black & white aesthetics, responsive search, and lightweight memory footprint."
+misc_tab:CreateButton({
+    name = "add console log",
+    description = "appends line to debug console",
+    callback = function()
+        console_box:Append("new log entry generated")
+    end,
 })

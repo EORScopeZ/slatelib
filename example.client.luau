@@ -453,7 +453,7 @@ whatsNew:CreateSection({
 
 local console = whatsNew:CreateConsole({
     name = 'Console',
-    text = '-- output lands here',
+    text = 'output lands here',
     height = 130,
     follow = true,
     maxLines = 50,

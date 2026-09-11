@@ -1,9 +1,6 @@
--- ++++++++ WAX BUNDLED DATA BELOW ++++++++ --
 
--- Will be used later for getting flattened globals
 local ImportGlobals
 
--- Holds direct closure data (defining this before the DOM tree for line debugging etc)
 local ClosureBindings = {
     function()local wax,script,require=ImportGlobals(1)local ImportGlobals return (function(...)local variables = require(script.utility.variables)
 local image = require(script.utility.image)
@@ -16195,7 +16192,6 @@ return windowSizing
 end)() end
 } -- [RefId] = Closure
 
--- Holds the actual DOM data
 local ObjectTree = {
     {
         1,
@@ -16697,7 +16693,6 @@ local ObjectTree = {
     }
 }
 
--- Line offsets for debugging (only included when minifyTables is false)
 local LineOffsets = {
     8,
     [3] = 175,
@@ -16768,13 +16763,10 @@ local LineOffsets = {
     [70] = 16090
 }
 
--- Misc AOT variable imports
 local WaxVersion = "0.4.1"
 local EnvName = "Slate"
 
--- ++++++++ RUNTIME IMPL BELOW ++++++++ --
 
--- Localizing certain libraries and built-ins for runtime efficiency
 local string, task, setmetatable, error, next, table, unpack, coroutine, script, type, require, pcall, xpcall, tostring, tonumber, _VERSION =
       string, task, setmetatable, error, next, table, unpack, coroutine, script, type, require, pcall, xpcall, tostring, tonumber, _VERSION
 
@@ -16788,8 +16780,6 @@ local string_sub = string.sub
 local string_match = string.match
 local string_gmatch = string.gmatch
 
--- The Lune runtime has its own `task` impl, but it must be imported by its builtin
--- module path, "@lune/task"
 if _VERSION and string_sub(_VERSION, 1, 4) == "Lune" then
     local RequireSuccess, LuneTaskLib = pcall(require, "@lune/task")
     if RequireSuccess and LuneTaskLib then
@@ -16799,12 +16789,10 @@ end
 
 local task_defer = task and task.defer
 
--- If we're not running on the Roblox engine, we won't have a `task` global
 local Defer = task_defer or function(f, ...)
     coroutine_wrap(f)(...)
 end
 
--- ClassName "IDs"
 local ClassNameIdBindings = {
     [1] = "Folder",
     [2] = "ModuleScript",
@@ -16820,14 +16808,10 @@ local ScriptClosureRefIds = {} -- [ScriptClosure] = RefId
 local StoredModuleValues = {}
 local ScriptsToRun = {}
 
--- wax.shared __index/__newindex
 local SharedEnvironment = {}
 
--- We're creating 'fake' instance refs soley for traversal of the DOM for require() compatibility
--- It's meant to be as lazy as possible
 local RefChildren = {} -- [Ref] = {ChildrenRef, ...}
 
--- Implemented instance methods
 local InstanceMethods = {
     GetFullName = { {}, function(self)
         local Path = self.Name
@@ -16836,7 +16820,6 @@ local InstanceMethods = {
         while ObjectPointer do
             Path = ObjectPointer.Name .. "." .. Path
 
-            -- Move up the DOM (parent will be nil at the end, and this while loop will stop)
             ObjectPointer = ObjectPointer.Parent
         end
 
@@ -16878,8 +16861,6 @@ local InstanceMethods = {
 
         if recursive then
             for Child in next, Children do
-                -- Yeah, Roblox follows this behavior- instead of searching the entire base of a
-                -- ref first, the engine uses a direct recursive call
                 return Child:FindFirstChild(name, true)
             end
         end
@@ -16896,13 +16877,11 @@ local InstanceMethods = {
         end
     end},
 
-    -- Just to implement for traversal usage
     WaitForChild = { {"string", "number?"}, function(self, name)
         return self:FindFirstChild(name)
     end},
 }
 
--- "Proxies" to instance methods, with err checks etc
 local InstanceMethodProxies = {}
 for MethodName, MethodObject in next, InstanceMethods do
     local Types = MethodObject[1]
@@ -16939,15 +16918,11 @@ for MethodName, MethodObject in next, InstanceMethods do
 end
 
 local function CreateRef(className, name, parent)
-    -- `name` and `parent` can also be set later by the init script if they're absent
 
-    -- Extras
     local StringValue_Value
 
-    -- Will be set to RefChildren later aswell
     local Children = setmetatable({}, {__mode = "k"})
 
-    -- Err funcs
     local function InvalidMember(member)
         error(member .. " is not a valid (virtual) member of " .. className .. " \"" .. name .. "\"", 3)
     end
@@ -16968,7 +16943,6 @@ local function CreateRef(className, name, parent)
         elseif index == "Parent" then
             return parent
         elseif className == "StringValue" and index == "Value" then
-            -- Supporting StringValue.Value for Rojo .txt file conv
             return StringValue_Value
         else -- Lastly, check "methods"
             local InstanceMethod = InstanceMethodProxies[index]
@@ -16978,45 +16952,37 @@ local function CreateRef(className, name, parent)
             end
         end
 
-        -- Next we'll look thru child refs
         for Child in next, Children do
             if Child.Name == index then
                 return Child
             end
         end
 
-        -- At this point, no member was found; this is the same err format as Roblox
         InvalidMember(index)
     end
 
     RefMetatable.__newindex = function(_, index, value)
-        -- __newindex is only for props fyi
         if index == "ClassName" then
             ReadOnlyProperty(index)
         elseif index == "Name" then
             name = value
         elseif index == "Parent" then
-            -- We'll just ignore the process if it's trying to set itself
             if value == Ref then
                 return
             end
 
             if parent ~= nil then
-                -- Remove this ref from the CURRENT parent
                 RefChildren[parent][Ref] = nil
             end
 
             parent = value
 
             if value ~= nil then
-                -- And NOW we're setting the new parent
                 RefChildren[value][Ref] = true
             end
         elseif className == "StringValue" and index == "Value" then
-            -- Supporting StringValue.Value for Rojo .txt file conv
             StringValue_Value = value
         else
-            -- Same err as __index when no member is found
             InvalidMember(index)
         end
     end
@@ -17036,7 +17002,6 @@ local function CreateRef(className, name, parent)
     return Ref
 end
 
--- Create real ref DOM from object tree
 local function CreateRefFromObject(object, parent)
     local RefId = object[1]
     local ClassNameId = object[2]
@@ -17070,7 +17035,6 @@ for _, Object in next, ObjectTree do
     CreateRefFromObject(Object, RealObjectRoot)
 end
 
--- Now we'll set script closure refs and check if they should be ran as a BaseScript
 for RefId, Closure in next, ClosureBindings do
     local Ref = RefBindings[RefId]
 
@@ -17086,7 +17050,6 @@ end
 local function LoadScript(scriptRef)
     local ScriptClassName = scriptRef.ClassName
 
-    -- First we'll check for a cached module value (packed into a tbl)
     local StoredModuleValue = StoredModuleValues[scriptRef]
     if StoredModuleValue and ScriptClassName == "ModuleScript" then
         return unpack(StoredModuleValue)
@@ -17094,8 +17057,6 @@ local function LoadScript(scriptRef)
 
     local Closure = ScriptClosures[scriptRef]
 
-    -- Grabs the stack while it's still live; pcall alone would discard it. Guarded,
-    -- since some executors sandbox `debug` away entirely
     local function CatchError(originalErrorMessage)
         local Traceback
         local TracebackSuccess, TracebackResult = pcall(function()
@@ -17113,7 +17074,6 @@ local function LoadScript(scriptRef)
 
         local VirtualFullName = scriptRef:GetFullName()
 
-        -- Check for vanilla/Roblox format
         local OriginalErrorLine, BaseErrorMessage = string_match(originalErrorMessage, "[^:]+:(%d+): (.+)")
 
         local FormattedMessage
@@ -17141,7 +17101,6 @@ local function LoadScript(scriptRef)
         return FormattedMessage
     end
 
-    -- If it's a BaseScript, we'll just run it directly!
     if ScriptClassName == "LocalScript" or ScriptClassName == "Script" then
         local RunSuccess, CaughtError = xpcall(Closure, CatchError)
         if not RunSuccess then
@@ -17161,8 +17120,6 @@ local function LoadScript(scriptRef)
     end
 end
 
--- We'll assign the actual func from the top of this output for flattening user globals at runtime
--- Returns (in a tuple order): wax, script, require
 function ImportGlobals(refId)
     local ScriptRef = RefBindings[refId]
 
@@ -17177,7 +17134,6 @@ function ImportGlobals(refId)
         return unpack(PCallReturn)
     end
 
-    -- `wax.shared` index
     local WaxShared = table_freeze(setmetatable({}, {
         __index = SharedEnvironment,
         __newindex = function(_, index, value)
@@ -17192,13 +17148,11 @@ function ImportGlobals(refId)
     }))
 
     local Global_wax = table_freeze({
-        -- From AOT variable imports
         version = WaxVersion,
         envname = EnvName,
 
         shared = WaxShared,
 
-        -- "Real" globals instead of the env set ones
         script = script,
         require = require,
     })
@@ -17220,7 +17174,6 @@ function ImportGlobals(refId)
 
             return LoadScript(module)
         elseif ModuleArgType == "string" and string_sub(module, 1, 1) ~= "@" then
-            -- The control flow on this SUCKS
 
             if #module == 0 then
                 error("Attempted to call require with empty string", 2)
@@ -17241,7 +17194,6 @@ function ImportGlobals(refId)
                     RealIndex = "Parent"
                 end
 
-                -- Don't advance dir if it's just another "/" either
                 if RealIndex ~= "" then
                     local ResultRef = CurrentRefPointer:FindFirstChild(RealIndex)
                     if not ResultRef then
@@ -17258,7 +17210,6 @@ function ImportGlobals(refId)
                     end
                 end
 
-                -- For possible checks next cycle
                 PreviousPathMatch = PathMatch
             end
 
@@ -17274,7 +17225,6 @@ function ImportGlobals(refId)
         return RealCall(require, module, ...)
     end
 
-    -- Now, return flattened globals ready for direct runtime exec
     return Global_wax, Global_script, Global_require
 end
 
@@ -17282,5 +17232,4 @@ for _, ScriptRef in next, ScriptsToRun do
     Defer(LoadScript, ScriptRef)
 end
 
--- AoT adjustment: Load init module (MainModule behavior)
 return LoadScript(RealObjectRoot:GetChildren()[1])
