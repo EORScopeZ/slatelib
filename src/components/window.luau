@@ -226,16 +226,16 @@ function Window.new(properties)
     local layout = resolveLayout(properties.sidebarLayout or properties.SidebarLayout)
 
     local self = setmetatable({
-        name = properties.name or properties.Name or "Rayfield Window",
+        name = properties.name or properties.Name or "Slate Window",
         subheading = properties.subtitle or properties.Subtitle,
         layout = layout,
         size = fitWindowSize(layout.mode),
         instances = {},
         connections = {},
 
-        icon = properties.icon or properties.Icon,
-        showName = properties.showName or properties.ShowName or "Rayfield",
-        showIcon = properties.showIcon or properties.ShowIcon or constants.icons.rayfield,
+        icon = properties.icon or properties.Icon or constants.icons.slate,
+        showName = properties.showName or properties.ShowName or "Slate",
+        showIcon = properties.showIcon or properties.ShowIcon or constants.icons.slate,
         -- collapse to a round badge rather than an icon-and-label pill
         showIconOnly = properties.showIconOnly or properties.ShowIconOnly or false,
         -- the line under the player's name in the sidebar's profile block
@@ -640,7 +640,7 @@ function Window.new(properties)
     })
 
     self.rfSettings = self:CreateTab({
-        name = "Rayfield Settings",
+        name = "Slate Settings",
         customOrder = 1000,
 
         neglectSelector = true,

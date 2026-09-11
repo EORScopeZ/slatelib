@@ -28,9 +28,10 @@ constants.icons = {
     check = 125626312718314,
     dot = 91452555903853, -- unselected dropdown option (also the colorpicker "invisible" mark)
     colorpicker = 91452555903853, -- same hollow-box glyph as dot
-    banner = 111263549366178,
+    banner = 106790631609801,
     config = 125823673784681, -- saved-configurations picker
-    rayfield = 80387863064905, -- default show icon on the sign-in toast
+    rayfield = 106790631609801, -- Slate logo icon
+    slate = 106790631609801, -- Slate logo icon
 }
 
 -- Accent used by the toggle switch + slider glow when active (Slate Monochrome).
