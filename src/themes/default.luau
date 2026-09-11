@@ -42,7 +42,7 @@ return {
     DropdownHighlight = Color3.fromRGB(255, 255, 255),
     AccentColor = Color3.fromRGB(255, 255, 255),
     AccentStroke = Color3.fromRGB(255, 255, 255),
-    AccentGlow = 0.2,
+    AccentGlow = 0.05,
     StatBackground = Color3.fromRGB(20, 20, 24),
     SliderHandle = Color3.fromRGB(255, 255, 255),
     PillCornerRadius = UDim.new(1, 0),

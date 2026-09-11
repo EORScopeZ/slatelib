@@ -158,12 +158,12 @@ function Slider.new(tab, properties)
     self.progressGlow = self.window:CreateGlow(self.progress, 'AccentColor', 20, 1)
     self.handle = self.window:Create('Frame', {
         AnchorPoint = Vector2.new(0.5, 0.5),
-        Position = handleOffset(),
+        Position = UDim2.new(0, handleRest.X / 2 - 2, 0.5, 0),
         Size = UDim2.fromOffset(handleRest.X, handleRest.Y),
         BorderSizePixel = 0,
         ZIndex = 50,
         BackgroundTransparency = 1,
-        Parent = self.progress,
+        Parent = self.track,
     }, {
         BackgroundColor3 = 'SliderHandle',
     })
@@ -417,6 +417,9 @@ function Slider:_format(value)
     local text = string.format('%.' .. self._decimals .. 'f', value)
 
     if self.suffix ~= '' then
+        if string.sub(self.suffix, 1, 1) == ' ' or string.sub(self.suffix, 1, 1) == '°' or string.sub(self.suffix, 1, 1) == '%' then
+            return text .. self.suffix
+        end
         return text .. ' ' .. self.suffix
     end
 
@@ -427,13 +430,17 @@ function Slider:_pillTravel()
 end
 function Slider:_renderProgress(info)
     local span = self.range[2] - self.range[1]
-    local ratio = if span ~= 0 then math.clamp((self.value - self.range[1]) / span, 0, 1)else 0
+    local ratio = if span ~= 0 then math.clamp((self.value - self.range[1]) / span, 0, 1) else 0
     local size = fillSize(ratio)
+    local handleOffset = (1 - 2 * ratio) * (self._handleWidth / 2 - 2)
+    local handlePos = UDim2.new(ratio, handleOffset, 0.5, 0)
 
     if info then
         variables.tweenService:Create(self.progress, info, {Size = size}):Play()
+        variables.tweenService:Create(self.handle, info, {Position = handlePos}):Play()
     else
         self.progress.Size = size
+        self.handle.Position = handlePos
     end
 end
 function Slider:_updateFromMouse()
