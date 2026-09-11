@@ -12,10 +12,10 @@ constants.icons = {
     check = 125626312718314,
     dot = 91452555903853,
     colorpicker = 91452555903853,
-    banner = 106790631609801,
+    banner = 136661212895058,
     config = 125823673784681,
-    rayfield = 106790631609801,
-    slate = 106790631609801,
+    rayfield = 136661212895058,
+    slate = 136661212895058,
 }
 constants.accent = {
     on = Color3.fromRGB(255, 255, 255),
