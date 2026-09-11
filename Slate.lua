@@ -8346,6 +8346,7 @@ function Tab.new(window, properties)
         window = assert(window, 'Missing argument #1 (Window expected)'),
         name = properties.name or properties.Name,
         icon = properties.icon or properties.Icon,
+        iconColor = properties.iconColor or properties.IconColor,
         neglectSelector = properties.neglectSelector or properties.NeglectSelector or false,
         customOrder = properties.customOrder or properties.CustomOrder or 0,
         forgetState = properties.forgetState or properties.ForgetState or false,
@@ -8844,14 +8845,18 @@ local function addContent(tab, iconSize, withInitial)
         })
     end
     if tab.icon then
-        tab.topbarItemIcon = tab.window:Create('ImageLabel', {
+        local iconProps = {
             Image = tab.icon,
             Size = UDim2.fromOffset(iconSize, iconSize),
             BorderSizePixel = 0,
             BackgroundTransparency = 1,
             ImageTransparency = 1,
             Parent = tab.topbarItemContainer,
-        }, {
+        }
+        if tab.iconColor then
+            iconProps.ImageColor3 = tab.iconColor
+        end
+        tab.topbarItemIcon = tab.window:Create('ImageLabel', iconProps, if tab.iconColor then nil else {
             ImageColor3 = 'TabColor',
         })
     end
@@ -10398,6 +10403,7 @@ function Window.new(properties)
         instances = {},
         connections = {},
         icon = properties.icon or properties.Icon or constants.icons.slate,
+        iconColor = properties.iconColor or properties.IconColor,
         showName = properties.showName or properties.ShowName or 'Slate',
         showIcon = properties.showIcon or properties.ShowIcon or constants.icons.slate,
         showIconOnly = properties.showIconOnly or properties.ShowIconOnly or false,
@@ -10590,13 +10596,18 @@ function Window.new(properties)
         })
     end
     if self.icon then
-        self.topbarIcon = self:Create('ImageLabel', {
+        local iconProps = {
             Image = self.icon,
             BackgroundTransparency = 1,
-            Size = UDim2.fromOffset(32, 32),
+            Size = UDim2.fromOffset(26, 26),
             ImageTransparency = 1,
+            LayoutOrder = 0,
             Parent = self.topContainer,
-        }, {
+        }
+        if self.iconColor then
+            iconProps.ImageColor3 = self.iconColor
+        end
+        self.topbarIcon = self:Create('ImageLabel', iconProps, if self.iconColor then nil else {
             ImageColor3 = 'TitlingColor',
         })
     end
@@ -13032,53 +13043,53 @@ end)() end,
 
 end)() end,
     [38] = function()local wax,script,require=ImportGlobals(38)local ImportGlobals return (function(...)export type Theme = string | {[string]: any}
-export type Translator = (source:string, localeId:string) -> string?
+export type Translator = (source: string, localeId: string) -> string?
 export type Translations = {[string]: {[string]: string}}
 export type WindowConfiguration = {autoSave: boolean?, autoLoad: boolean?, fileName: string?, customFolder: string?}
-export type WindowProps = {name: string?, subtitle: string?, theme: Theme?, icon: (string | number)?, showName: string?, showIcon: (string | number)?, showIconOnly: boolean?, sidebarLayout: boolean?, profile: string?, configuration: WindowConfiguration?, fallbackFont: (Font | Enum.Font)?, locale: string?, translations: Translations?, translator: Translator?}
-export type TabProps = {name: string?, icon: (string | number)?}
-export type TagProps = {text: string?, title: string?, icon: (string | number)?, color: Color3?, order: number?}
-export type SectionProps = {name: string?, icon: (string | number)?}
-export type TextProps = {name: string?, text: string?, icon: (string | number)?}
+export type WindowProps = {name: string?, subtitle: string?, theme: Theme?, icon: (string | number)?, iconColor: Color3?, showName: string?, showIcon: (string | number)?, showIconOnly: boolean?, sidebarLayout: boolean?, profile: string?, configuration: WindowConfiguration?, fallbackFont: (Font | Enum.Font)?, locale: string?, translations: Translations?, translator: Translator?}
+export type TabProps = {name: string?, icon: (string | number)?, iconColor: Color3?}
+export type TagProps = {text: string?, title: string?, icon: (string | number)?, iconColor: Color3?, color: Color3?, order: number?}
+export type SectionProps = {name: string?, icon: (string | number)?, iconColor: Color3?}
+export type TextProps = {name: string?, text: string?, icon: (string | number)?, iconColor: Color3?}
 export type DividerProps = {text: string?, spacing: number?, line: boolean?}
 export type GroupProps = {direction: string?}
-export type ButtonProps = {name: string?, description: string?, icon: (string | number)?, callback: (() -> ())?}
-export type ToggleProps = {name: string?, description: string?, icon: (string | number)?, flag: string?, value: boolean?, forgetState: boolean?, callback: ((value:boolean) -> ())?}
-export type SliderProps = {name: string?, description: string?, icon: (string | number)?, flag: string?, range: {number}?, increment: number?, value: number?, suffix: string?, minimal: boolean?, forgetState: boolean?, callback: ((value:number, dragging:boolean) -> ())?}
-export type DropdownProps = {name: string?, description: string?, icon: (string | number)?, flag: string?, options: {string}?, value: (string | {string})?, multiSelect: boolean?, placeholder: string?, forgetState: boolean?, callback: ((value:any) -> ())?}
-export type InputProps = {name: string?, description: string?, icon: (string | number)?, flag: string?, value: string?, placeholder: string?, numeric: boolean?, clearOnFocus: boolean?, forgetState: boolean?, callback: ((value:string) -> ())?}
-export type KeybindProps = {name: string?, description: string?, icon: (string | number)?, flag: string?, value: (EnumItem | string)?, forgetState: boolean?, isMenuToggle: boolean?, hold: boolean?, holdThreshold: number?, callback: ((value:EnumItem | boolean) -> ())?, onChanged: ((key:EnumItem) -> ())?}
-export type ColorPickerProps = {name: string?, description: string?, icon: (string | number)?, flag: string?, color: Color3?, alpha: number?, forgetState: boolean?, callback: ((value:Color3, alpha:number) -> ())?}
-export type StatProps = {name: string?, description: string?, icon: (string | number)?, prefix: string?, suffix: string?, value: number?, display: string?, compact: boolean?, changeMode: string?, changeBaseline: string?, numberEasing: boolean?}
-export type ProgressProps = {name: string?, description: string?, icon: (string | number)?, range: {number}?, value: number?, steps: number?, text: string?, format: ((value:number, min:number, max:number) -> string)?, showValue: boolean?, indeterminate: boolean?}
+export type ButtonProps = {name: string?, description: string?, icon: (string | number)?, iconColor: Color3?, callback: (() -> ())?}
+export type ToggleProps = {name: string?, description: string?, icon: (string | number)?, iconColor: Color3?, flag: string?, value: boolean?, forgetState: boolean?, callback: ((value: boolean) -> ())?}
+export type SliderProps = {name: string?, description: string?, icon: (string | number)?, iconColor: Color3?, flag: string?, range: {number}?, increment: number?, value: number?, suffix: string?, minimal: boolean?, forgetState: boolean?, callback: ((value: number, dragging: boolean) -> ())?}
+export type DropdownProps = {name: string?, description: string?, icon: (string | number)?, iconColor: Color3?, flag: string?, options: {string}?, value: (string | {string})?, multiSelect: boolean?, placeholder: string?, forgetState: boolean?, callback: ((value: any) -> ())?}
+export type InputProps = {name: string?, description: string?, icon: (string | number)?, iconColor: Color3?, flag: string?, value: string?, placeholder: string?, numeric: boolean?, clearOnFocus: boolean?, forgetState: boolean?, callback: ((value: string) -> ())?}
+export type KeybindProps = {name: string?, description: string?, icon: (string | number)?, iconColor: Color3?, flag: string?, value: (EnumItem | string)?, forgetState: boolean?, isMenuToggle: boolean?, hold: boolean?, holdThreshold: number?, callback: ((value: EnumItem | boolean) -> ())?, onChanged: ((key: EnumItem) -> ())?}
+export type ColorPickerProps = {name: string?, description: string?, icon: (string | number)?, iconColor: Color3?, flag: string?, color: Color3?, alpha: number?, forgetState: boolean?, callback: ((value: Color3, alpha: number) -> ())?}
+export type StatProps = {name: string?, description: string?, icon: (string | number)?, iconColor: Color3?, prefix: string?, suffix: string?, value: number?, display: string?, compact: boolean?, changeMode: string?, changeBaseline: string?, numberEasing: boolean?}
+export type ProgressProps = {name: string?, description: string?, icon: (string | number)?, iconColor: Color3?, range: {number}?, value: number?, steps: number?, text: string?, format: ((value: number, min: number, max: number) -> string)?, showValue: boolean?, indeterminate: boolean?}
 export type ConsoleProps = {name: string?, description: string?, text: string?, height: number?, follow: boolean?, maxLines: number?}
-export type NotifyProps = {title: string?, content: string?, icon: (string | number)?, duration: number?}
-export type ToastProps = {title: string?, subtitle: string?, subtitleAbove: boolean?, icon: (string | number)?, avatar: number?, minWidth: number?, duration: number?, position: 'Top' | 'Bottom'?}
-export type PopupBox = {title: string?, description: string?, icon: (string | number)?}
+export type NotifyProps = {title: string?, content: string?, icon: (string | number)?, iconColor: Color3?, duration: number?}
+export type ToastProps = {title: string?, subtitle: string?, subtitleAbove: boolean?, icon: (string | number)?, iconColor: Color3?, avatar: number?, minWidth: number?, duration: number?, position: ('Top' | 'Bottom')?}
+export type PopupBox = {title: string?, description: string?, icon: (string | number)?, iconColor: Color3?}
 export type PopupOption = {text: string?, style: string?, callback: (() -> ())?}
-export type PopupProps = {title: string?, subtitle: string?, icon: (string | number)?, content: string?, boxes: {PopupBox}?, options: {PopupOption}?, dismissable: boolean?}
-export type Moveable = {MoveTo: (self:any, index:number) -> (), MoveToTop: (self:any) -> (), MoveToBottom: (self:any) -> (), MoveUp: (self:any) -> (), MoveDown: (self:any) -> ()}
-export type Lockable = {Lock: (self:any, reason:string?) -> (), Unlock: (self:any) -> (), IsLocked: (self:any) -> boolean}
-export type Button = Moveable&Lockable&{}
-export type Toggle = Moveable&Lockable&{value: boolean, Set: (self:Toggle, value:boolean, skipCallback:boolean?) -> ()}
-export type Slider = Moveable&Lockable&{value: number, Set: (self:Slider, value:number, skipCallback:boolean?) -> ()}
-export type Dropdown = Moveable&Lockable&{value: {string}, Set: (self:Dropdown, value:string | {string}, skipCallback:boolean?) -> (), Refresh: (self:Dropdown, options:{string}) -> (), Add: (self:Dropdown, option:string) -> (), Remove: (self:Dropdown, option:string) -> ()}
-export type Input = Moveable&Lockable&{value: string, Set: (self:Input, value:string, skipCallback:boolean?) -> ()}
-export type Keybind = Moveable&Lockable&{value: EnumItem, Set: (self:Keybind, value:EnumItem | string, skipChanged:boolean?) -> ()}
-export type ColorPicker = Moveable&Lockable&{value: Color3, alpha: number, Set: (self:ColorPicker, value:Color3 | string, skipCallback:boolean?) -> (), SetAlpha: (self:ColorPicker, alpha:number, skipCallback:boolean?) -> ()}
-export type Stat = Moveable&{value: number, Set: (self:Stat, value:number) -> (), ResetBaseline: (self:Stat, value:number?) -> ()}
-export type Progress = Moveable&{value: number, Set: (self:Progress, value:number) -> (), Get: (self:Progress) -> number, GetPercentage: (self:Progress) -> number, SetRange: (self:Progress, min:number, max:number) -> (), SetText: (self:Progress, text:string?) -> (), SetIndeterminate: (self:Progress, state:boolean) -> (), Remove: (self:Progress) -> ()}
-export type Console = Moveable&{Set: (self:Console, text:string) -> (), Append: (self:Console, line:string) -> (), Clear: (self:Console) -> (), Get: (self:Console) -> string, Copy: (self:Console) -> boolean, SetHeight: (self:Console, height:number) -> (), Remove: (self:Console) -> ()}
-export type Section = Moveable&{}
-export type TabSection = {Remove: (self:TabSection) -> ()}
-export type Text = Moveable&{name: string, text: string, Set: (self:Text, text:string) -> (), SetTitle: (self:Text, title:string) -> ()}
-export type Divider = Moveable&{text: string, Set: (self:Divider, text:string?) -> ()}
-export type Tag = {Set: (self:Tag, props:TagProps) -> (), SetColor: (self:Tag, color:Color3) -> (), SetText: (self:Tag, text:string?) -> (), SetIcon: (self:Tag, icon:(string | number)?) -> (), Remove: (self:Tag) -> ()}
-export type Popup = {Close: (self:Popup) -> ()}
-export type Group = Moveable&{CreateButton: (self:Group, props:ButtonProps) -> Button, CreateToggle: (self:Group, props:ToggleProps) -> Toggle, CreateSwitch: (self:Group, props:ToggleProps) -> Toggle, CreateStat: (self:Group, props:StatProps) -> Stat, CreateSlider: (self:Group, props:SliderProps) -> Slider, CreateDropdown: (self:Group, props:DropdownProps) -> Dropdown?, CreateSection: (self:Group, props:SectionProps) -> Section?, CreateText: (self:Group, props:TextProps) -> Text?, CreateDivider: (self:Group, props:DividerProps?) -> Divider?, CreateGroup: (self:Group, props:GroupProps?) -> Group}
-export type Tab = {Select: (self:Tab, noAnimation:boolean?) -> (), Deselect: (self:Tab, noAnimation:boolean?) -> (), Remove: (self:Tab) -> (), CreateButton: (self:Tab, props:ButtonProps) -> Button, CreateToggle: (self:Tab, props:ToggleProps) -> Toggle, CreateSwitch: (self:Tab, props:ToggleProps) -> Toggle, CreateSlider: (self:Tab, props:SliderProps) -> Slider, CreateDropdown: (self:Tab, props:DropdownProps) -> Dropdown, CreateInput: (self:Tab, props:InputProps) -> Input, CreateKeybind: (self:Tab, props:KeybindProps) -> Keybind, CreateColorPicker: (self:Tab, props:ColorPickerProps) -> ColorPicker, CreateStat: (self:Tab, props:StatProps) -> Stat, CreateProgress: (self:Tab, props:ProgressProps) -> Progress, CreateConsole: (self:Tab, props:ConsoleProps) -> Console, CreateSection: (self:Tab, props:SectionProps) -> Section, CreateText: (self:Tab, props:TextProps) -> Text, CreateDivider: (self:Tab, props:DividerProps?) -> Divider, CreateGroup: (self:Tab, props:GroupProps?) -> Group}
-export type Window = {unloaded: boolean, Flags: {[string]: any}, CreateTab: (self:Window, props:TabProps) -> Tab, CreateSection: (self:Window, props:SectionProps) -> TabSection, CreateTag: (self:Window, props:TagProps) -> Tag, Notify: (self:Window, props:NotifyProps) -> (), Toast: (self:Window, props:ToastProps) -> (), Popup: (self:Window, props:PopupProps) -> Popup?, Show: (self:Window) -> (), Hide: (self:Window) -> (), ToggleHide: (self:Window) -> (), ToggleMinimise: (self:Window) -> (), Navigate: (self:Window, tab:string | Tab) -> (), ChangeTheme: (self:Window, theme:Theme) -> (), SetLocale: (self:Window, localeId:string) -> (), SetTranslator: (self:Window, translator:Translator?) -> (), RegisterTranslations: (self:Window, translations:Translations) -> (), Save: (self:Window, name:string?) -> boolean, Load: (self:Window, name:string?) -> boolean, ListConfigs: (self:Window) -> {string}, DeleteConfig: (self:Window, name:string) -> boolean, GetPath: (self:Window) -> (string,string), Get: (self:Window, flag:string) -> any, Set: (self:Window, flag:string, value:any) -> boolean, Unload: (self:Window) -> ()}
-export type Slate = {CreateWindow: (self:Slate, props:WindowProps) -> Window}
+export type PopupProps = {title: string?, subtitle: string?, icon: (string | number)?, iconColor: Color3?, content: string?, boxes: {PopupBox}?, options: {PopupOption}?, dismissable: boolean?}
+export type Moveable = {MoveTo: (self: any, index: number) -> (), MoveToTop: (self: any) -> (), MoveToBottom: (self: any) -> (), MoveUp: (self: any) -> (), MoveDown: (self: any) -> ()}
+export type Lockable = {Lock: (self: any, reason: string?) -> (), Unlock: (self: any) -> (), IsLocked: (self: any) -> boolean}
+export type Button = Moveable & Lockable & {}
+export type Toggle = Moveable & Lockable & {value: boolean, Set: (self: Toggle, value: boolean, skipCallback: boolean?) -> ()}
+export type Slider = Moveable & Lockable & {value: number, Set: (self: Slider, value: number, skipCallback: boolean?) -> ()}
+export type Dropdown = Moveable & Lockable & {value: {string}, Set: (self: Dropdown, value: string | {string}, skipCallback: boolean?) -> (), Refresh: (self: Dropdown, options: {string}) -> (), Add: (self: Dropdown, option: string) -> (), Remove: (self: Dropdown, option: string) -> ()}
+export type Input = Moveable & Lockable & {value: string, Set: (self: Input, value: string, skipCallback: boolean?) -> ()}
+export type Keybind = Moveable & Lockable & {value: EnumItem, Set: (self: Keybind, value: EnumItem | string, skipChanged: boolean?) -> ()}
+export type ColorPicker = Moveable & Lockable & {value: Color3, alpha: number, Set: (self: ColorPicker, value: Color3 | string, skipCallback: boolean?) -> (), SetAlpha: (self: ColorPicker, alpha: number, skipCallback: boolean?) -> ()}
+export type Stat = Moveable & {value: number, Set: (self: Stat, value: number) -> (), ResetBaseline: (self: Stat, value: number?) -> ()}
+export type Progress = Moveable & {value: number, Set: (self: Progress, value: number) -> (), Get: (self: Progress) -> number, GetPercentage: (self: Progress) -> number, SetRange: (self: Progress, min: number, max: number) -> (), SetText: (self: Progress, text: string?) -> (), SetIndeterminate: (self: Progress, state: boolean) -> (), Remove: (self: Progress) -> ()}
+export type Console = Moveable & {Set: (self: Console, text: string) -> (), Append: (self: Console, line: string) -> (), Clear: (self: Console) -> (), Get: (self: Console) -> string, Copy: (self: Console) -> boolean, SetHeight: (self: Console, height: number) -> (), Remove: (self: Console) -> ()}
+export type Section = Moveable & {}
+export type TabSection = {Remove: (self: TabSection) -> ()}
+export type Text = Moveable & {name: string, text: string, Set: (self: Text, text: string) -> (), SetTitle: (self: Text, title: string) -> ()}
+export type Divider = Moveable & {text: string, Set: (self: Divider, text: string?) -> ()}
+export type Tag = {Set: (self: Tag, props: TagProps) -> (), SetColor: (self: Tag, color: Color3) -> (), SetText: (self: Tag, text: string?) -> (), SetIcon: (self: Tag, icon: (string | number)?) -> (), Remove: (self: Tag) -> ()}
+export type Popup = {Close: (self: Popup) -> ()}
+export type Group = Moveable & {CreateButton: (self: Group, props: ButtonProps) -> Button, CreateToggle: (self: Group, props: ToggleProps) -> Toggle, CreateSwitch: (self: Group, props: ToggleProps) -> Toggle, CreateStat: (self: Group, props: StatProps) -> Stat, CreateSlider: (self: Group, props: SliderProps) -> Slider, CreateDropdown: (self: Group, props: DropdownProps) -> Dropdown?, CreateSection: (self: Group, props: SectionProps) -> Section?, CreateText: (self: Group, props: TextProps) -> Text?, CreateDivider: (self: Group, props: DividerProps?) -> Divider?, CreateGroup: (self: Group, props: GroupProps?) -> Group}
+export type Tab = {Select: (self: Tab, noAnimation: boolean?) -> (), Deselect: (self: Tab, noAnimation: boolean?) -> (), Remove: (self: Tab) -> (), CreateButton: (self: Tab, props: ButtonProps) -> Button, CreateToggle: (self: Tab, props: ToggleProps) -> Toggle, CreateSwitch: (self: Tab, props: ToggleProps) -> Toggle, CreateSlider: (self: Tab, props: SliderProps) -> Slider, CreateDropdown: (self: Tab, props: DropdownProps) -> Dropdown, CreateInput: (self: Tab, props: InputProps) -> Input, CreateKeybind: (self: Tab, props: KeybindProps) -> Keybind, CreateColorPicker: (self: Tab, props: ColorPickerProps) -> ColorPicker, CreateStat: (self: Tab, props: StatProps) -> Stat, CreateProgress: (self: Tab, props: ProgressProps) -> Progress, CreateConsole: (self: Tab, props: ConsoleProps) -> Console, CreateSection: (self: Tab, props: SectionProps) -> Section, CreateText: (self: Tab, props: TextProps) -> Text, CreateDivider: (self: Tab, props: DividerProps?) -> Divider, CreateGroup: (self: Tab, props: GroupProps?) -> Group}
+export type Window = {unloaded: boolean, Flags: {[string]: any}, CreateTab: (self: Window, props: TabProps) -> Tab, CreateSection: (self: Window, props: SectionProps) -> TabSection, CreateTag: (self: Window, props: TagProps) -> Tag, Notify: (self: Window, props: NotifyProps) -> (), Toast: (self: Window, props: ToastProps) -> (), Popup: (self: Window, props: PopupProps) -> Popup?, Show: (self: Window) -> (), Hide: (self: Window) -> (), ToggleHide: (self: Window) -> (), ToggleMinimise: (self: Window) -> (), Navigate: (self: Window, tab: string | Tab) -> (), ChangeTheme: (self: Window, theme: Theme) -> (), SetLocale: (self: Window, localeId: string) -> (), SetTranslator: (self: Window, translator: Translator?) -> (), RegisterTranslations: (self: Window, translations: Translations) -> (), Save: (self: Window, name: string?) -> boolean, Load: (self: Window, name: string?) -> boolean, ListConfigs: (self: Window) -> {string}, DeleteConfig: (self: Window, name: string) -> boolean, GetPath: (self: Window) -> (string, string), Get: (self: Window, flag: string) -> any, Set: (self: Window, flag: string, value: any) -> boolean, Unload: (self: Window) -> ()}
+export type Slate = {CreateWindow: (self: Slate, props: WindowProps) -> Window}
 
 return {}
 
@@ -13823,7 +13834,194 @@ end
 return flagNames
 
 end)() end,
-    [48] = function()local wax,script,require=ImportGlobals(48)local ImportGlobals return (function(...)local services = require(script.Parent.services)
+    [48] = function()local wax,script,require=ImportGlobals(48)local ImportGlobals return (function(...)local fluentIcons = {}
+
+local icons: {[string]: number} = {
+    home = 10734881907,
+    house = 10734881907,
+    settings = 10734950309,
+    gear = 10734950309,
+    options = 10734950309,
+    search = 10734943674,
+    find = 10734943674,
+    magnifying_glass = 10734943674,
+    close = 10747384394,
+    dismiss = 10747384394,
+    cancel = 10747384394,
+    x = 10747384394,
+    check = 10709790644,
+    checkmark = 10709790644,
+    circle_check = 10709790644,
+    minimise = 10734896206,
+    minimize = 10734896206,
+    maximise = 10734924524,
+    maximize = 10734924524,
+    chevron_down = 10709790948,
+    chevron_up = 10709791523,
+    chevron_left = 10709790387,
+    chevron_right = 10709791281,
+    arrow_down = 10709790948,
+    arrow_up = 10709791523,
+    arrow_left = 10709790387,
+    arrow_right = 10709791281,
+    chevron = 10709790948,
+    user = 10747373176,
+    person = 10747373176,
+    profile = 10747373176,
+    users = 10747373426,
+    people = 10747373426,
+    group = 10747373426,
+    lock = 10723345518,
+    locked = 10723345518,
+    unlock = 10723345749,
+    unlocked = 10723345749,
+    key = 10723344270,
+    shield = 10734952480,
+    shield_check = 10734952771,
+    security = 10734952480,
+    sword = 10734975486,
+    combat = 10734975486,
+    attack = 10734975486,
+    crosshair = 10709798276,
+    target = 10709798276,
+    aim = 10709798276,
+    zap = 10709819149,
+    flash = 10709819149,
+    lightning = 10709819149,
+    energy = 10709819149,
+    flame = 10709783424,
+    fire = 10709783424,
+    burn = 10709783424,
+    star = 10734966248,
+    favorite = 10734966248,
+    heart = 10709785880,
+    like = 10709785880,
+    love = 10709785880,
+    bell = 10709775704,
+    notification = 10709775704,
+    alert = 10709775704,
+    mail = 10723374141,
+    inbox = 10723374141,
+    message = 10709778233,
+    chat = 10709778233,
+    folder = 10709784362,
+    directory = 10709784362,
+    file = 10709783819,
+    document = 10709783819,
+    code = 10709781460,
+    script = 10709781460,
+    terminal = 10734976739,
+    console = 10734976739,
+    cpu = 10709782497,
+    chip = 10709782497,
+    processor = 10709782497,
+    database = 10709782758,
+    storage = 10709782758,
+    server = 10734950020,
+    cloud = 10709781067,
+    wifi = 10747363465,
+    network = 10747363465,
+    bluetooth = 10709776126,
+    battery = 10709775267,
+    power = 10709775267,
+    sliders = 10734953491,
+    adjust = 10734953491,
+    filter = 10709783204,
+    eye = 10709783052,
+    visible = 10709783052,
+    esp = 10709783052,
+    eye_off = 10709782845,
+    hidden = 10709782845,
+    trash = 10747375434,
+    delete = 10747375434,
+    remove = 10747375434,
+    edit = 10709782977,
+    pen = 10709782977,
+    pencil = 10709782977,
+    copy = 10709782230,
+    clipboard = 10709782230,
+    download = 10709782582,
+    upload = 10747372931,
+    refresh = 10734940376,
+    sync = 10734940376,
+    reload = 10734940376,
+    play = 10734923549,
+    pause = 10734923215,
+    car = 10709777174,
+    vehicle = 10709777174,
+    auto = 10709777174,
+    compass = 10709781705,
+    map = 10723374668,
+    navigation = 10734906372,
+    location = 10734906372,
+    globe = 10709784819,
+    world = 10709784819,
+    earth = 10709784819,
+    dollar = 10709782505,
+    coin = 10709782505,
+    money = 10709782505,
+    cash = 10709782505,
+    cart = 10734951847,
+    shopping_cart = 10734951847,
+    shop = 10734951847,
+    box = 10709776630,
+    package = 10709776630,
+    gift = 10709784576,
+    trophy = 10747372167,
+    award = 10747372167,
+    crown = 10709782356,
+    king = 10709782356,
+    sparkles = 10734965876,
+    sparkle = 10734965876,
+    magic = 10734965876,
+    palette = 10734922851,
+    color = 10734922851,
+    colorpicker = 10734922851,
+    brush = 10734922851,
+    wrench = 10747376377,
+    tool = 10747376377,
+    hammer = 10709785361,
+    sun = 10734967347,
+    light = 10734967347,
+    moon = 10723375896,
+    dark = 10723375896,
+    tag = 10734968840,
+    bookmark = 10709776366,
+    pin = 10734923058,
+    config = 125823673784681,
+    slate = 136661212895058,
+    rayfield = 136661212895058,
+    logo = 136661212895058,
+}
+
+local function normalize(name: string): string
+    name = string.lower(name)
+    name = string.gsub(name, '^fluent:', '')
+    name = string.gsub(name, '^fluent%-', '')
+    name = string.gsub(name, '^lucide:', '')
+    name = string.gsub(name, '^lucide%-', '')
+    name = string.gsub(name, '%-', '_')
+    name = string.gsub(name, '%s+', '_')
+
+    return name
+end
+
+function fluentIcons.get(name: unknown): number?
+    if type(name) ~= 'string' then
+        return nil
+    end
+
+    local clean = normalize(name)
+
+    return icons[clean]
+end
+
+fluentIcons.map = icons
+
+return fluentIcons
+
+end)() end,
+    [49] = function()local wax,script,require=ImportGlobals(49)local ImportGlobals return (function(...)local services = require(script.Parent.services)
 local httpService = services.getService('HttpService')
 local runService = services.getService('RunService')
 local fileSystem = require(script.Parent.filesystem)
@@ -14284,7 +14482,7 @@ end
 return fontManager
 
 end)() end,
-    [49] = function()local wax,script,require=ImportGlobals(49)local ImportGlobals return (function(...)local functions = {}
+    [50] = function()local wax,script,require=ImportGlobals(50)local ImportGlobals return (function(...)local functions = {}
 local textMetrics = require(script.Parent.textMetrics)
 local colors = require(script.Parent.colors)
 local flags = require(script.Parent.flagNames)
@@ -14299,65 +14497,44 @@ functions.contrastText = colors.contrastText
 return functions
 
 end)() end,
-    [50] = function()local wax,script,require=ImportGlobals(50)local ImportGlobals return (function(...)local imageCache = require(script.Parent.imageCache)
-local variables = require(script.Parent.variables)
+    [51] = function()local wax,script,require=ImportGlobals(51)local ImportGlobals return (function(...)local fluentIcons = require(script.Parent.fluentIcons)
+local constants = require(script.Parent.constants)
 
-type AvatarCallback = imageCache.AvatarCallback
-type PreloadCallback = imageCache.PreloadCallback
+type AvatarCallback = (uri: string) -> ()
+type PreloadCallback = (failed: number) -> ()
 
 local image = {}
 
-image.rewrites = imageCache.rewrites
-image.onBlock = nil::((unknown) -> ())?
+image.rewrites = {}
+image.onBlock = nil
 
 type PendingProperties = {[string]: boolean}
+image.pending = {}
 
-image.pending = {}::{[number]: {[Instance]: PendingProperties}}
-
-local settled = false
 local imageProperties: {[string]: boolean} = {
     Image = true,
     HoverImage = true,
     PressedImage = true,
 }
 
-local function idOf(value: unknown): number?
-    if type(value) == 'number' then
-        return value
-    elseif type(value) == 'string' then
-        return tonumber(string.match(value, '^rbxassetid://(%d+)$'))
+function image.preload(onSettled: PreloadCallback?): (boolean, number)
+    if onSettled then
+        task.defer(onSettled, 0)
     end
 
-    return nil
-end
-local function blocked(value: unknown): string
-    if image.onBlock then
-        image.onBlock(value)
-    end
-
-    return ''
+    return true, 0
 end
 
-function image.preload(onSettled: PreloadCallback?): (boolean,number)
-    settled = false
-
-    return imageCache.preload(function(failed)
-        settled = true
-
-        table.clear(image.pending)
-
-        if onSettled then
-            onSettled(failed)
-        end
-    end)
-end
 function image.avatar(userId: number, onReady: AvatarCallback?): string
-    if not variables.secureMode then
-        return `rbxthumb://type=AvatarHeadShot&id={userId}&w=48&h=48`
+    local uri = `rbxthumb://type=AvatarHeadShot&id={userId}&w=48&h=48`
+
+    if onReady then
+        task.defer(onReady, uri)
     end
 
-    return imageCache.avatar(userId, onReady)
+    return uri
 end
+
 function image.assign(instance: Instance, property: string, value: unknown)
     local target = instance::any
 
@@ -14368,99 +14545,52 @@ function image.assign(instance: Instance, property: string, value: unknown)
     end
 
     target[property] = image.resolve(value)
-
-    if variables.secureMode and not settled then
-        local id = idOf(value)
-
-        if id and not image.rewrites[id] then
-            local waiting = image.pending[id]
-
-            if not waiting then
-                waiting = setmetatable({}, {
-                    __mode = 'k',
-                })::any
-                image.pending[id] = waiting
-            end
-
-            local properties = waiting[instance]
-
-            if not properties then
-                properties = {}
-                waiting[instance] = properties
-            end
-
-            properties[property] = true
-        end
-    end
-end
-
-imageCache.onCached = function(id: number)
-    local waiting = image.pending[id]
-
-    if not waiting then
-        return
-    end
-
-    local uri = image.rewrites[id]
-
-    if uri then
-        for instance, properties in waiting do
-            if instance.Parent then
-                local target = instance::any
-
-                for property in properties do
-                    target[property] = uri
-                end
-            end
-        end
-    end
-
-    image.pending[id] = nil
 end
 
 function image.resolve(value: unknown): string
     if value == nil or value == 0 or value == '' then
         return ''
     end
+
+    if type(value) == 'number' then
+        return 'rbxassetid://' .. tostring(value)
+    end
+
     if type(value) == 'string' then
-        if string.sub(value, 1, 11) == 'rbxasset://' then
+        if string.sub(value, 1, 11) == 'rbxasset://' or string.sub(value, 1, 11) == 'rbxthumb://' or string.sub(value, 1, 7) == 'http://' or string.sub(value, 1, 8) == 'https://' then
             return value
         end
-        if string.sub(value, 1, 11) == 'rbxthumb://' then
-            return if variables.secureMode then blocked(value)else value
+
+        if string.match(value, '^rbxassetid://') then
+            return value
         end
-    end
 
-    local id: number? = nil
+        if string.match(value, '^%d+$') then
+            return 'rbxassetid://' .. value
+        end
 
-    if type(value) == 'number' then
-        id = value
-    elseif type(value) == 'string' then
-        id = tonumber(string.match(value, '^rbxassetid://(%d+)$'))
-    end
+        local fluentId = fluentIcons.get(value)
 
-    local rewrite = if id then image.rewrites[id]else nil
+        if fluentId then
+            return 'rbxassetid://' .. tostring(fluentId)
+        end
 
-    if rewrite then
-        return rewrite
-    end
-    if variables.secureMode then
-        return blocked(value)
-    end
-    if type(value) == 'number' then
-        return 'rbxassetid://' .. value
-    end
-    if type(value) == 'string' then
+        local constId = constants.icons[value]
+
+        if constId then
+            return 'rbxassetid://' .. tostring(constId)
+        end
+
         return value
     end
 
-    return blocked(value)
+    return ''
 end
 
 return image
 
 end)() end,
-    [51] = function()local wax,script,require=ImportGlobals(51)local ImportGlobals return (function(...)local filesystem = require(script.Parent.filesystem)
+    [52] = function()local wax,script,require=ImportGlobals(52)local ImportGlobals return (function(...)local filesystem = require(script.Parent.filesystem)
 local path = require(script.Parent.path)
 local variables = require(script.Parent.variables)
 local constants = require(script.Parent.constants)
@@ -14720,7 +14850,7 @@ end
 return imageCache
 
 end)() end,
-    [52] = function()local wax,script,require=ImportGlobals(52)local ImportGlobals return (function(...)local layouts = {}
+    [53] = function()local wax,script,require=ImportGlobals(53)local ImportGlobals return (function(...)local layouts = {}
 local topbarHeight = 64
 local tabStripTop = topbarHeight - 1
 local tabStripHeight = 38
@@ -14811,7 +14941,7 @@ end
 return layouts
 
 end)() end,
-    [53] = function()local wax,script,require=ImportGlobals(53)local ImportGlobals return (function(...)local variables = require(script.Parent.variables)
+    [54] = function()local wax,script,require=ImportGlobals(54)local ImportGlobals return (function(...)local variables = require(script.Parent.variables)
 local log = require(script.Parent.log)
 local locale = {}
 
@@ -14912,7 +15042,7 @@ end
 return locale
 
 end)() end,
-    [54] = function()local wax,script,require=ImportGlobals(54)local ImportGlobals return (function(...)local function lockable<T>(class: T): T
+    [55] = function()local wax,script,require=ImportGlobals(55)local ImportGlobals return (function(...)local function lockable<T>(class: T): T
     local target = class::any
 
     function target:Lock(reason: string?)
@@ -14931,7 +15061,7 @@ end
 return lockable
 
 end)() end,
-    [55] = function()local wax,script,require=ImportGlobals(55)local ImportGlobals return (function(...)local runtime = require(script.Parent.runtime)
+    [56] = function()local wax,script,require=ImportGlobals(56)local ImportGlobals return (function(...)local runtime = require(script.Parent.runtime)
 local log = {}
 
 type SuppressPredicate = () -> boolean
@@ -14976,7 +15106,7 @@ end
 return log
 
 end)() end,
-    [56] = function()local wax,script,require=ImportGlobals(56)local ImportGlobals return (function(...)local function moveable<T>(class: T): T
+    [57] = function()local wax,script,require=ImportGlobals(57)local ImportGlobals return (function(...)local function moveable<T>(class: T): T
     local target = class::any
 
     function target:MoveTo(index: number)
@@ -15009,7 +15139,7 @@ end
 return moveable
 
 end)() end,
-    [57] = function()local wax,script,require=ImportGlobals(57)local ImportGlobals return (function(...)local network = {}
+    [58] = function()local wax,script,require=ImportGlobals(58)local ImportGlobals return (function(...)local network = {}
 
 network.__index = network
 
@@ -15024,7 +15154,7 @@ end
 return network
 
 end)() end,
-    [58] = function()local wax,script,require=ImportGlobals(58)local ImportGlobals return (function(...)local variables = require(script.Parent.variables)
+    [59] = function()local wax,script,require=ImportGlobals(59)local ImportGlobals return (function(...)local variables = require(script.Parent.variables)
 local TextService = variables.textService
 local odometer = {}
 
@@ -15366,7 +15496,7 @@ end
 return odometer
 
 end)() end,
-    [59] = function()local wax,script,require=ImportGlobals(59)local ImportGlobals return (function(...)type OrderedElement = {main: GuiObject, descriptor: {main: GuiObject}?}
+    [60] = function()local wax,script,require=ImportGlobals(60)local ImportGlobals return (function(...)type OrderedElement = {main: GuiObject, descriptor: {main: GuiObject}?}
 
 local function assignOrder(element: OrderedElement, order: number)
     element.main.LayoutOrder = order
@@ -15379,7 +15509,7 @@ end
 return assignOrder
 
 end)() end,
-    [60] = function()local wax,script,require=ImportGlobals(60)local ImportGlobals return (function(...)local path = {}
+    [61] = function()local wax,script,require=ImportGlobals(61)local ImportGlobals return (function(...)local path = {}
 
 function path.join(basePath: string, childPath: string?): string
     if not childPath or childPath == '' then
@@ -15434,7 +15564,7 @@ end
 return path
 
 end)() end,
-    [61] = function()local wax,script,require=ImportGlobals(61)local ImportGlobals return (function(...)local persistence = {}
+    [62] = function()local wax,script,require=ImportGlobals(62)local ImportGlobals return (function(...)local persistence = {}
 local config = require(script.Parent.persistenceConfig)
 local settings = require(script.Parent.persistenceSettings)
 
@@ -15451,7 +15581,7 @@ persistence.loadSettings = settings.loadSettings
 return persistence
 
 end)() end,
-    [62] = function()local wax,script,require=ImportGlobals(62)local ImportGlobals return (function(...)local variables = require(script.Parent.variables)
+    [63] = function()local wax,script,require=ImportGlobals(63)local ImportGlobals return (function(...)local variables = require(script.Parent.variables)
 local filesystem = require(script.Parent.filesystem)
 local log = require(script.Parent.log)
 local path = require(script.Parent.path)
@@ -15700,7 +15830,7 @@ end
 return persistenceConfig
 
 end)() end,
-    [63] = function()local wax,script,require=ImportGlobals(63)local ImportGlobals return (function(...)local variables = require(script.Parent.variables)
+    [64] = function()local wax,script,require=ImportGlobals(64)local ImportGlobals return (function(...)local variables = require(script.Parent.variables)
 local path = require(script.Parent.path)
 local paths = {}
 
@@ -15742,7 +15872,7 @@ end
 return paths
 
 end)() end,
-    [64] = function()local wax,script,require=ImportGlobals(64)local ImportGlobals return (function(...)local variables = require(script.Parent.variables)
+    [65] = function()local wax,script,require=ImportGlobals(65)local ImportGlobals return (function(...)local variables = require(script.Parent.variables)
 local filesystem = require(script.Parent.filesystem)
 local paths = require(script.Parent.persistencePaths)
 local atomic = require(script.Parent.persistenceWrite)
@@ -15861,7 +15991,7 @@ end
 return persistenceSettings
 
 end)() end,
-    [65] = function()local wax,script,require=ImportGlobals(65)local ImportGlobals return (function(...)local filesystem = require(script.Parent.filesystem)
+    [66] = function()local wax,script,require=ImportGlobals(66)local ImportGlobals return (function(...)local filesystem = require(script.Parent.filesystem)
 local persistenceWrite = {}
 local parkedExtension = '.saving'
 
@@ -15889,7 +16019,7 @@ end
 return persistenceWrite
 
 end)() end,
-    [66] = function()local wax,script,require=ImportGlobals(66)local ImportGlobals return (function(...)local services = require(script.Parent.services)
+    [67] = function()local wax,script,require=ImportGlobals(67)local ImportGlobals return (function(...)local services = require(script.Parent.services)
 
 export type RuntimeState = {secureMode: boolean, coreGui: CoreGui, workspace: Workspace, runService: RunService, userInputService: UserInputService, guiService: GuiService, localPlayer: Player?, tweenService: TweenService, httpService: HttpService, textService: TextService, replicatedStorage: ReplicatedStorage, localizationService: LocalizationService, guiContainer: Instance}
 
@@ -15941,7 +16071,7 @@ end)()
 return runtime
 
 end)() end,
-    [67] = function()local wax,script,require=ImportGlobals(67)local ImportGlobals return (function(...)local services = {}
+    [68] = function()local wax,script,require=ImportGlobals(68)local ImportGlobals return (function(...)local services = {}
 
 function services.getService(name)
     local service = game:GetService(name)
@@ -15952,7 +16082,7 @@ end
 return services
 
 end)() end,
-    [68] = function()local wax,script,require=ImportGlobals(68)local ImportGlobals return (function(...)local variables = require(script.Parent.variables)
+    [69] = function()local wax,script,require=ImportGlobals(69)local ImportGlobals return (function(...)local variables = require(script.Parent.variables)
 local textService = variables.textService
 local textMetrics = {}
 local widthCache: {[string]: number} = {}
@@ -16036,7 +16166,7 @@ end
 return textMetrics
 
 end)() end,
-    [69] = function()local wax,script,require=ImportGlobals(69)local ImportGlobals return (function(...)local runtime = require(script.Parent.runtime)
+    [70] = function()local wax,script,require=ImportGlobals(70)local ImportGlobals return (function(...)local runtime = require(script.Parent.runtime)
 local constants = require(script.Parent.constants)
 local log = require(script.Parent.log)
 local fileSystemManager = require(script.Parent.filesystemManager)
@@ -16084,7 +16214,7 @@ end
 return variables
 
 end)() end,
-    [70] = function()local wax,script,require=ImportGlobals(70)local ImportGlobals return (function(...)local layouts = require(script.Parent.layouts)
+    [71] = function()local wax,script,require=ImportGlobals(71)local ImportGlobals return (function(...)local layouts = require(script.Parent.layouts)
 local windowSizing = {}
 
 export type Profile = {defaultSize: Vector2, minSize: Vector2, maxOccupancyX: number, maxOccupancyY: number?, marginFloorX: number, marginFloorY: number, topbarClearance: number?, maxAspectRatio: number, minAspectRatio: number?, widthCompensation: number?, chromeHeight: number}
@@ -16201,6 +16331,211 @@ local ObjectTree = {
         },
         {
             {
+                2,
+                1,
+                {
+                    "components"
+                },
+                {
+                    {
+                        6,
+                        2,
+                        {
+                            "colorpicker"
+                        }
+                    },
+                    {
+                        17,
+                        2,
+                        {
+                            "progress"
+                        }
+                    },
+                    {
+                        28,
+                        2,
+                        {
+                            "toast"
+                        }
+                    },
+                    {
+                        14,
+                        2,
+                        {
+                            "keybind"
+                        }
+                    },
+                    {
+                        10,
+                        2,
+                        {
+                            "drag"
+                        }
+                    },
+                    {
+                        30,
+                        2,
+                        {
+                            "window"
+                        }
+                    },
+                    {
+                        4,
+                        2,
+                        {
+                            "button"
+                        }
+                    },
+                    {
+                        19,
+                        2,
+                        {
+                            "section"
+                        }
+                    },
+                    {
+                        27,
+                        2,
+                        {
+                            "text"
+                        }
+                    },
+                    {
+                        26,
+                        2,
+                        {
+                            "tag"
+                        }
+                    },
+                    {
+                        23,
+                        2,
+                        {
+                            "tab"
+                        }
+                    },
+                    {
+                        15,
+                        2,
+                        {
+                            "notification"
+                        }
+                    },
+                    {
+                        24,
+                        2,
+                        {
+                            "tabSection"
+                        }
+                    },
+                    {
+                        25,
+                        2,
+                        {
+                            "tabSelector"
+                        }
+                    },
+                    {
+                        3,
+                        2,
+                        {
+                            "action"
+                        }
+                    },
+                    {
+                        5,
+                        2,
+                        {
+                            "chrome"
+                        }
+                    },
+                    {
+                        13,
+                        2,
+                        {
+                            "input"
+                        }
+                    },
+                    {
+                        8,
+                        2,
+                        {
+                            "descriptor"
+                        }
+                    },
+                    {
+                        22,
+                        2,
+                        {
+                            "stat"
+                        }
+                    },
+                    {
+                        7,
+                        2,
+                        {
+                            "console"
+                        }
+                    },
+                    {
+                        16,
+                        2,
+                        {
+                            "popup"
+                        }
+                    },
+                    {
+                        21,
+                        2,
+                        {
+                            "slider"
+                        }
+                    },
+                    {
+                        29,
+                        2,
+                        {
+                            "toggle"
+                        }
+                    },
+                    {
+                        20,
+                        2,
+                        {
+                            "sidebar"
+                        }
+                    },
+                    {
+                        9,
+                        2,
+                        {
+                            "divider"
+                        }
+                    },
+                    {
+                        11,
+                        2,
+                        {
+                            "dropdown"
+                        }
+                    },
+                    {
+                        18,
+                        2,
+                        {
+                            "search"
+                        }
+                    },
+                    {
+                        12,
+                        2,
+                        {
+                            "group"
+                        }
+                    }
+                }
+            },
+            {
                 39,
                 1,
                 {
@@ -16208,108 +16543,10 @@ local ObjectTree = {
                 },
                 {
                     {
-                        52,
+                        55,
                         2,
                         {
-                            "layouts"
-                        }
-                    },
-                    {
-                        60,
-                        2,
-                        {
-                            "path"
-                        }
-                    },
-                    {
-                        59,
-                        2,
-                        {
-                            "ordering"
-                        }
-                    },
-                    {
-                        51,
-                        2,
-                        {
-                            "imageCache"
-                        }
-                    },
-                    {
-                        67,
-                        2,
-                        {
-                            "services"
-                        }
-                    },
-                    {
-                        68,
-                        2,
-                        {
-                            "textMetrics"
-                        }
-                    },
-                    {
-                        58,
-                        2,
-                        {
-                            "odometer"
-                        }
-                    },
-                    {
-                        66,
-                        2,
-                        {
-                            "runtime"
-                        }
-                    },
-                    {
-                        42,
-                        2,
-                        {
-                            "colors"
-                        }
-                    },
-                    {
-                        65,
-                        2,
-                        {
-                            "persistenceWrite"
-                        }
-                    },
-                    {
-                        64,
-                        2,
-                        {
-                            "persistenceSettings"
-                        }
-                    },
-                    {
-                        50,
-                        2,
-                        {
-                            "image"
-                        }
-                    },
-                    {
-                        44,
-                        2,
-                        {
-                            "enums"
-                        }
-                    },
-                    {
-                        47,
-                        2,
-                        {
-                            "flagNames"
-                        }
-                    },
-                    {
-                        56,
-                        2,
-                        {
-                            "moveable"
+                            "lockable"
                         }
                     },
                     {
@@ -16320,59 +16557,87 @@ local ObjectTree = {
                         }
                     },
                     {
-                        63,
+                        48,
                         2,
                         {
-                            "persistencePaths"
+                            "fluentIcons"
                         }
                     },
                     {
-                        40,
+                        69,
                         2,
                         {
-                            "HapticEngine"
+                            "textMetrics"
                         }
                     },
                     {
-                        62,
+                        52,
                         2,
                         {
-                            "persistenceConfig"
+                            "imageCache"
                         }
                     },
                     {
-                        49,
+                        53,
                         2,
                         {
-                            "functions"
-                        }
-                    },
-                    {
-                        61,
-                        2,
-                        {
-                            "persistence"
+                            "layouts"
                         }
                     },
                     {
                         70,
                         2,
                         {
-                            "windowSizing"
+                            "variables"
                         }
                     },
                     {
-                        46,
-                        2,
-                        {
-                            "filesystemManager"
-                        }
-                    },
-                    {
-                        57,
+                        58,
                         2,
                         {
                             "network"
+                        }
+                    },
+                    {
+                        50,
+                        2,
+                        {
+                            "functions"
+                        }
+                    },
+                    {
+                        68,
+                        2,
+                        {
+                            "services"
+                        }
+                    },
+                    {
+                        67,
+                        2,
+                        {
+                            "runtime"
+                        }
+                    },
+                    {
+                        41,
+                        2,
+                        {
+                            "assetResolver"
+                        }
+                    },
+                    {
+                        66,
+                        2,
+                        {
+                            "persistenceWrite"
+                        }
+                    },
+                    {
+                        65,
+                        2,
+                        {
+                            "persistenceSettings"
                         }
                     },
                     {
@@ -16383,54 +16648,124 @@ local ObjectTree = {
                         }
                     },
                     {
-                        55,
+                        64,
                         2,
                         {
-                            "log"
+                            "persistencePaths"
                         }
                     },
                     {
-                        53,
+                        63,
                         2,
                         {
-                            "locale"
+                            "persistenceConfig"
                         }
                     },
                     {
-                        54,
+                        44,
                         2,
                         {
-                            "lockable"
+                            "enums"
                         }
                     },
                     {
-                        48,
+                        57,
+                        2,
+                        {
+                            "moveable"
+                        }
+                    },
+                    {
+                        51,
+                        2,
+                        {
+                            "image"
+                        }
+                    },
+                    {
+                        62,
+                        2,
+                        {
+                            "persistence"
+                        }
+                    },
+                    {
+                        46,
+                        2,
+                        {
+                            "filesystemManager"
+                        }
+                    },
+                    {
+                        40,
+                        2,
+                        {
+                            "HapticEngine"
+                        }
+                    },
+                    {
+                        60,
+                        2,
+                        {
+                            "ordering"
+                        }
+                    },
+                    {
+                        59,
+                        2,
+                        {
+                            "odometer"
+                        }
+                    },
+                    {
+                        49,
                         2,
                         {
                             "fontManager"
                         }
                     },
                     {
-                        69,
+                        61,
                         2,
                         {
-                            "variables"
+                            "path"
                         }
                     },
                     {
-                        41,
+                        71,
                         2,
                         {
-                            "assetResolver"
+                            "windowSizing"
+                        }
+                    },
+                    {
+                        47,
+                        2,
+                        {
+                            "flagNames"
+                        }
+                    },
+                    {
+                        42,
+                        2,
+                        {
+                            "colors"
+                        }
+                    },
+                    {
+                        54,
+                        2,
+                        {
+                            "locale"
+                        }
+                    },
+                    {
+                        56,
+                        2,
+                        {
+                            "log"
                         }
                     }
-                }
-            },
-            {
-                38,
-                2,
-                {
-                    "types"
                 }
             },
             {
@@ -16440,27 +16775,6 @@ local ObjectTree = {
                     "themes"
                 },
                 {
-                    {
-                        37,
-                        2,
-                        {
-                            "rose"
-                        }
-                    },
-                    {
-                        32,
-                        2,
-                        {
-                            "amethyst"
-                        }
-                    },
-                    {
-                        33,
-                        2,
-                        {
-                            "cobalt"
-                        }
-                    },
                     {
                         34,
                         2,
@@ -16481,212 +16795,35 @@ local ObjectTree = {
                         {
                             "ember"
                         }
+                    },
+                    {
+                        33,
+                        2,
+                        {
+                            "cobalt"
+                        }
+                    },
+                    {
+                        32,
+                        2,
+                        {
+                            "amethyst"
+                        }
+                    },
+                    {
+                        37,
+                        2,
+                        {
+                            "rose"
+                        }
                     }
                 }
             },
             {
+                38,
                 2,
-                1,
                 {
-                    "components"
-                },
-                {
-                    {
-                        10,
-                        2,
-                        {
-                            "drag"
-                        }
-                    },
-                    {
-                        19,
-                        2,
-                        {
-                            "section"
-                        }
-                    },
-                    {
-                        28,
-                        2,
-                        {
-                            "toast"
-                        }
-                    },
-                    {
-                        9,
-                        2,
-                        {
-                            "divider"
-                        }
-                    },
-                    {
-                        17,
-                        2,
-                        {
-                            "progress"
-                        }
-                    },
-                    {
-                        6,
-                        2,
-                        {
-                            "colorpicker"
-                        }
-                    },
-                    {
-                        30,
-                        2,
-                        {
-                            "window"
-                        }
-                    },
-                    {
-                        11,
-                        2,
-                        {
-                            "dropdown"
-                        }
-                    },
-                    {
-                        16,
-                        2,
-                        {
-                            "popup"
-                        }
-                    },
-                    {
-                        24,
-                        2,
-                        {
-                            "tabSection"
-                        }
-                    },
-                    {
-                        22,
-                        2,
-                        {
-                            "stat"
-                        }
-                    },
-                    {
-                        4,
-                        2,
-                        {
-                            "button"
-                        }
-                    },
-                    {
-                        27,
-                        2,
-                        {
-                            "text"
-                        }
-                    },
-                    {
-                        26,
-                        2,
-                        {
-                            "tag"
-                        }
-                    },
-                    {
-                        25,
-                        2,
-                        {
-                            "tabSelector"
-                        }
-                    },
-                    {
-                        29,
-                        2,
-                        {
-                            "toggle"
-                        }
-                    },
-                    {
-                        15,
-                        2,
-                        {
-                            "notification"
-                        }
-                    },
-                    {
-                        20,
-                        2,
-                        {
-                            "sidebar"
-                        }
-                    },
-                    {
-                        3,
-                        2,
-                        {
-                            "action"
-                        }
-                    },
-                    {
-                        23,
-                        2,
-                        {
-                            "tab"
-                        }
-                    },
-                    {
-                        5,
-                        2,
-                        {
-                            "chrome"
-                        }
-                    },
-                    {
-                        8,
-                        2,
-                        {
-                            "descriptor"
-                        }
-                    },
-                    {
-                        21,
-                        2,
-                        {
-                            "slider"
-                        }
-                    },
-                    {
-                        7,
-                        2,
-                        {
-                            "console"
-                        }
-                    },
-                    {
-                        12,
-                        2,
-                        {
-                            "group"
-                        }
-                    },
-                    {
-                        18,
-                        2,
-                        {
-                            "search"
-                        }
-                    },
-                    {
-                        13,
-                        2,
-                        {
-                            "input"
-                        }
-                    },
-                    {
-                        14,
-                        2,
-                        {
-                            "keybind"
-                        }
-                    }
+                    "types"
                 }
             }
         }
@@ -16716,51 +16853,52 @@ local LineOffsets = {
     [21] = 7050,
     [22] = 7636,
     [23] = 8300,
-    [24] = 8605,
-    [25] = 8743,
-    [26] = 9075,
-    [27] = 9234,
-    [28] = 9385,
-    [29] = 9786,
-    [30] = 10215,
-    [32] = 12780,
-    [33] = 12815,
-    [34] = 12850,
-    [35] = 12915,
-    [36] = 12950,
-    [37] = 13002,
-    [38] = 13037,
-    [40] = 13089,
-    [41] = 13198,
-    [42] = 13381,
-    [43] = 13400,
-    [44] = 13457,
-    [45] = 13488,
-    [46] = 13753,
-    [47] = 13795,
-    [48] = 13829,
-    [49] = 14290,
-    [50] = 14305,
-    [51] = 14466,
-    [52] = 14726,
-    [53] = 14817,
-    [54] = 14918,
-    [55] = 14937,
-    [56] = 14982,
-    [57] = 15015,
-    [58] = 15030,
-    [59] = 15372,
-    [60] = 15385,
-    [61] = 15440,
-    [62] = 15457,
-    [63] = 15706,
-    [64] = 15748,
-    [65] = 15867,
-    [66] = 15895,
-    [67] = 15947,
-    [68] = 15958,
-    [69] = 16042,
-    [70] = 16090
+    [24] = 8606,
+    [25] = 8744,
+    [26] = 9080,
+    [27] = 9239,
+    [28] = 9390,
+    [29] = 9791,
+    [30] = 10220,
+    [32] = 12791,
+    [33] = 12826,
+    [34] = 12861,
+    [35] = 12926,
+    [36] = 12961,
+    [37] = 13013,
+    [38] = 13048,
+    [40] = 13100,
+    [41] = 13209,
+    [42] = 13392,
+    [43] = 13411,
+    [44] = 13468,
+    [45] = 13499,
+    [46] = 13764,
+    [47] = 13806,
+    [48] = 13840,
+    [49] = 14027,
+    [50] = 14488,
+    [51] = 14503,
+    [52] = 14596,
+    [53] = 14856,
+    [54] = 14947,
+    [55] = 15048,
+    [56] = 15067,
+    [57] = 15112,
+    [58] = 15145,
+    [59] = 15160,
+    [60] = 15502,
+    [61] = 15515,
+    [62] = 15570,
+    [63] = 15587,
+    [64] = 15836,
+    [65] = 15878,
+    [66] = 15997,
+    [67] = 16025,
+    [68] = 16077,
+    [69] = 16088,
+    [70] = 16172,
+    [71] = 16220
 }
 
 local WaxVersion = "0.4.1"

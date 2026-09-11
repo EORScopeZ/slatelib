@@ -105,14 +105,18 @@ local function addContent(tab, iconSize, withInitial)
         })
     end
     if tab.icon then
-        tab.topbarItemIcon = tab.window:Create('ImageLabel', {
+        local iconProps = {
             Image = tab.icon,
             Size = UDim2.fromOffset(iconSize, iconSize),
             BorderSizePixel = 0,
             BackgroundTransparency = 1,
             ImageTransparency = 1,
             Parent = tab.topbarItemContainer,
-        }, {
+        }
+        if tab.iconColor then
+            iconProps.ImageColor3 = tab.iconColor
+        end
+        tab.topbarItemIcon = tab.window:Create('ImageLabel', iconProps, if tab.iconColor then nil else {
             ImageColor3 = 'TabColor',
         })
     end

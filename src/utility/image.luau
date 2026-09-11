@@ -1,62 +1,41 @@
-local imageCache = require(script.Parent.imageCache)
-local variables = require(script.Parent.variables)
+local fluentIcons = require(script.Parent.fluentIcons)
+local constants = require(script.Parent.constants)
 
-type AvatarCallback = imageCache.AvatarCallback
-type PreloadCallback = imageCache.PreloadCallback
+type AvatarCallback = (uri: string) -> ()
+type PreloadCallback = (failed: number) -> ()
 
 local image = {}
 
-image.rewrites = imageCache.rewrites
-image.onBlock = nil::((unknown) -> ())?
+image.rewrites = {}
+image.onBlock = nil
 
 type PendingProperties = {[string]: boolean}
+image.pending = {}
 
-image.pending = {}::{[number]: {[Instance]: PendingProperties}}
-
-local settled = false
 local imageProperties: {[string]: boolean} = {
     Image = true,
     HoverImage = true,
     PressedImage = true,
 }
 
-local function idOf(value: unknown): number?
-    if type(value) == 'number' then
-        return value
-    elseif type(value) == 'string' then
-        return tonumber(string.match(value, '^rbxassetid://(%d+)$'))
+function image.preload(onSettled: PreloadCallback?): (boolean, number)
+    if onSettled then
+        task.defer(onSettled, 0)
     end
 
-    return nil
-end
-local function blocked(value: unknown): string
-    if image.onBlock then
-        image.onBlock(value)
-    end
-
-    return ''
+    return true, 0
 end
 
-function image.preload(onSettled: PreloadCallback?): (boolean,number)
-    settled = false
-
-    return imageCache.preload(function(failed)
-        settled = true
-
-        table.clear(image.pending)
-
-        if onSettled then
-            onSettled(failed)
-        end
-    end)
-end
 function image.avatar(userId: number, onReady: AvatarCallback?): string
-    if not variables.secureMode then
-        return `rbxthumb://type=AvatarHeadShot&id={userId}&w=48&h=48`
+    local uri = `rbxthumb://type=AvatarHeadShot&id={userId}&w=48&h=48`
+
+    if onReady then
+        task.defer(onReady, uri)
     end
 
-    return imageCache.avatar(userId, onReady)
+    return uri
 end
+
 function image.assign(instance: Instance, property: string, value: unknown)
     local target = instance::any
 
@@ -67,93 +46,46 @@ function image.assign(instance: Instance, property: string, value: unknown)
     end
 
     target[property] = image.resolve(value)
-
-    if variables.secureMode and not settled then
-        local id = idOf(value)
-
-        if id and not image.rewrites[id] then
-            local waiting = image.pending[id]
-
-            if not waiting then
-                waiting = setmetatable({}, {
-                    __mode = 'k',
-                })::any
-                image.pending[id] = waiting
-            end
-
-            local properties = waiting[instance]
-
-            if not properties then
-                properties = {}
-                waiting[instance] = properties
-            end
-
-            properties[property] = true
-        end
-    end
-end
-
-imageCache.onCached = function(id: number)
-    local waiting = image.pending[id]
-
-    if not waiting then
-        return
-    end
-
-    local uri = image.rewrites[id]
-
-    if uri then
-        for instance, properties in waiting do
-            if instance.Parent then
-                local target = instance::any
-
-                for property in properties do
-                    target[property] = uri
-                end
-            end
-        end
-    end
-
-    image.pending[id] = nil
 end
 
 function image.resolve(value: unknown): string
     if value == nil or value == 0 or value == '' then
         return ''
     end
+
+    if type(value) == 'number' then
+        return 'rbxassetid://' .. tostring(value)
+    end
+
     if type(value) == 'string' then
-        if string.sub(value, 1, 11) == 'rbxasset://' then
+        if string.sub(value, 1, 11) == 'rbxasset://' or string.sub(value, 1, 11) == 'rbxthumb://' or string.sub(value, 1, 7) == 'http://' or string.sub(value, 1, 8) == 'https://' then
             return value
         end
-        if string.sub(value, 1, 11) == 'rbxthumb://' then
-            return if variables.secureMode then blocked(value)else value
+
+        if string.match(value, '^rbxassetid://') then
+            return value
         end
-    end
 
-    local id: number? = nil
+        if string.match(value, '^%d+$') then
+            return 'rbxassetid://' .. value
+        end
 
-    if type(value) == 'number' then
-        id = value
-    elseif type(value) == 'string' then
-        id = tonumber(string.match(value, '^rbxassetid://(%d+)$'))
-    end
+        local fluentId = fluentIcons.get(value)
 
-    local rewrite = if id then image.rewrites[id]else nil
+        if fluentId then
+            return 'rbxassetid://' .. tostring(fluentId)
+        end
 
-    if rewrite then
-        return rewrite
-    end
-    if variables.secureMode then
-        return blocked(value)
-    end
-    if type(value) == 'number' then
-        return 'rbxassetid://' .. value
-    end
-    if type(value) == 'string' then
+        local constId = constants.icons[value]
+
+        if constId then
+            return 'rbxassetid://' .. tostring(constId)
+        end
+
         return value
     end
 
-    return blocked(value)
+    return ''
 end
 
 return image

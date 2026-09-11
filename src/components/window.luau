@@ -187,6 +187,7 @@ function Window.new(properties)
         instances = {},
         connections = {},
         icon = properties.icon or properties.Icon or constants.icons.slate,
+        iconColor = properties.iconColor or properties.IconColor,
         showName = properties.showName or properties.ShowName or 'Slate',
         showIcon = properties.showIcon or properties.ShowIcon or constants.icons.slate,
         showIconOnly = properties.showIconOnly or properties.ShowIconOnly or false,
@@ -379,13 +380,18 @@ function Window.new(properties)
         })
     end
     if self.icon then
-        self.topbarIcon = self:Create('ImageLabel', {
+        local iconProps = {
             Image = self.icon,
             BackgroundTransparency = 1,
-            Size = UDim2.fromOffset(32, 32),
+            Size = UDim2.fromOffset(26, 26),
             ImageTransparency = 1,
+            LayoutOrder = 0,
             Parent = self.topContainer,
-        }, {
+        }
+        if self.iconColor then
+            iconProps.ImageColor3 = self.iconColor
+        end
+        self.topbarIcon = self:Create('ImageLabel', iconProps, if self.iconColor then nil else {
             ImageColor3 = 'TitlingColor',
         })
     end
