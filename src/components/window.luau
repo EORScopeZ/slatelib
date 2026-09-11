@@ -128,10 +128,10 @@ local function themeOverrides(value)
             return require(named)
         end
 
-        log.warn("Rayfield: unknown theme '" .. value .. "', using default")
+        log.warn("Slate: unknown theme '" .. value .. "', using default")
     elseif value ~= nil then
         log.warn(
-[[Rayfield: invalid theme (expected a built-in name or a theme table), using default]])
+[[Slate: invalid theme (expected a built-in name or a theme table), using default]])
     end
 
     return require(themes['default'])
@@ -225,7 +225,7 @@ function Window.new(properties)
             local control = self.controls[flag]
 
             if not control then
-                log.warn("Rayfield: no flag '" .. tostring(flag) .. "' to set")
+                log.warn("Slate: no flag '" .. tostring(flag) .. "' to set")
 
                 return
             end
@@ -738,7 +738,7 @@ function Window:_registerControl(control)
 
         flag = flag .. n
 
-        log.warn("Rayfield: duplicate config flag '" .. control.flag .. "', saving this one as '" .. flag .. "'. Set a unique flag to keep it stable across sessions.")
+        log.warn("Slate: duplicate config flag '" .. control.flag .. "', saving this one as '" .. flag .. "'. Set a unique flag to keep it stable across sessions.")
     end
 
     control.flag = flag
@@ -1746,7 +1746,7 @@ function Window:Show()
         local ok, err = pcall(self.Load, self)
 
         if not ok then
-            log.warn('Rayfield: Failed to load configuration - ' .. tostring(err))
+            log.warn('Slate: Failed to load configuration - ' .. tostring(err))
         end
     end
 
@@ -2239,7 +2239,7 @@ function Window:_runGuarded(element, fn, ...)
             element.title.Text = locale.resolve('Error, log recorded in console.')
         end
 
-        log.warn(`Rayfield encountered an error, with the callback for a {element.__type} component named '{element.name}':`)
+        log.warn(`Slate encountered an error, with the callback for a {element.__type} component named '{element.name}':`)
         log.print(err)
         task.wait(1)
 

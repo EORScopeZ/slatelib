@@ -51,8 +51,8 @@ export type Text = types.Text
 export type Divider = types.Divider
 export type Tag = types.Tag
 export type Popup = types.Popup
-export type Slate = types.Rayfield
-export type Rayfield = types.Rayfield
+export type Slate = types.Slate
+export type Slate = types.Slate
 type WindowModule = {new: (types.WindowProps) -> types.Window}
 
 local slate = {}::Slate

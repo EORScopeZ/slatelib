@@ -591,7 +591,7 @@ function Popup:_buildButton(parent, option, order)
                 local ok, err = pcall(callback)
 
                 if not ok then
-                    log.warn("Rayfield: popup button '" .. label .. "' callback errored:")
+                    log.warn("Slate: popup button '" .. label .. "' callback errored:")
                     log.print(err)
                 end
             end)

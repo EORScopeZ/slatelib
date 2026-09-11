@@ -58,8 +58,8 @@ export type Text = types.Text
 export type Divider = types.Divider
 export type Tag = types.Tag
 export type Popup = types.Popup
-export type Slate = types.Rayfield
-export type Rayfield = types.Rayfield
+export type Slate = types.Slate
+export type Slate = types.Slate
 type WindowModule = {new: (types.WindowProps) -> types.Window}
 
 local slate = {}::Slate
@@ -243,7 +243,7 @@ function Action.new(window, properties)
             local success, result = pcall(self.callback)
 
             if not success then
-                log.warn(`Rayfield encountered an error, with the callback for a {self.__type} component named '{self.name}':`)
+                log.warn(`Slate encountered an error, with the callback for a {self.__type} component named '{self.name}':`)
                 log.print(result)
             end
 
@@ -3953,7 +3953,7 @@ function Group.new(tab, properties)
 end
 function Group:_add(componentName, properties)
     if self.compact and not compactCapable[componentName] then
-        log.warn(`Rayfield: a row only holds compact elements (button/toggle/stat/slider), ignoring '{componentName}'. Use a column for it.`)
+        log.warn(`Slate: a row only holds compact elements (button/toggle/stat/slider), ignoring '{componentName}'. Use a column for it.`)
 
         return nil
     end
@@ -4763,12 +4763,12 @@ function Keybind:Set(value, skipChanged)
             local clash = self.window:_keybindUsing(key, self)
 
             if clash then
-                log.warn('Rayfield: ' .. keyName(key) .. " is bound to '" .. tostring(clash.name) .. "'; kept " .. keyName(self.value))
+                log.warn('Slate: ' .. keyName(key) .. " is bound to '" .. tostring(clash.name) .. "'; kept " .. keyName(self.value))
 
                 return
             end
         elseif key == self.window.settings.toggleKeybind then
-            log.warn('Rayfield: ' .. keyName(key) .. ' is the menu toggle key; kept ' .. keyName(self.value))
+            log.warn('Slate: ' .. keyName(key) .. ' is the menu toggle key; kept ' .. keyName(self.value))
 
             return
         end
@@ -5757,7 +5757,7 @@ function Popup:_buildButton(parent, option, order)
                 local ok, err = pcall(callback)
 
                 if not ok then
-                    log.warn("Rayfield: popup button '" .. label .. "' callback errored:")
+                    log.warn("Slate: popup button '" .. label .. "' callback errored:")
                     log.print(err)
                 end
             end)
@@ -7726,7 +7726,7 @@ function Statistic.new(tab, properties)
     end
     if self.description then
         if self.compact then
-            log.warn(`Rayfield: a compact stat has no room for a description, ignoring it on '{self.name}'.`)
+            log.warn(`Slate: a compact stat has no room for a description, ignoring it on '{self.name}'.`)
         else
             self.descriptor = require(script.Parent.descriptor).new(self.tab, {
                 description = self.description,
@@ -8637,7 +8637,7 @@ function TabSection.new(window, properties)
             window._warnedTabSection = true
 
             log.warn(
-[[Rayfield: Window:CreateSection needs the sidebar layout; it does nothing on the top strip.]])
+[[Slate: Window:CreateSection needs the sidebar layout; it does nothing on the top strip.]])
         end
 
         self.inert = true
@@ -10342,10 +10342,10 @@ local function themeOverrides(value)
             return require(named)
         end
 
-        log.warn("Rayfield: unknown theme '" .. value .. "', using default")
+        log.warn("Slate: unknown theme '" .. value .. "', using default")
     elseif value ~= nil then
         log.warn(
-[[Rayfield: invalid theme (expected a built-in name or a theme table), using default]])
+[[Slate: invalid theme (expected a built-in name or a theme table), using default]])
     end
 
     return require(themes['default'])
@@ -10439,7 +10439,7 @@ function Window.new(properties)
             local control = self.controls[flag]
 
             if not control then
-                log.warn("Rayfield: no flag '" .. tostring(flag) .. "' to set")
+                log.warn("Slate: no flag '" .. tostring(flag) .. "' to set")
 
                 return
             end
@@ -10952,7 +10952,7 @@ function Window:_registerControl(control)
 
         flag = flag .. n
 
-        log.warn("Rayfield: duplicate config flag '" .. control.flag .. "', saving this one as '" .. flag .. "'. Set a unique flag to keep it stable across sessions.")
+        log.warn("Slate: duplicate config flag '" .. control.flag .. "', saving this one as '" .. flag .. "'. Set a unique flag to keep it stable across sessions.")
     end
 
     control.flag = flag
@@ -11960,7 +11960,7 @@ function Window:Show()
         local ok, err = pcall(self.Load, self)
 
         if not ok then
-            log.warn('Rayfield: Failed to load configuration - ' .. tostring(err))
+            log.warn('Slate: Failed to load configuration - ' .. tostring(err))
         end
     end
 
@@ -12453,7 +12453,7 @@ function Window:_runGuarded(element, fn, ...)
             element.title.Text = locale.resolve('Error, log recorded in console.')
         end
 
-        log.warn(`Rayfield encountered an error, with the callback for a {element.__type} component named '{element.name}':`)
+        log.warn(`Slate encountered an error, with the callback for a {element.__type} component named '{element.name}':`)
         log.print(err)
         task.wait(1)
 
@@ -13081,7 +13081,7 @@ export type Popup = {Close: (self:Popup) -> ()}
 export type Group = Moveable&{CreateButton: (self:Group, props:ButtonProps) -> Button, CreateToggle: (self:Group, props:ToggleProps) -> Toggle, CreateSwitch: (self:Group, props:ToggleProps) -> Toggle, CreateStat: (self:Group, props:StatProps) -> Stat, CreateSlider: (self:Group, props:SliderProps) -> Slider, CreateDropdown: (self:Group, props:DropdownProps) -> Dropdown?, CreateSection: (self:Group, props:SectionProps) -> Section?, CreateText: (self:Group, props:TextProps) -> Text?, CreateDivider: (self:Group, props:DividerProps?) -> Divider?, CreateGroup: (self:Group, props:GroupProps?) -> Group}
 export type Tab = {Select: (self:Tab, noAnimation:boolean?) -> (), Deselect: (self:Tab, noAnimation:boolean?) -> (), Remove: (self:Tab) -> (), CreateButton: (self:Tab, props:ButtonProps) -> Button, CreateToggle: (self:Tab, props:ToggleProps) -> Toggle, CreateSwitch: (self:Tab, props:ToggleProps) -> Toggle, CreateSlider: (self:Tab, props:SliderProps) -> Slider, CreateDropdown: (self:Tab, props:DropdownProps) -> Dropdown, CreateInput: (self:Tab, props:InputProps) -> Input, CreateKeybind: (self:Tab, props:KeybindProps) -> Keybind, CreateColorPicker: (self:Tab, props:ColorPickerProps) -> ColorPicker, CreateStat: (self:Tab, props:StatProps) -> Stat, CreateProgress: (self:Tab, props:ProgressProps) -> Progress, CreateConsole: (self:Tab, props:ConsoleProps) -> Console, CreateSection: (self:Tab, props:SectionProps) -> Section, CreateText: (self:Tab, props:TextProps) -> Text, CreateDivider: (self:Tab, props:DividerProps?) -> Divider, CreateGroup: (self:Tab, props:GroupProps?) -> Group}
 export type Window = {unloaded: boolean, Flags: {[string]: any}, CreateTab: (self:Window, props:TabProps) -> Tab, CreateSection: (self:Window, props:SectionProps) -> TabSection, CreateTag: (self:Window, props:TagProps) -> Tag, Notify: (self:Window, props:NotifyProps) -> (), Toast: (self:Window, props:ToastProps) -> (), Popup: (self:Window, props:PopupProps) -> Popup?, Show: (self:Window) -> (), Hide: (self:Window) -> (), ToggleHide: (self:Window) -> (), ToggleMinimise: (self:Window) -> (), Navigate: (self:Window, tab:string | Tab) -> (), ChangeTheme: (self:Window, theme:Theme) -> (), SetLocale: (self:Window, localeId:string) -> (), SetTranslator: (self:Window, translator:Translator?) -> (), RegisterTranslations: (self:Window, translations:Translations) -> (), Save: (self:Window, name:string?) -> boolean, Load: (self:Window, name:string?) -> boolean, ListConfigs: (self:Window) -> {string}, DeleteConfig: (self:Window, name:string) -> boolean, GetPath: (self:Window) -> (string,string), Get: (self:Window, flag:string) -> any, Set: (self:Window, flag:string, value:any) -> boolean, Unload: (self:Window) -> ()}
-export type Rayfield = {CreateWindow: (self:Rayfield, props:WindowProps) -> Window}
+export type Slate = {CreateWindow: (self:Slate, props:WindowProps) -> Window}
 
 return {}
 
@@ -14891,7 +14891,7 @@ function locale.register(tables: TranslationTables?)
                 if type(source) == 'string' and type(translated) == 'string' then
                     target[source] = translated
                 else
-                    log.warn(`Rayfield: skipping a '{id}' translation, entries must be string to string.`)
+                    log.warn(`Slate: skipping a '{id}' translation, entries must be string to string.`)
                 end
             end
         end
@@ -15472,7 +15472,7 @@ function persistenceConfig.save(window: ConfigWindow, name: unknown?): boolean
     local dir, fullPath = persistenceConfig.getPath(window, name)
 
     if not dir or not fullPath then
-        log.warn("Rayfield: configuration name '" .. tostring(name) .. "' has no usable characters")
+        log.warn("Slate: configuration name '" .. tostring(name) .. "' has no usable characters")
 
         return false
     end
@@ -15496,7 +15496,7 @@ function persistenceConfig.save(window: ConfigWindow, name: unknown?): boolean
         if ok then
             flags[flag] = value
         else
-            log.warn("Rayfield: Failed to serialize flag '" .. tostring(flag) .. "' - " .. tostring(value))
+            log.warn("Slate: Failed to serialize flag '" .. tostring(flag) .. "' - " .. tostring(value))
         end
     end
 
@@ -15513,7 +15513,7 @@ function persistenceConfig.save(window: ConfigWindow, name: unknown?): boolean
     local encodeSuccess, encoded = pcall(variables.httpService.JSONEncode, variables.httpService, flags)
 
     if not encodeSuccess then
-        log.warn('Rayfield: Failed to encode configuration - ' .. tostring(encoded))
+        log.warn('Slate: Failed to encode configuration - ' .. tostring(encoded))
 
         return false
     end
@@ -15523,7 +15523,7 @@ function persistenceConfig.save(window: ConfigWindow, name: unknown?): boolean
     end)
 
     if not ok then
-        log.warn('Rayfield: Failed to save configuration - ' .. tostring(err))
+        log.warn('Slate: Failed to save configuration - ' .. tostring(err))
 
         return false
     end
@@ -15543,7 +15543,7 @@ local function decodeFile(fullPath: string): ({[string]: unknown}?,string?)
     local readOk, contents = pcall(filesystem.readfile, fullPath)
 
     if not readOk or type(contents) ~= 'string' then
-        log.warn('Rayfield: Failed to read configuration file')
+        log.warn('Slate: Failed to read configuration file')
 
         return nil, nil
     end
@@ -15574,7 +15574,7 @@ function persistenceConfig.load(window: ConfigWindow, name: unknown?): boolean
     local dir, fullPath = persistenceConfig.getPath(window, name)
 
     if not dir or not fullPath then
-        log.warn("Rayfield: configuration name '" .. tostring(name) .. "' has no usable characters")
+        log.warn("Slate: configuration name '" .. tostring(name) .. "' has no usable characters")
 
         return false
     end
@@ -15596,7 +15596,7 @@ function persistenceConfig.load(window: ConfigWindow, name: unknown?): boolean
     if not parsedFlags then
         if raw then
             log.warn(
-[[Rayfield: Configuration file has an invalid format, backing up and resetting]])
+[[Slate: Configuration file has an invalid format, backing up and resetting]])
 
             local backupPath = backupPathFor(fullPath)
 
@@ -15624,7 +15624,7 @@ function persistenceConfig.load(window: ConfigWindow, name: unknown?): boolean
     window._loading = wasLoading
 
     if not applyOk then
-        log.warn('Rayfield: Failed to apply configuration - ' .. tostring(applyErr))
+        log.warn('Slate: Failed to apply configuration - ' .. tostring(applyErr))
     end
 
     window._loadedConfig = flags
@@ -15648,7 +15648,7 @@ function persistenceConfig.applyTo(control: PersistedControl, value: unknown)
     end)
 
     if not ok then
-        log.warn("Rayfield: Failed to restore flag '" .. tostring(control.flag) .. "' - " .. tostring(err))
+        log.warn("Slate: Failed to restore flag '" .. tostring(control.flag) .. "' - " .. tostring(err))
     end
 end
 function persistenceConfig.list(window: ConfigWindow): {string}
@@ -16204,13 +16204,6 @@ local ObjectTree = {
         },
         {
             {
-                38,
-                2,
-                {
-                    "types"
-                }
-            },
-            {
                 39,
                 1,
                 {
@@ -16218,45 +16211,10 @@ local ObjectTree = {
                 },
                 {
                     {
-                        61,
+                        43,
                         2,
                         {
-                            "persistence"
-                        }
-                    },
-                    {
-                        52,
-                        2,
-                        {
-                            "layouts"
-                        }
-                    },
-                    {
-                        40,
-                        2,
-                        {
-                            "HapticEngine"
-                        }
-                    },
-                    {
-                        56,
-                        2,
-                        {
-                            "moveable"
-                        }
-                    },
-                    {
-                        65,
-                        2,
-                        {
-                            "persistenceWrite"
-                        }
-                    },
-                    {
-                        50,
-                        2,
-                        {
-                            "image"
+                            "constants"
                         }
                     },
                     {
@@ -16267,6 +16225,27 @@ local ObjectTree = {
                         }
                     },
                     {
+                        40,
+                        2,
+                        {
+                            "HapticEngine"
+                        }
+                    },
+                    {
+                        52,
+                        2,
+                        {
+                            "layouts"
+                        }
+                    },
+                    {
+                        54,
+                        2,
+                        {
+                            "lockable"
+                        }
+                    },
+                    {
                         70,
                         2,
                         {
@@ -16274,31 +16253,10 @@ local ObjectTree = {
                         }
                     },
                     {
-                        51,
+                        67,
                         2,
                         {
-                            "imageCache"
-                        }
-                    },
-                    {
-                        66,
-                        2,
-                        {
-                            "runtime"
-                        }
-                    },
-                    {
-                        68,
-                        2,
-                        {
-                            "textMetrics"
-                        }
-                    },
-                    {
-                        64,
-                        2,
-                        {
-                            "persistenceSettings"
+                            "services"
                         }
                     },
                     {
@@ -16316,24 +16274,31 @@ local ObjectTree = {
                         }
                     },
                     {
-                        46,
+                        48,
                         2,
                         {
-                            "filesystemManager"
+                            "fontManager"
                         }
                     },
                     {
-                        60,
+                        68,
                         2,
                         {
-                            "path"
+                            "textMetrics"
                         }
                     },
                     {
-                        59,
+                        66,
                         2,
                         {
-                            "ordering"
+                            "runtime"
+                        }
+                    },
+                    {
+                        47,
+                        2,
+                        {
+                            "flagNames"
                         }
                     },
                     {
@@ -16344,31 +16309,59 @@ local ObjectTree = {
                         }
                     },
                     {
-                        54,
+                        65,
                         2,
                         {
-                            "lockable"
+                            "persistenceWrite"
                         }
                     },
                     {
-                        49,
+                        64,
                         2,
                         {
-                            "functions"
+                            "persistenceSettings"
                         }
                     },
                     {
-                        41,
+                        61,
                         2,
                         {
-                            "assetResolver"
+                            "persistence"
                         }
                     },
                     {
-                        48,
+                        44,
                         2,
                         {
-                            "fontManager"
+                            "enums"
+                        }
+                    },
+                    {
+                        45,
+                        2,
+                        {
+                            "filesystem"
+                        }
+                    },
+                    {
+                        60,
+                        2,
+                        {
+                            "path"
+                        }
+                    },
+                    {
+                        56,
+                        2,
+                        {
+                            "moveable"
+                        }
+                    },
+                    {
+                        59,
+                        2,
+                        {
+                            "ordering"
                         }
                     },
                     {
@@ -16376,6 +16369,13 @@ local ObjectTree = {
                         2,
                         {
                             "network"
+                        }
+                    },
+                    {
+                        46,
+                        2,
+                        {
+                            "filesystemManager"
                         }
                     },
                     {
@@ -16393,38 +16393,10 @@ local ObjectTree = {
                         }
                     },
                     {
-                        45,
+                        50,
                         2,
                         {
-                            "filesystem"
-                        }
-                    },
-                    {
-                        67,
-                        2,
-                        {
-                            "services"
-                        }
-                    },
-                    {
-                        44,
-                        2,
-                        {
-                            "enums"
-                        }
-                    },
-                    {
-                        43,
-                        2,
-                        {
-                            "constants"
-                        }
-                    },
-                    {
-                        47,
-                        2,
-                        {
-                            "flagNames"
+                            "image"
                         }
                     },
                     {
@@ -16433,7 +16405,35 @@ local ObjectTree = {
                         {
                             "locale"
                         }
+                    },
+                    {
+                        41,
+                        2,
+                        {
+                            "assetResolver"
+                        }
+                    },
+                    {
+                        49,
+                        2,
+                        {
+                            "functions"
+                        }
+                    },
+                    {
+                        51,
+                        2,
+                        {
+                            "imageCache"
+                        }
                     }
+                }
+            },
+            {
+                38,
+                2,
+                {
+                    "types"
                 }
             },
             {
@@ -16444,10 +16444,17 @@ local ObjectTree = {
                 },
                 {
                     {
-                        34,
+                        36,
                         2,
                         {
-                            "default"
+                            "frost"
+                        }
+                    },
+                    {
+                        33,
+                        2,
+                        {
+                            "cobalt"
                         }
                     },
                     {
@@ -16465,13 +16472,6 @@ local ObjectTree = {
                         }
                     },
                     {
-                        36,
-                        2,
-                        {
-                            "frost"
-                        }
-                    },
-                    {
                         35,
                         2,
                         {
@@ -16479,10 +16479,10 @@ local ObjectTree = {
                         }
                     },
                     {
-                        33,
+                        34,
                         2,
                         {
-                            "cobalt"
+                            "default"
                         }
                     }
                 }
@@ -16495,150 +16495,10 @@ local ObjectTree = {
                 },
                 {
                     {
-                        10,
-                        2,
-                        {
-                            "drag"
-                        }
-                    },
-                    {
-                        7,
-                        2,
-                        {
-                            "console"
-                        }
-                    },
-                    {
-                        16,
-                        2,
-                        {
-                            "popup"
-                        }
-                    },
-                    {
-                        6,
-                        2,
-                        {
-                            "colorpicker"
-                        }
-                    },
-                    {
-                        30,
-                        2,
-                        {
-                            "window"
-                        }
-                    },
-                    {
-                        20,
-                        2,
-                        {
-                            "sidebar"
-                        }
-                    },
-                    {
-                        12,
-                        2,
-                        {
-                            "group"
-                        }
-                    },
-                    {
-                        17,
-                        2,
-                        {
-                            "progress"
-                        }
-                    },
-                    {
                         29,
                         2,
                         {
                             "toggle"
-                        }
-                    },
-                    {
-                        11,
-                        2,
-                        {
-                            "dropdown"
-                        }
-                    },
-                    {
-                        26,
-                        2,
-                        {
-                            "tag"
-                        }
-                    },
-                    {
-                        28,
-                        2,
-                        {
-                            "toast"
-                        }
-                    },
-                    {
-                        9,
-                        2,
-                        {
-                            "divider"
-                        }
-                    },
-                    {
-                        3,
-                        2,
-                        {
-                            "action"
-                        }
-                    },
-                    {
-                        27,
-                        2,
-                        {
-                            "text"
-                        }
-                    },
-                    {
-                        15,
-                        2,
-                        {
-                            "notification"
-                        }
-                    },
-                    {
-                        25,
-                        2,
-                        {
-                            "tabSelector"
-                        }
-                    },
-                    {
-                        24,
-                        2,
-                        {
-                            "tabSection"
-                        }
-                    },
-                    {
-                        8,
-                        2,
-                        {
-                            "descriptor"
-                        }
-                    },
-                    {
-                        23,
-                        2,
-                        {
-                            "tab"
-                        }
-                    },
-                    {
-                        22,
-                        2,
-                        {
-                            "stat"
                         }
                     },
                     {
@@ -16649,10 +16509,17 @@ local ObjectTree = {
                         }
                     },
                     {
-                        19,
+                        21,
                         2,
                         {
-                            "section"
+                            "slider"
+                        }
+                    },
+                    {
+                        12,
+                        2,
+                        {
+                            "group"
                         }
                     },
                     {
@@ -16663,10 +16530,143 @@ local ObjectTree = {
                         }
                     },
                     {
+                        16,
+                        2,
+                        {
+                            "popup"
+                        }
+                    },
+                    {
+                        27,
+                        2,
+                        {
+                            "text"
+                        }
+                    },
+                    {
+                        17,
+                        2,
+                        {
+                            "progress"
+                        }
+                    },
+                    {
+                        24,
+                        2,
+                        {
+                            "tabSection"
+                        }
+                    },
+                    {
                         14,
                         2,
                         {
                             "keybind"
+                        }
+                    },
+                    {
+                        30,
+                        2,
+                        {
+                            "window"
+                        }
+                    },
+                    {
+                        28,
+                        2,
+                        {
+                            "toast"
+                        }
+                    },
+                    {
+                        22,
+                        2,
+                        {
+                            "stat"
+                        }
+                    },
+                    {
+                        6,
+                        2,
+                        {
+                            "colorpicker"
+                        }
+                    },
+                    {
+                        15,
+                        2,
+                        {
+                            "notification"
+                        }
+                    },
+                    {
+                        23,
+                        2,
+                        {
+                            "tab"
+                        }
+                    },
+                    {
+                        25,
+                        2,
+                        {
+                            "tabSelector"
+                        }
+                    },
+                    {
+                        26,
+                        2,
+                        {
+                            "tag"
+                        }
+                    },
+                    {
+                        20,
+                        2,
+                        {
+                            "sidebar"
+                        }
+                    },
+                    {
+                        19,
+                        2,
+                        {
+                            "section"
+                        }
+                    },
+                    {
+                        18,
+                        2,
+                        {
+                            "search"
+                        }
+                    },
+                    {
+                        7,
+                        2,
+                        {
+                            "console"
+                        }
+                    },
+                    {
+                        3,
+                        2,
+                        {
+                            "action"
+                        }
+                    },
+                    {
+                        8,
+                        2,
+                        {
+                            "descriptor"
+                        }
+                    },
+                    {
+                        10,
+                        2,
+                        {
+                            "drag"
                         }
                     },
                     {
@@ -16677,17 +16677,17 @@ local ObjectTree = {
                         }
                     },
                     {
-                        21,
+                        11,
                         2,
                         {
-                            "slider"
+                            "dropdown"
                         }
                     },
                     {
-                        18,
+                        9,
                         2,
                         {
-                            "search"
+                            "divider"
                         }
                     }
                 }

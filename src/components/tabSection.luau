@@ -33,7 +33,7 @@ function TabSection.new(window, properties)
             window._warnedTabSection = true
 
             log.warn(
-[[Rayfield: Window:CreateSection needs the sidebar layout; it does nothing on the top strip.]])
+[[Slate: Window:CreateSection needs the sidebar layout; it does nothing on the top strip.]])
         end
 
         self.inert = true
