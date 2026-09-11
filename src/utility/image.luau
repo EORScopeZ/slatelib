@@ -54,7 +54,7 @@ function image.resolve(value: unknown): string
     end
 
     if type(value) == 'number' then
-        return 'rbxassetid://' .. tostring(value)
+        return `rbxthumb://type=Asset&id={value}&w=420&h=420`
     end
 
     if type(value) == 'string' then
@@ -62,24 +62,26 @@ function image.resolve(value: unknown): string
             return value
         end
 
-        if string.match(value, '^rbxassetid://') then
-            return value
+        local assetId = string.match(value, '^rbxassetid://(%d+)$')
+
+        if assetId then
+            return `rbxthumb://type=Asset&id={assetId}&w=420&h=420`
         end
 
         if string.match(value, '^%d+$') then
-            return 'rbxassetid://' .. value
+            return `rbxthumb://type=Asset&id={value}&w=420&h=420`
         end
 
         local fluentId = fluentIcons.get(value)
 
         if fluentId then
-            return 'rbxassetid://' .. tostring(fluentId)
+            return `rbxthumb://type=Asset&id={fluentId}&w=420&h=420`
         end
 
         local constId = constants.icons[value]
 
         if constId then
-            return 'rbxassetid://' .. tostring(constId)
+            return `rbxthumb://type=Asset&id={constId}&w=420&h=420`
         end
 
         return value
