@@ -61,12 +61,13 @@ export type Text = types.Text
 export type Divider = types.Divider
 export type Tag = types.Tag
 export type Popup = types.Popup
+export type Slate = types.Rayfield
 export type Rayfield = types.Rayfield
 
 -- the components are untyped luau, so this is where the window module meets the public contract
 type WindowModule = { new: (types.WindowProps) -> types.Window }
 
-local rayfield = {} :: Rayfield
+local slate = {} :: Slate
 
 local function createBanner()
     local ui = Instance.new("ScreenGui")
@@ -96,9 +97,8 @@ local function createBanner()
     return ui
 end
 
-function rayfield:CreateWindow(properties: types.WindowProps): types.Window
+function slate:CreateWindow(properties: types.WindowProps): types.Window
     local banner = createBanner()
-
     local window: types.Window? -- forward declared so the settle callback below can reach it
     -- preload can settle before the window is built; hold the notify until it is
     local queuedNotify: (() -> ())?
@@ -183,4 +183,4 @@ function rayfield:CreateWindow(properties: types.WindowProps): types.Window
     return built
 end
 
-return rayfield
+return slate

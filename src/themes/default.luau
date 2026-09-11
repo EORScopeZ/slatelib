@@ -33,56 +33,56 @@ return {
     TabColor = Color3.fromRGB(255, 255, 255),
     TabBackground = ColorSequence.new(Color3.fromRGB(50, 50, 50), Color3.fromRGB(35, 35, 35)),
     TabStroke = ColorSequence.new(Color3.fromRGB(95, 95, 95), Color3.fromRGB(50, 50, 50)),
-    SliderBackground = Color3.fromRGB(47, 47, 47),
-    SliderBackgroundHover = Color3.fromRGB(60, 60, 60),
-    SliderProgress = ColorSequence.new(Color3.fromRGB(0, 170, 127), Color3.fromRGB(0, 134, 98)),
+    SliderBackground = Color3.fromRGB(38, 38, 42),
+    SliderBackgroundHover = Color3.fromRGB(50, 50, 56),
+    SliderProgress = ColorSequence.new(Color3.fromRGB(255, 255, 255), Color3.fromRGB(200, 200, 210)),
     SliderStroke = Color3.fromRGB(255, 255, 255),
     ActionColor = Color3.fromRGB(255, 255, 255),
     TitleFont = variables.brandFont(Enum.FontWeight.SemiBold),
     Font = variables.brandFont(Enum.FontWeight.Medium),
     ContentColor = Color3.fromRGB(255, 255, 255),
 
-    LiveAnimation = false, -- Subtly changes window gradient and shadow offset to make Rayfield feel more natural.
+    LiveAnimation = false, -- Subtly changes window gradient and shadow offset to make Slate feel more natural.
 
     DarkToggleOverlay = true,
     ElementTransparency = 0,
     ElementStrokeTransparency = 0,
     ElementStrokeHoverTransparency = 0,
-    ElementStrokeHover = Color3.fromRGB(50, 50, 50),
+    ElementStrokeHover = Color3.fromRGB(60, 60, 68),
     ElementCornerRadius = UDim.new(0, 12),
     ElementTextHoverColor = Color3.fromRGB(255, 255, 255),
     TitlingColor = Color3.fromRGB(255, 255, 255),
 
     DropdownHighlight = Color3.fromRGB(255, 255, 255),
 
-    -- Accent for the active toggle, slider glow and popup primary button.
-    AccentColor = Color3.fromRGB(23, 153, 110),
-    AccentStroke = Color3.fromRGB(32, 201, 144),
-    AccentGlow = 0.4, -- shown transparency of the toggle's accent glow
+    -- Accent for the active toggle, slider glow and popup primary button (Slate Monochrome).
+    AccentColor = Color3.fromRGB(255, 255, 255),
+    AccentStroke = Color3.fromRGB(255, 255, 255),
+    AccentGlow = 0.2, -- shown transparency of the toggle's accent glow
 
-    StatBackground = Color3.fromRGB(25, 25, 25),
+    StatBackground = Color3.fromRGB(20, 20, 24),
     SliderHandle = Color3.fromRGB(255, 255, 255),
     PillCornerRadius = UDim.new(1, 0), -- tab pills + the collapsed icon
 
     -- Toggle switch: track colour + transparency, and the off-knob's colour + transparency.
     ToggleTrack = Color3.fromRGB(0, 0, 0),
     ToggleTrackTransparency = 0.9,
-    ToggleKnobOff = Color3.fromRGB(255, 255, 255),
-    ToggleKnobOffTransparency = 0.8,
+    ToggleKnobOff = Color3.fromRGB(160, 160, 170),
+    ToggleKnobOffTransparency = 0.6,
 
     -- Inset fields (input, keybind box): fill, its transparency, and the soft glow behind them.
     FieldBackground = Color3.fromRGB(255, 255, 255),
-    FieldTransparency = 0.9,
+    FieldTransparency = 0.92,
     FieldGlow = Color3.fromRGB(255, 255, 255),
 
-    PlaceholderColor = Color3.fromRGB(178, 178, 178), -- input/search hint text
+    PlaceholderColor = Color3.fromRGB(150, 150, 160), -- input/search hint text
     SurfaceStroke = Color3.fromRGB(255, 255, 255), -- faint rim on window/field/toast/popup surfaces
 
     -- Popup neutral (secondary) button: rest, hover and edge.
-    NeutralButton = Color3.fromRGB(38, 38, 38),
-    NeutralButtonHover = Color3.fromRGB(54, 54, 54),
-    NeutralButtonStroke = Color3.fromRGB(255, 255, 255),
+    NeutralButton = Color3.fromRGB(28, 28, 34),
+    NeutralButtonHover = Color3.fromRGB(44, 44, 52),
+    NeutralButtonStroke = Color3.fromRGB(80, 80, 90),
 
-    ErrorColor = Color3.fromRGB(185, 50, 50),
-    ErrorStrokeColor = Color3.fromRGB(240, 75, 75),
+    ErrorColor = Color3.fromRGB(180, 180, 180),
+    ErrorStrokeColor = Color3.fromRGB(240, 240, 240),
 }

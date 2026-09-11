@@ -33,26 +33,25 @@ constants.icons = {
     rayfield = 80387863064905, -- default show icon on the sign-in toast
 }
 
--- Accent used by the toggle switch + slider glow when active.
+-- Accent used by the toggle switch + slider glow when active (Slate Monochrome).
 constants.accent = {
-    on = Color3.fromRGB(23, 153, 110),
-    onStroke = Color3.fromRGB(32, 201, 144),
+    on = Color3.fromRGB(255, 255, 255),
+    onStroke = Color3.fromRGB(255, 255, 255),
 }
 
 -- Stat card accents per direction (fill drives the card + glow, stroke is the brighter edge).
 constants.statAccents = {
     positive = {
-        fill = ColorSequence.new(Color3.fromRGB(0, 170, 127), Color3.fromRGB(0, 134, 98)),
-        stroke = ColorSequence.new(Color3.fromRGB(0, 213, 156), Color3.fromRGB(0, 189, 135)),
+        fill = ColorSequence.new(Color3.fromRGB(255, 255, 255), Color3.fromRGB(200, 200, 200)),
+        stroke = ColorSequence.new(Color3.fromRGB(255, 255, 255), Color3.fromRGB(220, 220, 220)),
     },
     negative = {
-        fill = ColorSequence.new(Color3.fromRGB(172, 47, 47), Color3.fromRGB(135, 37, 37)),
-        stroke = ColorSequence.new(Color3.fromRGB(255, 75, 75), Color3.fromRGB(244, 67, 67)),
+        fill = ColorSequence.new(Color3.fromRGB(120, 120, 120), Color3.fromRGB(80, 80, 80)),
+        stroke = ColorSequence.new(Color3.fromRGB(180, 180, 180), Color3.fromRGB(140, 140, 140)),
     },
-    -- Neutral matches RF2's default green stat exactly
     neutral = {
-        fill = ColorSequence.new(Color3.fromRGB(0, 170, 127), Color3.fromRGB(0, 134, 98)),
-        stroke = ColorSequence.new(Color3.fromRGB(0, 213, 156), Color3.fromRGB(0, 189, 135)),
+        fill = ColorSequence.new(Color3.fromRGB(255, 255, 255), Color3.fromRGB(200, 200, 200)),
+        stroke = ColorSequence.new(Color3.fromRGB(255, 255, 255), Color3.fromRGB(220, 220, 220)),
     },
 }
 
