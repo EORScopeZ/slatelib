@@ -72,10 +72,14 @@ function image.resolve(value: unknown): string
             return `rbxthumb://type=Asset&id={value}&w=420&h=420`
         end
 
-        local fluentId = fluentIcons.get(value)
+        local fluentRes = fluentIcons.get(value)
 
-        if fluentId then
-            return `rbxthumb://type=Asset&id={fluentId}&w=420&h=420`
+        if fluentRes then
+            if type(fluentRes) == 'number' or string.match(tostring(fluentRes), '^%d+$') then
+                return `rbxthumb://type=Asset&id={fluentRes}&w=420&h=420`
+            end
+
+            return tostring(fluentRes)
         end
 
         local constId = constants.icons[value]

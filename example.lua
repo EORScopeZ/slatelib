@@ -20,7 +20,7 @@ local elements_tab = window:CreateTab({
 
 local display_tab = window:CreateTab({
     name = "display",
-    icon = "chart-multiple",
+    icon = "grid",
 })
 
 local misc_tab = window:CreateTab({
