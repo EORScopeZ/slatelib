@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slate UI — Developer Documentation</title>
+  <meta name="description" content="Official documentation for Slate UI: a modern, high-performance monochrome Roblox UI framework with top-pill navigation and filled Fluent system icons.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09090b; --bg-surface: #111114; --bg-card: #18181c;
+      --border: rgba(255, 255, 255, 0.08); --border-bright: rgba(255, 255, 255, 0.16);
+      --text: #f4f4f5; --text-muted: #a1a1aa; --text-dim: #71717a;
+      --code-bg: #0d0d10; --sidebar-w: 270px; --toc-w: 230px; --header-h: 64px;
+      --radius: 10px; --radius-sm: 6px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+    header {
+      position: sticky; top: 0; height: var(--header-h); background: rgba(9, 9, 11, 0.85);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border); z-index: 100;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 2rem;
+    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text); }
+    .brand-logo { width: 32px; height: 32px; border-radius: 8px; background: #1c1c22; border: 1px solid var(--border-bright); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .brand-title { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; }
+    .brand-badge { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; background: rgba(255, 255, 255, 0.1); color: #fff; padding: 2px 6px; border-radius: 999px; border: 1px solid var(--border); }
+    .header-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .search-btn {
+      display: flex; align-items: center; gap: 0.5rem; background: var(--bg-surface);
+      border: 1px solid var(--border); padding: 0.45rem 0.9rem; border-radius: 8px;
+      color: var(--text-muted); font-size: 0.85rem; cursor: pointer; transition: all 0.2s ease;
+    }
+    .search-btn:hover { border-color: var(--border-bright); color: var(--text); }
+    .search-kbd { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; background: rgba(255, 255, 255, 0.08); padding: 2px 5px; border-radius: 4px; border: 1px solid var(--border); }
+    .action-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem; background: var(--bg-surface);
+      border: 1px solid var(--border); color: var(--text); font-size: 0.82rem; font-weight: 500;
+      padding: 0.45rem 0.85rem; border-radius: 8px; cursor: pointer; text-decoration: none; transition: all 0.2s ease;
+    }
+    .action-btn:hover { background: var(--bg-card); border-color: var(--border-bright); }
+    .action-btn.ai-btn { background: #ffffff; color: #09090b; font-weight: 600; border-color: #ffffff; }
+    .action-btn.ai-btn:hover { background: #e4e4e7; }
+    .layout-container { display: flex; max-width: 1440px; margin: 0 auto; width: 100%; flex: 1; }
+    aside.sidebar {
+      width: var(--sidebar-w); position: sticky; top: var(--header-h);
+      height: calc(100vh - var(--header-h)); overflow-y: auto;
+      padding: 1.5rem 1rem 3rem 1.5rem; border-right: 1px solid var(--border);
+      scrollbar-width: thin; scrollbar-color: var(--border) transparent; flex-shrink: 0;
+    }
+    .nav-group { margin-bottom: 1.5rem; }
+    .nav-group-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 0.5rem; padding-left: 0.5rem; }
+    .nav-links { list-style: none; }
+    .nav-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.42rem 0.65rem; border-radius: var(--radius-sm); color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: all 0.15s ease; }
+    .nav-link:hover { background: rgba(255, 255, 255, 0.04); color: var(--text); }
+    .nav-link.active { background: rgba(255, 255, 255, 0.08); color: #ffffff; font-weight: 600; }
+    main.content { flex: 1; min-width: 0; padding: 2.5rem 3rem 5rem 3rem; line-height: 1.7; }
+    .doc-hero { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .doc-breadcrumbs { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.5rem; }
+    .doc-title { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
+    .doc-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 720px; }
+    .doc-section { margin-bottom: 3.5rem; scroll-margin-top: calc(var(--header-h) + 2rem); }
+    h2.section-heading { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin: 2rem 0 1rem; }
+    p { color: var(--text-muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    .code-container { background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--radius); margin: 1.25rem 0; overflow: hidden; }
+    .code-header { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid var(--border); font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; color: var(--text-dim); }
+    .code-copy-btn { background: transparent; border: 1px solid transparent; color: var(--text-muted); padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; }
+    .code-copy-btn:hover { border-color: var(--border); color: #fff; }
+    pre { padding: 1rem 1.25rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.6; color: #e4e4e7; }
+    .screenshot-card { background: var(--bg-surface); border: 1px dashed var(--border-bright); border-radius: var(--radius); padding: 1.75rem; text-align: center; margin: 1.5rem 0; }
+    .screenshot-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255, 255, 255, 0.08); color: #fff; font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; margin-bottom: 0.75rem; }
+    .screenshot-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.35rem; }
+    .screenshot-spec { font-size: 0.82rem; color: var(--text-dim); }
+    aside.toc { width: var(--toc-w); position: sticky; top: var(--header-h); height: calc(100vh - var(--header-h)); padding: 2rem 1.5rem; overflow-y: auto; flex-shrink: 0; }
+    .toc-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 0.75rem; }
+    .toc-list { list-style: none; }
+    .toc-item { margin-bottom: 0.4rem; }
+    .toc-link { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; transition: color 0.15s ease; display: block; }
+    .toc-link:hover { color: #fff; }
+    #toast { position: fixed; bottom: 2rem; right: 2rem; background: #ffffff; color: #09090b; font-weight: 600; font-size: 0.85rem; padding: 0.75rem 1.25rem; border-radius: 8px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); display: flex; align-items: center; gap: 0.5rem; transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 999; }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #searchModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); display: none; align-items: flex-start; justify-content: center; padding-top: 15vh; z-index: 200; }
+    #searchModal.open { display: flex; }
+    .search-box { width: 100%; max-width: 580px; background: var(--bg-surface); border: 1px solid var(--border-bright); border-radius: 12px; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); }
+    .search-input { width: 100%; padding: 1rem 1.25rem; background: transparent; border: none; border-bottom: 1px solid var(--border); font-size: 1rem; color: #fff; outline: none; }
+    .search-results { max-height: 360px; overflow-y: auto; padding: 0.5rem; }
+    .search-result-item { padding: 0.75rem 1rem; border-radius: 6px; color: var(--text-muted); text-decoration: none; display: block; cursor: pointer; }
+    .search-result-item:hover { background: var(--bg-card); color: #fff; }
+    @media (max-width: 1024px) { aside.toc { display: none; } }
+    @media (max-width: 768px) { aside.sidebar { display: none; } main.content { padding: 1.5rem; } header { padding: 0 1rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="#" class="brand">
+      <div class="brand-logo">
+        <img src="https://tr.rbxcdn.com/180DAY-eeb2c15b44f3a4e6cb2412ac02ed845a/420/420/Decal/Png/noFilter" alt="Slate Logo">
+      </div>
+      <span class="brand-title">Slate UI</span>
+      <span class="brand-badge">v2.0</span>
+    </a>
+    <div class="header-actions">
+      <button class="search-btn" onclick="openSearch()">
+        <span>Search docs...</span>
+        <span class="search-kbd">⌘K</span>
+      </button>
+      <button class="action-btn ai-btn" onclick="copyForAI()">
+        <span>Copy for AI / MCP</span>
+      </button>
+      <button class="action-btn" onclick="copyFullMarkdown()">
+        <span>Copy Markdown</span>
+      </button>
+      <a href="https://github.com/EORScopeZ/slatelib" target="_blank" class="action-btn">
+        <span>GitHub</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="layout-container">
+    <aside class="sidebar">
+      <div class="nav-group">
+        <div class="nav-group-title">Get Started</div>
+        <ul class="nav-links">
+          <li><a href="#overview" class="nav-link active">Overview</a></li>
+          <li><a href="#installation" class="nav-link">Installation</a></li>
+          <li><a href="#quickstart" class="nav-link">Quickstart</a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Structure & Layout</div>
+        <ul class="nav-links">
+          <li><a href="#window" class="nav-link">Window Configuration</a></li>
+          <li><a href="#tabs" class="nav-link">Tabs & Sections</a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Components</div>
+        <ul class="nav-links">
+          <li><a href="#buttons" class="nav-link">Buttons</a></li>
+          <li><a href="#toggles" class="nav-link">Toggles</a></li>
+          <li><a href="#sliders" class="nav-link">Sliders</a></li>
+          <li><a href="#dropdowns" class="nav-link">Dropdowns</a></li>
+          <li><a href="#colorpickers" class="nav-link">Color Pickers</a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Dynamic API & Controls</div>
+        <ul class="nav-links">
+          <li><a href="#dynamic-set" class="nav-link">Updating Values (:Set)</a></li>
+          <li><a href="#notifications" class="nav-link">Notifications & Toasts</a></li>
+          <li><a href="#fluent-icons" class="nav-link">Fluent Filled Icons</a></li>
+          <li><a href="#screenshots-guide" class="nav-link">Screenshot Checklist</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="doc-hero">
+        <div class="doc-breadcrumbs">Slate UI / Documentation</div>
+        <h1 class="doc-title">Slate UI Documentation</h1>
+        <p class="doc-desc">A modern, ultra-responsive monochrome UI library for Roblox with top pill navigation, left-to-right swipe transitions, and 1,200+ solid filled Fluent icons.</p>
+      </div>
+
+      <section class="doc-section" id="overview">
+        <h2 class="section-heading">Overview</h2>
+        <p>Slate provides a clean obsidian dark aesthetic with pure white accents, fluid swipe page transitions, custom icon colors, and universal executor compatibility.</p>
+        <div class="screenshot-card">
+          <div class="screenshot-badge">📷 SCREENSHOT 1</div>
+          <div class="screenshot-title">Slate Main Window (Top Tab Layout)</div>
+          <div class="screenshot-spec">Capture the full Slate window with top pill tabs active (e.g. Combat, Farming, Visuals, Settings) with 740x480 resolution.</div>
+        </div>
+      </section>
+
+      <section class="doc-section" id="installation">
+        <h2 class="section-heading">Installation</h2>
+        <p>Load Slate directly via HTTP using loadstring:</p>
+        <div class="code-container">
+          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>local slate = loadstring(game:HttpGet("https://raw.githubusercontent.com/EORScopeZ/slatelib/main/Slate.lua"))()</code></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="window">
+        <h2 class="section-heading">Window Configuration</h2>
+        <p>Create a master window with custom title, subtitle, icon, theme, and layout mode:</p>
+        <div class="code-container">
+          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>local window = slate:CreateWindow({
+    name = "slate",
+    subtitle = "ui library",
+    icon = 136661212895058,
+    theme = "Default",
+    sidebarLayout = false, -- false for top pill tabs, true for sidebar
+})</code></pre>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-badge">📷 SCREENSHOT 2</div>
+          <div class="screenshot-title">Collapsed 'Tap to show' Pill</div>
+          <div class="screenshot-spec">Capture the floating pill at top left showing the Slate logo, 'Slate' title and 'Tap to show' subtitle.</div>
+        </div>
+      </section>
+
+      <section class="doc-section" id="tabs">
+        <h2 class="section-heading">Tabs & Sections</h2>
+        <p>Organize controls cleanly using top pill navigation tabs and labeled sections. Pass solid filled Fluent icon names directly.</p>
+        <div class="code-container">
+          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>local tab = window:CreateTab({
+    name = "combat",
+    icon = "sword", -- solid filled fluent icon
+    iconColor = Color3.fromRGB(255, 255, 255),
+})
+
+local section = tab:CreateSection({
+    name = "combat controls",
+})</code></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="buttons">
+        <h2 class="section-heading">Buttons</h2>
+        <p>Trigger actions on click with interactive feedback and custom icon colors.</p>
+        <div class="code-container">
+          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>local button = tab:CreateButton({
+    name = "kill aura",
+    description = "automatically attack targets in range",
+    icon = "crosshair",
+    iconColor = Color3.fromRGB(255, 80, 80),
+    callback = function()
+        print("kill aura executed")
+    end,
+})</code></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="toggles">
+        <h2 class="section-heading">Toggles & Switches</h2>
+        <p>Boolean switches with smooth sliding spring animations and flag persistence.</p>
+        <div class="code-container">
+          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>local toggle = tab:CreateToggle({
+    name = "auto parry",
+    description = "automatically parries incoming projectiles",
+    icon = "shield",
+    flag = "auto_parry",
+    value = false,
+    callback = function(val)
+        print("auto parry is now:", val)
+    end,
+})</code></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="sliders">
+        <h2 class="section-heading">Sliders</h2>
+        <p>Draggable numeric sliders with range bounds, precision increments, and custom suffixes.</p>
+        <div class="code-container">
+          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>local slider = tab:CreateSlider({
+    name = "walkspeed",
+    description = "adjust character speed",
+    icon = "flame",
+    flag = "speed_val",
+    range = {16, 250},
+    increment = 1,
+    value = 16,
+    suffix = " studs/s",
+    callback = function(val)
+        print("speed:", val)
+    end,
+})</code></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="dropdowns">
+        <h2 class="section-heading">Dropdowns</h2>
+        <p>Single and multi-select accordion dropdowns with dynamic item insertion and removal.</p>
+        <div class="code-container">
+          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>local dropdown = tab:CreateDropdown({
+    name = "target mob",
+    description = "select enemy entity",
+    flag = "target_mob",
+    options = {"bandit", "boss", "zombie", "pirate"},
+    value = "bandit",
+    multiSelect = false,
+    callback = function(opt)
+        print("selected mob:", opt)
+    end,
+})</code></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="colorpickers">
+        <h2 class="section-heading">Color Pickers</h2>
+        <p>Color swatch with real-time RGB, HEX, and alpha transparency adjustment.</p>
+        <div class="code-container">
+          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>local colorpicker = tab:CreateColorPicker({
+    name = "esp chams color",
+    description = "select highlight tint",
+    icon = "palette",
+    flag = "chams_color",
+    color = Color3.fromRGB(0, 170, 255),
+    alpha = 1,
+    callback = function(col, alpha)
+        print("color:", col, "alpha:", alpha)
+    end,
+})</code></pre>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-badge">📷 SCREENSHOT 3</div>
+          <div class="screenshot-title">Color Picker Modal</div>
+          <div class="screenshot-spec">Capture the color picker dropdown / popup palette opened showing RGB and Hex controls.</div>
+        </div>
+      </section>
+
+      <section class="doc-section" id="dynamic-set">
+        <h2 class="section-heading">Dynamic Modification API</h2>
+        <p>Update any element dynamically without recreating UI instances:</p>
+        <div class="code-container">
+          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>toggle:Set(true)
+slider:Set(120)
+dropdown:Set("boss")
+dropdown:Refresh({"mob 1", "mob 2", "mob 3"})
+dropdown:Add("mob 4")
+dropdown:Remove("mob 1")
+button:Lock("disabled during combat")
+button:Unlock()</code></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="notifications">
+        <h2 class="section-heading">Notifications, Toasts & Popups</h2>
+        <p>Communicate events to users using cards, bottom toasts, or interactive modal dialogs.</p>
+        <div class="code-container">
+          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>window:Notify({
+    title = "slate",
+    content = "configuration applied successfully",
+    icon = "shield",
+    duration = 3,
+})
+
+window:Toast({
+    title = "saved",
+    subtitle = "profile saved to disk",
+    duration = 2.5,
+})</code></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="fluent-icons">
+        <h2 class="section-heading">Fluent Filled Icons Reference</h2>
+        <p>Over 1,200+ solid filled icons are integrated. Pass the name directly to any <code>icon</code> property.</p>
+        <div style="margin: 1rem 0;">
+          <input type="text" id="iconFilterInput" placeholder="Filter icons (e.g. sword, shield, fire, eye, user)..." oninput="filterIcons()" style="width: 100%; padding: 0.75rem 1rem; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 8px; color: #fff; outline: none;">
+        </div>
+        <div id="iconGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.6rem; max-height: 380px; overflow-y: auto; padding: 0.5rem; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 8px;"></div>
+      </section>
+
+      <section class="doc-section" id="screenshots-guide">
+        <h2 class="section-heading">Screenshot Checklist for Docs</h2>
+        <p>To showcase Slate beautifully, take these screenshots in Roblox:</p>
+        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;">
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 1rem;">
+            <li style="display: flex; gap: 0.75rem;">
+              <span style="background: rgba(255,255,255,0.1); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 700;">1</span>
+              <div><strong>Main Window (Top Tab Layout)</strong><p style="margin:0; font-size:0.85rem;">Slate window with top pill navigation showing 'slate', tabs, and controls.</p></div>
+            </li>
+            <li style="display: flex; gap: 0.75rem;">
+              <span style="background: rgba(255,255,255,0.1); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 700;">2</span>
+              <div><strong>Collapsed 'Tap to show' Pill</strong><p style="margin:0; font-size:0.85rem;">Floating pill button in top-left showing Slate logo and 'Tap to show'.</p></div>
+            </li>
+            <li style="display: flex; gap: 0.75rem;">
+              <span style="background: rgba(255,255,255,0.1); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 700;">3</span>
+              <div><strong>Component Showcase</strong><p style="margin:0; font-size:0.85rem;">Tab showing Sliders, Dropdowns, Toggles, and filled icons.</p></div>
+            </li>
+            <li style="display: flex; gap: 0.75rem;">
+              <span style="background: rgba(255,255,255,0.1); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 700;">4</span>
+              <div><strong>Color Picker & Modal Dialog</strong><p style="margin:0; font-size:0.85rem;">Active color picker popup showing saturation/brightness canvas and RGB/Hex inputs.</p></div>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <aside class="toc">
+      <div class="toc-title">On This Page</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#overview" class="toc-link">Overview</a></li>
+        <li class="toc-item"><a href="#installation" class="toc-link">Installation</a></li>
+        <li class="toc-item"><a href="#window" class="toc-link">Window Configuration</a></li>
+        <li class="toc-item"><a href="#tabs" class="toc-link">Tabs & Sections</a></li>
+        <li class="toc-item"><a href="#buttons" class="toc-link">Buttons</a></li>
+        <li class="toc-item"><a href="#toggles" class="toc-link">Toggles</a></li>
+        <li class="toc-item"><a href="#sliders" class="toc-link">Sliders</a></li>
+        <li class="toc-item"><a href="#dropdowns" class="toc-link">Dropdowns</a></li>
+        <li class="toc-item"><a href="#colorpickers" class="toc-link">Color Pickers</a></li>
+        <li class="toc-item"><a href="#dynamic-set" class="toc-link">Dynamic API</a></li>
+        <li class="toc-item"><a href="#notifications" class="toc-link">Notifications & Toasts</a></li>
+        <li class="toc-item"><a href="#fluent-icons" class="toc-link">Fluent Icons</a></li>
+        <li class="toc-item"><a href="#screenshots-guide" class="toc-link">Screenshot Checklist</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <div id="searchModal" onclick="if(event.target===this)closeSearch()">
+    <div class="search-box">
+      <input type="text" id="modalSearchInput" class="search-input" placeholder="Search documentation..." oninput="runSearch(this.value)">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </div>
+
+  <div id="toast">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span id="toastMsg">Copied to clipboard</span>
+  </div>
+
+  <script>
+    const sampleIcons = [
+      'sword', 'swords', 'shield', 'shield_check', 'zap', 'flash', 'lightning', 'flame', 'fire',
+      'eye', 'eye_closed', 'settings', 'tuning', 'sliders', 'adjust', 'user', 'users', 'target',
+      'crosshair', 'star', 'stars', 'heart', 'bell', 'notification', 'search', 'find', 'check',
+      'checkmark', 'close', 'dismiss', 'cart', 'shopping_cart', 'folder', 'file', 'document',
+      'lock', 'unlock', 'key', 'palette', 'color', 'car', 'vehicle', 'crown', 'trophy', 'magic',
+      'sun', 'moon', 'trash', 'delete', 'copy', 'download', 'upload', 'play', 'pause', 'dollar',
+      'money', 'coin', 'wallet', 'wrench', 'tool', 'hammer', 'code', 'terminal', 'cpu', 'database',
+      'server', 'cloud', 'wifi', 'bluetooth', 'battery', 'power'
+    ];
+
+    function renderIcons(list) {
+      const grid = document.getElementById('iconGrid');
+      grid.innerHTML = '';
+      list.forEach(name => {
+        const item = document.createElement('div');
+        item.style.padding = '0.5rem';
+        item.style.background = 'rgba(255,255,255,0.03)';
+        item.style.border = '1px solid var(--border)';
+        item.style.borderRadius = '6px';
+        item.style.fontSize = '0.78rem';
+        item.style.textAlign = 'center';
+        item.style.cursor = 'pointer';
+        item.innerHTML = `<div style="font-weight:600; color:#fff;">${name}</div><div style="font-size:0.68rem; color:var(--text-dim);">copy name</div>`;
+        item.onclick = () => {
+          navigator.clipboard.writeText(name);
+          showToast(`Copied icon "${name}"`);
+        };
+        grid.appendChild(item);
+      });
+    }
+
+    function filterIcons() {
+      const q = document.getElementById('iconFilterInput').value.toLowerCase().trim();
+      const filtered = sampleIcons.filter(i => i.includes(q));
+      renderIcons(filtered);
+    }
+    renderIcons(sampleIcons);
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2400);
+    }
+
+    function copyCode(btn) {
+      const code = btn.closest('.code-container').querySelector('code').innerText;
+      navigator.clipboard.writeText(code);
+      btn.innerText = 'Copied!';
+      setTimeout(() => btn.innerText = 'Copy', 2000);
+      showToast('Code copied to clipboard');
+    }
+
+    function copyForAI() {
+      const markdown = `# Slate UI Framework — LLM & MCP Reference Document
+## Overview
+Slate is a high-performance monochrome Roblox UI framework with top-pill tab navigation, left-to-right swipe transitions, and 1,200+ solid filled Microsoft Fluent System icons.
+
+## Quick Installation
+\`\`\`lua
+local slate = loadstring(game:HttpGet("https://raw.githubusercontent.com/EORScopeZ/slatelib/main/Slate.lua"))()
+\`\`\`
+
+## Creating Window
+\`\`\`lua
+local window = slate:CreateWindow({
+    name = "slate",
+    subtitle = "ui library",
+    icon = 136661212895058,
+    theme = "Default",
+    sidebarLayout = false, -- false for top tabs, true for sidebar
+})
+\`\`\`
+
+## Creating Tabs & Sections
+\`\`\`lua
+local tab = window:CreateTab({
+    name = "combat",
+    icon = "sword", -- Solid filled fluent icon name
+    iconColor = Color3.fromRGB(255, 255, 255),
+})
+local section = tab:CreateSection({ name = "controls" })
+\`\`\`
+
+## Complete Component API
+- **Button**: \`tab:CreateButton({ name, description, icon, iconColor, callback })\`
+- **Toggle**: \`tab:CreateToggle({ name, description, icon, flag, value, callback })\`
+- **Slider**: \`tab:CreateSlider({ name, description, icon, flag, range={min,max}, increment, value, suffix, callback })\`
+- **Dropdown**: \`tab:CreateDropdown({ name, description, icon, flag, options={}, value, multiSelect=false, callback })\`
+- **Input**: \`tab:CreateInput({ name, description, icon, flag, value, placeholder, numeric=false, clearOnFocus=false, callback })\`
+- **Keybind**: \`tab:CreateKeybind({ name, description, icon, flag, value=Enum.KeyCode.E, hold=false, callback })\`
+- **ColorPicker**: \`tab:CreateColorPicker({ name, description, icon, flag, color=Color3.fromRGB(255,255,255), alpha=1, callback })\`
+- **Stat**: \`tab:CreateStat({ name, description, prefix, suffix, value })\`
+- **Progress**: \`tab:CreateProgress({ name, range={0,100}, value=50, showValue=true })\`
+- **Console**: \`tab:CreateConsole({ name, text="logs...", height=120 })\`
+
+## Dynamic Modification Methods
+- \`toggle:Set(boolean)\`
+- \`slider:Set(number)\`
+- \`dropdown:Set(string or table)\`
+- \`dropdown:Refresh(newOptionsTable)\`
+- \`dropdown:Add(optionString)\`
+- \`dropdown:Remove(optionString)\`
+- \`button:Lock(reasonString)\`
+- \`button:Unlock()\`
+- \`button:MoveToTop() / MoveUp() / MoveDown()\`
+
+## Notifications & Popups
+- \`window:Notify({ title, content, icon, duration })\`
+- \`window:Toast({ title, subtitle, duration })\`
+- \`window:Popup({ title, subtitle, content, options={ {text="yes", style="Primary", callback=fn} } })\`
+`;
+      navigator.clipboard.writeText(markdown);
+      showToast('Copied full AI & MCP documentation markdown!');
+    }
+
+    function copyFullMarkdown() {
+      copyForAI();
+    }
+
+    function openSearch() {
+      document.getElementById('searchModal').classList.add('open');
+      document.getElementById('modalSearchInput').focus();
+    }
+    function closeSearch() {
+      document.getElementById('searchModal').classList.remove('open');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        openSearch();
+      }
+      if (e.key === 'Escape') closeSearch();
+    });
+
+    const searchIndex = [
+      { title: 'Window Configuration', section: '#window', text: 'CreateWindow name subtitle icon theme sidebarLayout' },
+      { title: 'Top Pill Navigation', section: '#tabs', text: 'top pill navigation tabs horizontal swipe' },
+      { title: 'Buttons', section: '#buttons', text: 'CreateButton click callback icon iconColor' },
+      { title: 'Toggles & Switches', section: '#toggles', text: 'CreateToggle flag value switch spring' },
+      { title: 'Sliders', section: '#sliders', text: 'CreateSlider range increment suffix number' },
+      { title: 'Dropdowns', section: '#dropdowns', text: 'CreateDropdown options multiSelect add remove refresh' },
+      { title: 'Color Pickers', section: '#colorpickers', text: 'CreateColorPicker RGB Hex alpha' },
+      { title: 'Dynamic Modification (:Set)', section: '#dynamic-set', text: 'Set Lock Unlock MoveToTop' },
+      { title: 'Notifications & Popups', section: '#notifications', text: 'Notify Toast Popup modal dialog' },
+      { title: 'Fluent Filled Icons', section: '#fluent-icons', text: '1200+ solid filled icons sword shield fire eye' }
+    ];
+
+    function runSearch(query) {
+      const q = query.toLowerCase().trim();
+      const results = document.getElementById('searchResults');
+      results.innerHTML = '';
+      if (!q) return;
+      const matched = searchIndex.filter(item => item.title.toLowerCase().includes(q) || item.text.toLowerCase().includes(q));
+      if (matched.length === 0) {
+        results.innerHTML = '<div style="padding:1rem; color:var(--text-dim); text-align:center;">No matching results found</div>';
+        return;
+      }
+      matched.forEach(item => {
+        const a = document.createElement('a');
+        a.className = 'search-result-item';
+        a.href = item.section;
+        a.onclick = closeSearch;
+        a.innerHTML = `<strong>${item.title}</strong><div style="font-size:0.75rem; color:var(--text-dim);">${item.text}</div>`;
+        results.appendChild(a);
+      });
+    }
+  </script>
+</body>
+</html>
