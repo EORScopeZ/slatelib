@@ -29,7 +29,7 @@ function Notification.new(window, properties)
         window = assert(window, 'Missing argument #1 (Window expected)'),
         title = properties.title or properties.Title or 'Notification',
         content = properties.content or properties.Content or '',
-        icon = properties.icon or properties.Icon,
+        icon = properties.icon or properties.Icon or 136661212895058,
         _hovered = false,
         _dismissed = false,
     }, Notification)
@@ -89,8 +89,8 @@ function Notification.new(window, properties)
     self.shadow = self.window:CreateGlow(self.body, 'ShadowColor', 20, 1)
 
     self.window:Create('UIPadding', {
-        PaddingLeft = UDim.new(0, 20),
-        PaddingRight = UDim.new(0, 20),
+        PaddingLeft = UDim.new(0, 16),
+        PaddingRight = UDim.new(0, 16),
         Parent = self.body,
     })
     self.window:Create('UIListLayout', {
@@ -98,14 +98,14 @@ function Notification.new(window, properties)
         VerticalAlignment = Enum.VerticalAlignment.Center,
         HorizontalAlignment = Enum.HorizontalAlignment.Left,
         SortOrder = Enum.SortOrder.LayoutOrder,
-        Padding = UDim.new(0, 14),
+        Padding = UDim.new(0, 12),
         Parent = self.body,
     })
 
     if hasIcon then
         self.iconLabel = self.window:Create('ImageLabel', {
             Image = self.icon,
-            Size = UDim2.fromOffset(24, 24),
+            Size = UDim2.fromOffset(26, 26),
             BackgroundTransparency = 1,
             BorderSizePixel = 0,
             LayoutOrder = 1,
@@ -118,7 +118,7 @@ function Notification.new(window, properties)
     end
 
     self.container = self.window:Create('Frame', {
-        Size = UDim2.fromOffset(hasIcon and 222 or 260, 0),
+        Size = UDim2.fromOffset(hasIcon and 224 or 260, 0),
         AutomaticSize = Enum.AutomaticSize.Y,
         BackgroundTransparency = 1,
         BorderSizePixel = 0,
@@ -212,14 +212,14 @@ function Notification.new(window, properties)
     return self
 end
 function Notification:_measure()
-    local colWidth = self.iconLabel and 222 or 260
+    local colWidth = self.iconLabel and 224 or 260
     local contentH = functions.textHeight(self.window.theme.TitleFont, 16, self.title, colWidth)
 
     if self.descriptionLabel then
         contentH = contentH + 4 + functions.textHeight(self.window.theme.Font, 15, self.content, colWidth)
     end
 
-    return math.max(contentH, self.iconLabel and 24 or 0) + 28
+    return math.max(contentH, self.iconLabel and 26 or 0) + 28
 end
 function Notification:_show()
     local target = self:_measure() + stackPadding

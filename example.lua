@@ -1,4 +1,4 @@
-﻿local slate = loadstring(game:HttpGet("https://raw.githubusercontent.com/EORScopeZ/slatelib/main/Slate.lua"))()
+local slate = loadstring(game:HttpGet("https://raw.githubusercontent.com/EORScopeZ/slatelib/main/Slate.lua"))()
 
 local window = slate:CreateWindow({
     name = "slate",
@@ -10,22 +10,22 @@ local window = slate:CreateWindow({
 
 local main_tab = window:CreateTab({
     name = "main",
-    icon = 136661212895058,
+    icon = "home",
 })
 
 local elements_tab = window:CreateTab({
     name = "elements",
-    icon = 136661212895058,
+    icon = "sparkle",
 })
 
 local display_tab = window:CreateTab({
     name = "display",
-    icon = 136661212895058,
+    icon = "chart-multiple",
 })
 
 local misc_tab = window:CreateTab({
     name = "misc",
-    icon = 136661212895058,
+    icon = "settings",
 })
 
 main_tab:CreateSection({

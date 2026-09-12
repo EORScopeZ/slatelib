@@ -1,6 +1,9 @@
+-- ++++++++ WAX BUNDLED DATA BELOW ++++++++ --
 
+-- Will be used later for getting flattened globals
 local ImportGlobals
 
+-- Holds direct closure data (defining this before the DOM tree for line debugging etc)
 local ClosureBindings = {
     function()local wax,script,require=ImportGlobals(1)local ImportGlobals return (function(...)local variables = require(script.utility.variables)
 local image = require(script.utility.image)
@@ -4869,7 +4872,7 @@ function Notification.new(window, properties)
         window = assert(window, 'Missing argument #1 (Window expected)'),
         title = properties.title or properties.Title or 'Notification',
         content = properties.content or properties.Content or '',
-        icon = properties.icon or properties.Icon,
+        icon = properties.icon or properties.Icon or 136661212895058,
         _hovered = false,
         _dismissed = false,
     }, Notification)
@@ -4929,8 +4932,8 @@ function Notification.new(window, properties)
     self.shadow = self.window:CreateGlow(self.body, 'ShadowColor', 20, 1)
 
     self.window:Create('UIPadding', {
-        PaddingLeft = UDim.new(0, 20),
-        PaddingRight = UDim.new(0, 20),
+        PaddingLeft = UDim.new(0, 16),
+        PaddingRight = UDim.new(0, 16),
         Parent = self.body,
     })
     self.window:Create('UIListLayout', {
@@ -4938,14 +4941,14 @@ function Notification.new(window, properties)
         VerticalAlignment = Enum.VerticalAlignment.Center,
         HorizontalAlignment = Enum.HorizontalAlignment.Left,
         SortOrder = Enum.SortOrder.LayoutOrder,
-        Padding = UDim.new(0, 14),
+        Padding = UDim.new(0, 12),
         Parent = self.body,
     })
 
     if hasIcon then
         self.iconLabel = self.window:Create('ImageLabel', {
             Image = self.icon,
-            Size = UDim2.fromOffset(24, 24),
+            Size = UDim2.fromOffset(26, 26),
             BackgroundTransparency = 1,
             BorderSizePixel = 0,
             LayoutOrder = 1,
@@ -4958,7 +4961,7 @@ function Notification.new(window, properties)
     end
 
     self.container = self.window:Create('Frame', {
-        Size = UDim2.fromOffset(hasIcon and 222 or 260, 0),
+        Size = UDim2.fromOffset(hasIcon and 224 or 260, 0),
         AutomaticSize = Enum.AutomaticSize.Y,
         BackgroundTransparency = 1,
         BorderSizePixel = 0,
@@ -5052,14 +5055,14 @@ function Notification.new(window, properties)
     return self
 end
 function Notification:_measure()
-    local colWidth = self.iconLabel and 222 or 260
+    local colWidth = self.iconLabel and 224 or 260
     local contentH = functions.textHeight(self.window.theme.TitleFont, 16, self.title, colWidth)
 
     if self.descriptionLabel then
         contentH = contentH + 4 + functions.textHeight(self.window.theme.Font, 15, self.content, colWidth)
     end
 
-    return math.max(contentH, self.iconLabel and 24 or 0) + 28
+    return math.max(contentH, self.iconLabel and 26 or 0) + 28
 end
 function Notification:_show()
     local target = self:_measure() + stackPadding
@@ -18384,6 +18387,7 @@ return windowSizing
 end)() end
 } -- [RefId] = Closure
 
+-- Holds the actual DOM data
 local ObjectTree = {
     {
         1,
@@ -18393,211 +18397,6 @@ local ObjectTree = {
         },
         {
             {
-                2,
-                1,
-                {
-                    "components"
-                },
-                {
-                    {
-                        29,
-                        2,
-                        {
-                            "toggle"
-                        }
-                    },
-                    {
-                        17,
-                        2,
-                        {
-                            "progress"
-                        }
-                    },
-                    {
-                        22,
-                        2,
-                        {
-                            "stat"
-                        }
-                    },
-                    {
-                        16,
-                        2,
-                        {
-                            "popup"
-                        }
-                    },
-                    {
-                        5,
-                        2,
-                        {
-                            "chrome"
-                        }
-                    },
-                    {
-                        28,
-                        2,
-                        {
-                            "toast"
-                        }
-                    },
-                    {
-                        26,
-                        2,
-                        {
-                            "tag"
-                        }
-                    },
-                    {
-                        3,
-                        2,
-                        {
-                            "action"
-                        }
-                    },
-                    {
-                        27,
-                        2,
-                        {
-                            "text"
-                        }
-                    },
-                    {
-                        10,
-                        2,
-                        {
-                            "drag"
-                        }
-                    },
-                    {
-                        21,
-                        2,
-                        {
-                            "slider"
-                        }
-                    },
-                    {
-                        7,
-                        2,
-                        {
-                            "console"
-                        }
-                    },
-                    {
-                        23,
-                        2,
-                        {
-                            "tab"
-                        }
-                    },
-                    {
-                        6,
-                        2,
-                        {
-                            "colorpicker"
-                        }
-                    },
-                    {
-                        8,
-                        2,
-                        {
-                            "descriptor"
-                        }
-                    },
-                    {
-                        25,
-                        2,
-                        {
-                            "tabSelector"
-                        }
-                    },
-                    {
-                        24,
-                        2,
-                        {
-                            "tabSection"
-                        }
-                    },
-                    {
-                        4,
-                        2,
-                        {
-                            "button"
-                        }
-                    },
-                    {
-                        13,
-                        2,
-                        {
-                            "input"
-                        }
-                    },
-                    {
-                        15,
-                        2,
-                        {
-                            "notification"
-                        }
-                    },
-                    {
-                        12,
-                        2,
-                        {
-                            "group"
-                        }
-                    },
-                    {
-                        20,
-                        2,
-                        {
-                            "sidebar"
-                        }
-                    },
-                    {
-                        19,
-                        2,
-                        {
-                            "section"
-                        }
-                    },
-                    {
-                        18,
-                        2,
-                        {
-                            "search"
-                        }
-                    },
-                    {
-                        30,
-                        2,
-                        {
-                            "window"
-                        }
-                    },
-                    {
-                        11,
-                        2,
-                        {
-                            "dropdown"
-                        }
-                    },
-                    {
-                        14,
-                        2,
-                        {
-                            "keybind"
-                        }
-                    },
-                    {
-                        9,
-                        2,
-                        {
-                            "divider"
-                        }
-                    }
-                }
-            },
-            {
                 39,
                 1,
                 {
@@ -18605,24 +18404,10 @@ local ObjectTree = {
                 },
                 {
                     {
-                        69,
+                        64,
                         2,
                         {
-                            "textMetrics"
-                        }
-                    },
-                    {
-                        70,
-                        2,
-                        {
-                            "variables"
-                        }
-                    },
-                    {
-                        61,
-                        2,
-                        {
-                            "path"
+                            "persistencePaths"
                         }
                     },
                     {
@@ -18633,45 +18418,17 @@ local ObjectTree = {
                         }
                     },
                     {
-                        68,
+                        43,
                         2,
                         {
-                            "services"
+                            "constants"
                         }
                     },
                     {
-                        45,
+                        47,
                         2,
                         {
-                            "filesystem"
-                        }
-                    },
-                    {
-                        67,
-                        2,
-                        {
-                            "runtime"
-                        }
-                    },
-                    {
-                        44,
-                        2,
-                        {
-                            "enums"
-                        }
-                    },
-                    {
-                        40,
-                        2,
-                        {
-                            "HapticEngine"
-                        }
-                    },
-                    {
-                        62,
-                        2,
-                        {
-                            "persistence"
+                            "flagNames"
                         }
                     },
                     {
@@ -18682,17 +18439,10 @@ local ObjectTree = {
                         }
                     },
                     {
-                        51,
+                        68,
                         2,
                         {
-                            "image"
-                        }
-                    },
-                    {
-                        48,
-                        2,
-                        {
-                            "fluentIcons"
+                            "services"
                         }
                     },
                     {
@@ -18710,24 +18460,17 @@ local ObjectTree = {
                         }
                     },
                     {
-                        64,
+                        59,
                         2,
                         {
-                            "persistencePaths"
+                            "odometer"
                         }
                     },
                     {
-                        63,
+                        62,
                         2,
                         {
-                            "persistenceConfig"
-                        }
-                    },
-                    {
-                        66,
-                        2,
-                        {
-                            "persistenceWrite"
+                            "persistence"
                         }
                     },
                     {
@@ -18738,38 +18481,31 @@ local ObjectTree = {
                         }
                     },
                     {
-                        59,
+                        50,
                         2,
                         {
-                            "odometer"
+                            "functions"
                         }
                     },
                     {
-                        54,
+                        69,
                         2,
                         {
-                            "locale"
+                            "textMetrics"
                         }
                     },
                     {
-                        41,
+                        66,
                         2,
                         {
-                            "assetResolver"
+                            "persistenceWrite"
                         }
                     },
                     {
-                        42,
+                        67,
                         2,
                         {
-                            "colors"
-                        }
-                    },
-                    {
-                        57,
-                        2,
-                        {
-                            "moveable"
+                            "runtime"
                         }
                     },
                     {
@@ -18780,38 +18516,38 @@ local ObjectTree = {
                         }
                     },
                     {
-                        43,
+                        58,
                         2,
                         {
-                            "constants"
+                            "network"
                         }
                     },
                     {
-                        60,
+                        70,
                         2,
                         {
-                            "ordering"
+                            "variables"
                         }
                     },
                     {
-                        47,
+                        40,
                         2,
                         {
-                            "flagNames"
+                            "HapticEngine"
                         }
                     },
                     {
-                        53,
+                        63,
                         2,
                         {
-                            "layouts"
+                            "persistenceConfig"
                         }
                     },
                     {
-                        50,
+                        61,
                         2,
                         {
-                            "functions"
+                            "path"
                         }
                     },
                     {
@@ -18822,12 +18558,82 @@ local ObjectTree = {
                         }
                     },
                     {
-                        58,
+                        60,
                         2,
                         {
-                            "network"
+                            "ordering"
+                        }
+                    },
+                    {
+                        57,
+                        2,
+                        {
+                            "moveable"
+                        }
+                    },
+                    {
+                        48,
+                        2,
+                        {
+                            "fluentIcons"
+                        }
+                    },
+                    {
+                        53,
+                        2,
+                        {
+                            "layouts"
+                        }
+                    },
+                    {
+                        54,
+                        2,
+                        {
+                            "locale"
+                        }
+                    },
+                    {
+                        44,
+                        2,
+                        {
+                            "enums"
+                        }
+                    },
+                    {
+                        51,
+                        2,
+                        {
+                            "image"
+                        }
+                    },
+                    {
+                        42,
+                        2,
+                        {
+                            "colors"
+                        }
+                    },
+                    {
+                        41,
+                        2,
+                        {
+                            "assetResolver"
+                        }
+                    },
+                    {
+                        45,
+                        2,
+                        {
+                            "filesystem"
                         }
                     }
+                }
+            },
+            {
+                38,
+                2,
+                {
+                    "types"
                 }
             },
             {
@@ -18838,10 +18644,24 @@ local ObjectTree = {
                 },
                 {
                     {
+                        35,
+                        2,
+                        {
+                            "ember"
+                        }
+                    },
+                    {
                         37,
                         2,
                         {
                             "rose"
+                        }
+                    },
+                    {
+                        33,
+                        2,
+                        {
+                            "cobalt"
                         }
                     },
                     {
@@ -18859,39 +18679,224 @@ local ObjectTree = {
                         }
                     },
                     {
-                        35,
-                        2,
-                        {
-                            "ember"
-                        }
-                    },
-                    {
                         36,
                         2,
                         {
                             "frost"
                         }
-                    },
-                    {
-                        33,
-                        2,
-                        {
-                            "cobalt"
-                        }
                     }
                 }
             },
             {
-                38,
                 2,
+                1,
                 {
-                    "types"
+                    "components"
+                },
+                {
+                    {
+                        21,
+                        2,
+                        {
+                            "slider"
+                        }
+                    },
+                    {
+                        11,
+                        2,
+                        {
+                            "dropdown"
+                        }
+                    },
+                    {
+                        12,
+                        2,
+                        {
+                            "group"
+                        }
+                    },
+                    {
+                        6,
+                        2,
+                        {
+                            "colorpicker"
+                        }
+                    },
+                    {
+                        15,
+                        2,
+                        {
+                            "notification"
+                        }
+                    },
+                    {
+                        30,
+                        2,
+                        {
+                            "window"
+                        }
+                    },
+                    {
+                        18,
+                        2,
+                        {
+                            "search"
+                        }
+                    },
+                    {
+                        22,
+                        2,
+                        {
+                            "stat"
+                        }
+                    },
+                    {
+                        4,
+                        2,
+                        {
+                            "button"
+                        }
+                    },
+                    {
+                        16,
+                        2,
+                        {
+                            "popup"
+                        }
+                    },
+                    {
+                        29,
+                        2,
+                        {
+                            "toggle"
+                        }
+                    },
+                    {
+                        28,
+                        2,
+                        {
+                            "toast"
+                        }
+                    },
+                    {
+                        3,
+                        2,
+                        {
+                            "action"
+                        }
+                    },
+                    {
+                        8,
+                        2,
+                        {
+                            "descriptor"
+                        }
+                    },
+                    {
+                        23,
+                        2,
+                        {
+                            "tab"
+                        }
+                    },
+                    {
+                        25,
+                        2,
+                        {
+                            "tabSelector"
+                        }
+                    },
+                    {
+                        27,
+                        2,
+                        {
+                            "text"
+                        }
+                    },
+                    {
+                        26,
+                        2,
+                        {
+                            "tag"
+                        }
+                    },
+                    {
+                        24,
+                        2,
+                        {
+                            "tabSection"
+                        }
+                    },
+                    {
+                        9,
+                        2,
+                        {
+                            "divider"
+                        }
+                    },
+                    {
+                        20,
+                        2,
+                        {
+                            "sidebar"
+                        }
+                    },
+                    {
+                        13,
+                        2,
+                        {
+                            "input"
+                        }
+                    },
+                    {
+                        14,
+                        2,
+                        {
+                            "keybind"
+                        }
+                    },
+                    {
+                        19,
+                        2,
+                        {
+                            "section"
+                        }
+                    },
+                    {
+                        5,
+                        2,
+                        {
+                            "chrome"
+                        }
+                    },
+                    {
+                        7,
+                        2,
+                        {
+                            "console"
+                        }
+                    },
+                    {
+                        17,
+                        2,
+                        {
+                            "progress"
+                        }
+                    },
+                    {
+                        10,
+                        2,
+                        {
+                            "drag"
+                        }
+                    }
                 }
             }
         }
     }
 }
 
+-- Line offsets for debugging (only included when minifyTables is false)
 local LineOffsets = {
     8,
     [3] = 175,
@@ -18963,10 +18968,13 @@ local LineOffsets = {
     [71] = 18282
 }
 
+-- Misc AOT variable imports
 local WaxVersion = "0.4.1"
-local EnvName = "Slate"
+local EnvName = "WaxRuntime"
 
+-- ++++++++ RUNTIME IMPL BELOW ++++++++ --
 
+-- Localizing certain libraries and built-ins for runtime efficiency
 local string, task, setmetatable, error, next, table, unpack, coroutine, script, type, require, pcall, xpcall, tostring, tonumber, _VERSION =
       string, task, setmetatable, error, next, table, unpack, coroutine, script, type, require, pcall, xpcall, tostring, tonumber, _VERSION
 
@@ -18980,6 +18988,8 @@ local string_sub = string.sub
 local string_match = string.match
 local string_gmatch = string.gmatch
 
+-- The Lune runtime has its own `task` impl, but it must be imported by its builtin
+-- module path, "@lune/task"
 if _VERSION and string_sub(_VERSION, 1, 4) == "Lune" then
     local RequireSuccess, LuneTaskLib = pcall(require, "@lune/task")
     if RequireSuccess and LuneTaskLib then
@@ -18989,10 +18999,12 @@ end
 
 local task_defer = task and task.defer
 
+-- If we're not running on the Roblox engine, we won't have a `task` global
 local Defer = task_defer or function(f, ...)
     coroutine_wrap(f)(...)
 end
 
+-- ClassName "IDs"
 local ClassNameIdBindings = {
     [1] = "Folder",
     [2] = "ModuleScript",
@@ -19008,10 +19020,14 @@ local ScriptClosureRefIds = {} -- [ScriptClosure] = RefId
 local StoredModuleValues = {}
 local ScriptsToRun = {}
 
+-- wax.shared __index/__newindex
 local SharedEnvironment = {}
 
+-- We're creating 'fake' instance refs soley for traversal of the DOM for require() compatibility
+-- It's meant to be as lazy as possible
 local RefChildren = {} -- [Ref] = {ChildrenRef, ...}
 
+-- Implemented instance methods
 local InstanceMethods = {
     GetFullName = { {}, function(self)
         local Path = self.Name
@@ -19020,6 +19036,7 @@ local InstanceMethods = {
         while ObjectPointer do
             Path = ObjectPointer.Name .. "." .. Path
 
+            -- Move up the DOM (parent will be nil at the end, and this while loop will stop)
             ObjectPointer = ObjectPointer.Parent
         end
 
@@ -19061,6 +19078,8 @@ local InstanceMethods = {
 
         if recursive then
             for Child in next, Children do
+                -- Yeah, Roblox follows this behavior- instead of searching the entire base of a
+                -- ref first, the engine uses a direct recursive call
                 return Child:FindFirstChild(name, true)
             end
         end
@@ -19077,11 +19096,13 @@ local InstanceMethods = {
         end
     end},
 
+    -- Just to implement for traversal usage
     WaitForChild = { {"string", "number?"}, function(self, name)
         return self:FindFirstChild(name)
     end},
 }
 
+-- "Proxies" to instance methods, with err checks etc
 local InstanceMethodProxies = {}
 for MethodName, MethodObject in next, InstanceMethods do
     local Types = MethodObject[1]
@@ -19118,11 +19139,15 @@ for MethodName, MethodObject in next, InstanceMethods do
 end
 
 local function CreateRef(className, name, parent)
+    -- `name` and `parent` can also be set later by the init script if they're absent
 
+    -- Extras
     local StringValue_Value
 
+    -- Will be set to RefChildren later aswell
     local Children = setmetatable({}, {__mode = "k"})
 
+    -- Err funcs
     local function InvalidMember(member)
         error(member .. " is not a valid (virtual) member of " .. className .. " \"" .. name .. "\"", 3)
     end
@@ -19143,6 +19168,7 @@ local function CreateRef(className, name, parent)
         elseif index == "Parent" then
             return parent
         elseif className == "StringValue" and index == "Value" then
+            -- Supporting StringValue.Value for Rojo .txt file conv
             return StringValue_Value
         else -- Lastly, check "methods"
             local InstanceMethod = InstanceMethodProxies[index]
@@ -19152,37 +19178,45 @@ local function CreateRef(className, name, parent)
             end
         end
 
+        -- Next we'll look thru child refs
         for Child in next, Children do
             if Child.Name == index then
                 return Child
             end
         end
 
+        -- At this point, no member was found; this is the same err format as Roblox
         InvalidMember(index)
     end
 
     RefMetatable.__newindex = function(_, index, value)
+        -- __newindex is only for props fyi
         if index == "ClassName" then
             ReadOnlyProperty(index)
         elseif index == "Name" then
             name = value
         elseif index == "Parent" then
+            -- We'll just ignore the process if it's trying to set itself
             if value == Ref then
                 return
             end
 
             if parent ~= nil then
+                -- Remove this ref from the CURRENT parent
                 RefChildren[parent][Ref] = nil
             end
 
             parent = value
 
             if value ~= nil then
+                -- And NOW we're setting the new parent
                 RefChildren[value][Ref] = true
             end
         elseif className == "StringValue" and index == "Value" then
+            -- Supporting StringValue.Value for Rojo .txt file conv
             StringValue_Value = value
         else
+            -- Same err as __index when no member is found
             InvalidMember(index)
         end
     end
@@ -19202,6 +19236,7 @@ local function CreateRef(className, name, parent)
     return Ref
 end
 
+-- Create real ref DOM from object tree
 local function CreateRefFromObject(object, parent)
     local RefId = object[1]
     local ClassNameId = object[2]
@@ -19235,6 +19270,7 @@ for _, Object in next, ObjectTree do
     CreateRefFromObject(Object, RealObjectRoot)
 end
 
+-- Now we'll set script closure refs and check if they should be ran as a BaseScript
 for RefId, Closure in next, ClosureBindings do
     local Ref = RefBindings[RefId]
 
@@ -19250,6 +19286,7 @@ end
 local function LoadScript(scriptRef)
     local ScriptClassName = scriptRef.ClassName
 
+    -- First we'll check for a cached module value (packed into a tbl)
     local StoredModuleValue = StoredModuleValues[scriptRef]
     if StoredModuleValue and ScriptClassName == "ModuleScript" then
         return unpack(StoredModuleValue)
@@ -19257,6 +19294,8 @@ local function LoadScript(scriptRef)
 
     local Closure = ScriptClosures[scriptRef]
 
+    -- Grabs the stack while it's still live; pcall alone would discard it. Guarded,
+    -- since some executors sandbox `debug` away entirely
     local function CatchError(originalErrorMessage)
         local Traceback
         local TracebackSuccess, TracebackResult = pcall(function()
@@ -19274,6 +19313,7 @@ local function LoadScript(scriptRef)
 
         local VirtualFullName = scriptRef:GetFullName()
 
+        -- Check for vanilla/Roblox format
         local OriginalErrorLine, BaseErrorMessage = string_match(originalErrorMessage, "[^:]+:(%d+): (.+)")
 
         local FormattedMessage
@@ -19301,6 +19341,7 @@ local function LoadScript(scriptRef)
         return FormattedMessage
     end
 
+    -- If it's a BaseScript, we'll just run it directly!
     if ScriptClassName == "LocalScript" or ScriptClassName == "Script" then
         local RunSuccess, CaughtError = xpcall(Closure, CatchError)
         if not RunSuccess then
@@ -19320,6 +19361,8 @@ local function LoadScript(scriptRef)
     end
 end
 
+-- We'll assign the actual func from the top of this output for flattening user globals at runtime
+-- Returns (in a tuple order): wax, script, require
 function ImportGlobals(refId)
     local ScriptRef = RefBindings[refId]
 
@@ -19334,6 +19377,7 @@ function ImportGlobals(refId)
         return unpack(PCallReturn)
     end
 
+    -- `wax.shared` index
     local WaxShared = table_freeze(setmetatable({}, {
         __index = SharedEnvironment,
         __newindex = function(_, index, value)
@@ -19348,11 +19392,13 @@ function ImportGlobals(refId)
     }))
 
     local Global_wax = table_freeze({
+        -- From AOT variable imports
         version = WaxVersion,
         envname = EnvName,
 
         shared = WaxShared,
 
+        -- "Real" globals instead of the env set ones
         script = script,
         require = require,
     })
@@ -19374,6 +19420,7 @@ function ImportGlobals(refId)
 
             return LoadScript(module)
         elseif ModuleArgType == "string" and string_sub(module, 1, 1) ~= "@" then
+            -- The control flow on this SUCKS
 
             if #module == 0 then
                 error("Attempted to call require with empty string", 2)
@@ -19394,6 +19441,7 @@ function ImportGlobals(refId)
                     RealIndex = "Parent"
                 end
 
+                -- Don't advance dir if it's just another "/" either
                 if RealIndex ~= "" then
                     local ResultRef = CurrentRefPointer:FindFirstChild(RealIndex)
                     if not ResultRef then
@@ -19410,6 +19458,7 @@ function ImportGlobals(refId)
                     end
                 end
 
+                -- For possible checks next cycle
                 PreviousPathMatch = PathMatch
             end
 
@@ -19425,6 +19474,7 @@ function ImportGlobals(refId)
         return RealCall(require, module, ...)
     end
 
+    -- Now, return flattened globals ready for direct runtime exec
     return Global_wax, Global_script, Global_require
 end
 
@@ -19432,4 +19482,5 @@ for _, ScriptRef in next, ScriptsToRun do
     Defer(LoadScript, ScriptRef)
 end
 
+-- AoT adjustment: Load init module (MainModule behavior)
 return LoadScript(RealObjectRoot:GetChildren()[1])
