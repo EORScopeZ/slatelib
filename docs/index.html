@@ -370,21 +370,34 @@
       color: var(--text);
     }
     pre {
-      padding: 0.85rem 1rem;
+      padding: 0.9rem 1.1rem;
       overflow-x: auto;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
-      line-height: 1.5;
-      color: #d4d4d8;
+      font-size: 0.83rem;
+      line-height: 1.55;
+      color: #e4e4e7;
       background: var(--code-bg);
     }
+    pre code {
+      background: transparent !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+      border: none !important;
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      display: block;
+    }
+    pre code * {
+      background: transparent !important;
+    }
 
-    .hl-kw { color: #f43f5e; font-weight: 600; }
-    .hl-str { color: #34d399; }
-    .hl-fn { color: #38bdf8; }
-    .hl-num { color: #fbbf24; }
-    .hl-bool { color: #a78bfa; }
-    .hl-cmt { color: #71717a; font-style: italic; }
+    .hl-kw { color: #f43f5e; font-weight: 600; background: transparent !important; }
+    .hl-str { color: #34d399; background: transparent !important; }
+    .hl-fn { color: #38bdf8; background: transparent !important; }
+    .hl-num { color: #fbbf24; background: transparent !important; }
+    .hl-bool { color: #a78bfa; background: transparent !important; }
+    .hl-cmt { color: #71717a; font-style: italic; background: transparent !important; }
 
     .callout {
       border-left: 3px solid #38bdf8;
@@ -439,7 +452,7 @@
     tr:last-child td {
       border-bottom: none;
     }
-    code {
+    :not(pre) > code {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.78rem;
       background: rgba(255, 255, 255, 0.06);
