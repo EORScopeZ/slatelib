@@ -90,20 +90,16 @@
       color: var(--text);
     }
     .brand-logo {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      background: #18181b;
-      border: 1px solid var(--border-bright);
+      width: 32px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
     }
     .brand-logo img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
     .brand-title {
       font-size: 1.05rem;
@@ -111,15 +107,10 @@
       letter-spacing: -0.02em;
     }
     .brand-badge {
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      background: rgba(255, 255, 255, 0.08);
-      color: #e4e4e7;
-      padding: 2px 6px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      font-weight: 600;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      font-weight: 500;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .header-actions {
@@ -649,10 +640,10 @@
   <header>
     <a href="#" class="brand">
       <div class="brand-logo">
-        <img src="https://assetdelivery.roblox.com/v1/asset/?id=136661212895058" alt="Slate Logo" onerror="this.src='https://raw.githubusercontent.com/EORScopeZ/slatelib/main/assets/slate.png';">
+        <img src="https://i.postimg.cc/fTW53y7h/IMG-2754-Photoroom.png" alt="Slate Logo">
       </div>
       <span class="brand-title">Slate UI</span>
-      <span class="brand-badge">v2.0</span>
+      <span class="brand-badge">v0.01</span>
     </a>
 
     <div class="header-actions">
@@ -687,7 +678,6 @@
           <li><a href="#overview" class="nav-link active">Overview</a></li>
           <li><a href="#installation" class="nav-link">Installation</a></li>
           <li><a href="#quickstart" class="nav-link">Quickstart</a></li>
-          <li><a href="#visual-showcase" class="nav-link">UI Screenshots Gallery</a></li>
         </ul>
       </div>
 
@@ -735,7 +725,7 @@
         <h2>Overview</h2>
         <p>Slate provides a clean obsidian dark aesthetic with pure white accents, fluid swipe page transitions, custom icon colors, and universal executor compatibility.</p>
         
-        <!-- Main Window Preview Frame -->
+        <!-- Main Window Preview -->
         <div class="preview-frame">
           <div class="preview-header">
             <div class="preview-dots">
@@ -744,62 +734,25 @@
               <span class="preview-dot"></span>
             </div>
             <span class="preview-caption">Slate — Main Interface Window</span>
-            <span class="preview-badge">1600x900</span>
           </div>
           <div class="preview-img-wrap">
             <img src="assets/window-preview.png" alt="Slate Main Window">
           </div>
         </div>
-      </section>
 
-      <!-- UI Screenshots Gallery -->
-      <section id="visual-showcase">
-        <h2>UI Screenshots Gallery</h2>
-        <p>Explore the visual hierarchy and states of Slate UI components in action:</p>
-
-        <div class="showcase-grid">
-          <!-- Card 1: Collapsed Pill -->
-          <div class="preview-frame">
-            <div class="preview-header">
-              <span class="preview-caption">Minimized Floating Pill</span>
-              <span class="preview-badge">Pill State</span>
+        <!-- Collapsed Pill Preview -->
+        <div class="preview-frame">
+          <div class="preview-header">
+            <div class="preview-dots">
+              <span class="preview-dot"></span>
+              <span class="preview-dot"></span>
+              <span class="preview-dot"></span>
             </div>
-            <div class="preview-img-wrap">
-              <img src="assets/collapsed-preview.png" alt="Collapsed Pill Preview">
-            </div>
+            <span class="preview-caption">Minimized Floating Pill</span>
+            <span class="preview-badge">Pill State</span>
           </div>
-
-          <!-- Card 2: Components -->
-          <div class="preview-frame">
-            <div class="preview-header">
-              <span class="preview-caption">Interactive Components</span>
-              <span class="preview-badge">Controls</span>
-            </div>
-            <div class="preview-img-wrap">
-              <img src="assets/components-preview.png" alt="Components Preview">
-            </div>
-          </div>
-
-          <!-- Card 3: Color Picker -->
-          <div class="preview-frame">
-            <div class="preview-header">
-              <span class="preview-caption">Color Picker Modal</span>
-              <span class="preview-badge">Modal</span>
-            </div>
-            <div class="preview-img-wrap">
-              <img src="assets/colorpicker-preview.png" alt="Color Picker Preview">
-            </div>
-          </div>
-
-          <!-- Card 4: Notifications -->
-          <div class="preview-frame">
-            <div class="preview-header">
-              <span class="preview-caption">Notification Banner</span>
-              <span class="preview-badge">Feedback</span>
-            </div>
-            <div class="preview-img-wrap">
-              <img src="assets/notification-preview.png" alt="Notification Banner Preview">
-            </div>
+          <div class="preview-img-wrap">
+            <img src="assets/collapsed-preview.png" alt="Collapsed Pill Preview">
           </div>
         </div>
       </section>
@@ -1043,6 +996,21 @@ tab:<span class="hl-fn">CreateDropdown</span>({
     <span class="hl-kw">end</span>,
 })</code></pre>
         </div>
+
+        <!-- Components / Dropdowns Preview -->
+        <div class="preview-frame">
+          <div class="preview-header">
+            <div class="preview-dots">
+              <span class="preview-dot"></span>
+              <span class="preview-dot"></span>
+              <span class="preview-dot"></span>
+            </div>
+            <span class="preview-caption">Sliders & Dropdowns in Action</span>
+          </div>
+          <div class="preview-img-wrap">
+            <img src="assets/components-preview.png" alt="Components Preview">
+          </div>
+        </div>
       </section>
 
       <!-- Inputs & Keybinds -->
@@ -1095,6 +1063,21 @@ tab:<span class="hl-fn">CreateKeybind</span>({
     <span class="hl-kw">end</span>,
 })</code></pre>
         </div>
+
+        <!-- Color Picker Preview -->
+        <div class="preview-frame">
+          <div class="preview-header">
+            <div class="preview-dots">
+              <span class="preview-dot"></span>
+              <span class="preview-dot"></span>
+              <span class="preview-dot"></span>
+            </div>
+            <span class="preview-caption">2D Canvas Color Picker</span>
+          </div>
+          <div class="preview-img-wrap">
+            <img src="assets/colorpicker-preview.png" alt="Color Picker Preview">
+          </div>
+        </div>
       </section>
 
       <!-- Progress & Console -->
@@ -1144,6 +1127,21 @@ window:<span class="hl-fn">Toast</span>({
     subtitle = <span class="hl-str">"settings written to disk"</span>,
     duration = <span class="hl-num">2</span>,
 })</code></pre>
+        </div>
+
+        <!-- Notification Preview -->
+        <div class="preview-frame">
+          <div class="preview-header">
+            <div class="preview-dots">
+              <span class="preview-dot"></span>
+              <span class="preview-dot"></span>
+              <span class="preview-dot"></span>
+            </div>
+            <span class="preview-caption">Slate Toast Notification</span>
+          </div>
+          <div class="preview-img-wrap">
+            <img src="assets/notification-preview.png" alt="Notification Banner Preview">
+          </div>
         </div>
       </section>
 
