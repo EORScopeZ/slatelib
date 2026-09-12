@@ -468,127 +468,6 @@
       padding: 1px 5px;
       border-radius: 3px;
     }
-
-    /* Modern Screenshot & Preview Frames */
-    .preview-frame {
-      background: #0e0e11;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      margin: 1.25rem 0 1.75rem 0;
-      overflow: hidden;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
-      transition: border-color 0.2s, transform 0.2s;
-    }
-    .preview-frame:hover {
-      border-color: rgba(255, 255, 255, 0.16);
-    }
-    .preview-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.65rem 1rem;
-      background: #141418;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .preview-dots {
-      display: flex;
-      gap: 6px;
-    }
-    .preview-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.15);
-    }
-    .preview-caption {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 500;
-    }
-    .preview-badge {
-      font-size: 0.68rem;
-      background: rgba(255, 255, 255, 0.08);
-      color: #e4e4e7;
-      padding: 2px 7px;
-      border-radius: 4px;
-      font-weight: 600;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .preview-img-wrap {
-      position: relative;
-      background: #09090b;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem 1.25rem;
-      min-height: 140px;
-    }
-    .preview-img-wrap img {
-      max-width: 100%;
-      height: auto;
-      object-fit: contain;
-      display: block;
-      border-radius: 6px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    }
-    .preview-fallback {
-      display: none;
-      padding: 2.5rem 1.5rem;
-      text-align: center;
-      width: 100%;
-    }
-    .preview-img-wrap.fallback-active img {
-      display: none;
-    }
-    .preview-img-wrap.fallback-active .preview-fallback {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .fallback-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 0.75rem;
-      color: var(--text-muted);
-    }
-    .fallback-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #ffffff;
-      margin-bottom: 0.3rem;
-    }
-    .fallback-desc {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      max-width: 420px;
-      margin: 0 auto;
-    }
-
-    /* 2-Column Showcase Grid */
-    .showcase-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.25rem;
-      margin: 1.25rem 0 2rem 0;
-    }
-    .showcase-grid .preview-frame {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-    }
-    .showcase-grid .preview-img-wrap {
-      flex: 1;
-      padding: 1.75rem 1.25rem;
-    }
-
     /* Search Modal */
     #searchModal {
       display: none;
@@ -676,7 +555,6 @@
     @media (max-width: 1024px) {
       aside.toc { display: none; }
       main.content { max-width: 100%; padding: 1.5rem 1.5rem 3rem 1.5rem; }
-      .showcase-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 768px) {
       aside.sidebar { display: none; }
@@ -728,7 +606,6 @@
           <li><a href="#overview" class="nav-link active">Overview</a></li>
           <li><a href="#installation" class="nav-link">Installation</a></li>
           <li><a href="#quickstart" class="nav-link">Quickstart</a></li>
-          <li><a href="#visual-showcase" class="nav-link">UI Screenshots Gallery</a></li>
         </ul>
       </div>
 
@@ -758,7 +635,6 @@
         <ul class="nav-links">
           <li><a href="#notifications" class="nav-link">Notifications & Toasts</a></li>
           <li><a href="#fluent-icons" class="nav-link">Fluent System Icons</a></li>
-          <li><a href="#screenshots-guide" class="nav-link">Screenshots Guide</a></li>
         </ul>
       </div>
     </aside>
@@ -776,109 +652,6 @@
       <section id="overview">
         <h2>Overview</h2>
         <p>Slate provides a clean obsidian dark aesthetic with pure white accents, fluid swipe page transitions, custom icon colors, and universal executor compatibility.</p>
-        
-        <!-- Main Window Preview Frame -->
-        <div class="preview-frame">
-          <div class="preview-header">
-            <div class="preview-dots">
-              <span class="preview-dot"></span>
-              <span class="preview-dot"></span>
-              <span class="preview-dot"></span>
-            </div>
-            <span class="preview-caption">Slate — Main Interface Window</span>
-            <span class="preview-badge">1600x900</span>
-          </div>
-          <div class="preview-img-wrap" id="wrap-window">
-            <img src="assets/window-preview.png" alt="Slate Main Window" onerror="handleImageFallback(this)">
-            <div class="preview-fallback">
-              <div class="fallback-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-              </div>
-              <div class="fallback-title">Main Window (Top Tab Layout)</div>
-              <div class="fallback-desc">Showing topbar with Slate logo, active tabs (General, Combat, Misc), and obsidian component cards.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- UI Screenshots Gallery -->
-      <section id="visual-showcase">
-        <h2>UI Screenshots Gallery</h2>
-        <p>Explore the visual hierarchy and states of Slate UI components in action:</p>
-
-        <div class="showcase-grid">
-          <!-- Card 1: Collapsed Pill -->
-          <div class="preview-frame">
-            <div class="preview-header">
-              <span class="preview-caption">Minimized Floating Pill</span>
-              <span class="preview-badge">Pill State</span>
-            </div>
-            <div class="preview-img-wrap">
-              <img src="assets/collapsed-preview.png" alt="Collapsed Pill Preview" onerror="handleImageFallback(this)">
-              <div class="preview-fallback">
-                <div class="fallback-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="9" width="12" height="6" rx="3"/></svg>
-                </div>
-                <div class="fallback-title">Collapsed "Tap to Show" Pill</div>
-                <div class="fallback-desc">Ultra-compact floating pill with glowing border and Slate logo badge.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 2: Components -->
-          <div class="preview-frame">
-            <div class="preview-header">
-              <span class="preview-caption">Interactive Components</span>
-              <span class="preview-badge">Controls</span>
-            </div>
-            <div class="preview-img-wrap">
-              <img src="assets/components-preview.png" alt="Components Preview" onerror="handleImageFallback(this)">
-              <div class="preview-fallback">
-                <div class="fallback-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
-                </div>
-                <div class="fallback-title">Controls & Multi-Dropdowns</div>
-                <div class="fallback-desc">Smooth sliders, toggles with descriptions, and multi-select tags.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 3: Color Picker -->
-          <div class="preview-frame">
-            <div class="preview-header">
-              <span class="preview-caption">Color Picker Modal</span>
-              <span class="preview-badge">Modal</span>
-            </div>
-            <div class="preview-img-wrap">
-              <img src="assets/colorpicker-preview.png" alt="Color Picker Preview" onerror="handleImageFallback(this)">
-              <div class="preview-fallback">
-                <div class="fallback-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
-                </div>
-                <div class="fallback-title">2D Canvas Color Picker</div>
-                <div class="fallback-desc">Real-time HSV/RGB gradient selection with live swatch preview.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 4: Notifications -->
-          <div class="preview-frame">
-            <div class="preview-header">
-              <span class="preview-caption">Notification Banner</span>
-              <span class="preview-badge">Feedback</span>
-            </div>
-            <div class="preview-img-wrap">
-              <img src="assets/notification-preview.png" alt="Notification Banner Preview" onerror="handleImageFallback(this)">
-              <div class="preview-fallback">
-                <div class="fallback-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                </div>
-                <div class="fallback-title">Slate Logo Notifications</div>
-                <div class="fallback-desc">Sleek toast notifications with Slate logo badge on the left side.</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
       <!-- Installation -->
@@ -1238,57 +1011,6 @@ window:<span class="hl-fn">Toast</span>({
         </div>
       </section>
 
-      <!-- Screenshots Guide -->
-      <section id="screenshots-guide">
-        <h2>Screenshots Guide</h2>
-        <p>To capture screenshots for the documentation site, take high-resolution screenshots in Studio or in-game and replace the placeholders in <code>docs/assets/</code>:</p>
-
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Screenshot</th>
-                <th>File Path</th>
-                <th>Aspect Ratio</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Main Window</strong></td>
-                <td><code>docs/assets/window-preview.png</code></td>
-                <td>16:9 (1600x900)</td>
-                <td>Full Slate window with topbar tabs and open components.</td>
-              </tr>
-              <tr>
-                <td><strong>Collapsed Pill</strong></td>
-                <td><code>docs/assets/collapsed-preview.png</code></td>
-                <td>2:1 (800x400)</td>
-                <td>Compact floating pill with "Tap to show" and Slate logo badge.</td>
-              </tr>
-              <tr>
-                <td><strong>Components</strong></td>
-                <td><code>docs/assets/components-preview.png</code></td>
-                <td>16:9 (1400x800)</td>
-                <td>Open dropdowns, sliders, and keybind chips in action.</td>
-              </tr>
-              <tr>
-                <td><strong>Color Picker</strong></td>
-                <td><code>docs/assets/colorpicker-preview.png</code></td>
-                <td>4:3 (1000x750)</td>
-                <td>RGB/HSV modal with 2D color canvas and hue slider.</td>
-              </tr>
-              <tr>
-                <td><strong>Notification</strong></td>
-                <td><code>docs/assets/notification-preview.png</code></td>
-                <td>3:1 (600x200)</td>
-                <td>Slate notification card with Slate logo badge.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
     </main>
 
     <!-- Right TOC -->
@@ -1296,7 +1018,6 @@ window:<span class="hl-fn">Toast</span>({
       <div class="toc-title">On this page</div>
       <ul class="toc-list">
         <li class="toc-item"><a href="#overview" class="active">Overview</a></li>
-        <li class="toc-item"><a href="#visual-showcase">UI Screenshots Gallery</a></li>
         <li class="toc-item"><a href="#installation">Installation</a></li>
         <li class="toc-item"><a href="#quickstart">Quickstart</a></li>
         <li class="toc-item"><a href="#window-config">Window Configuration</a></li>
@@ -1310,7 +1031,6 @@ window:<span class="hl-fn">Toast</span>({
         <li class="toc-item"><a href="#progress-console">Progress & Console</a></li>
         <li class="toc-item"><a href="#notifications">Notifications & Toasts</a></li>
         <li class="toc-item"><a href="#fluent-icons">Fluent System Icons</a></li>
-        <li class="toc-item"><a href="#screenshots-guide">Screenshots Guide</a></li>
       </ul>
     </aside>
   </div>
@@ -1330,14 +1050,8 @@ window:<span class="hl-fn">Toast</span>({
   <div id="toastNotice">Copied to clipboard!</div>
 
   <script>
-    function handleImageFallback(img) {
-      const wrap = img.closest('.preview-img-wrap');
-      if (wrap) wrap.classList.add('fallback-active');
-    }
-
     const searchDb = [
       { title: "Overview", cat: "Get Started", href: "#overview" },
-      { title: "UI Screenshots Gallery", cat: "Get Started", href: "#visual-showcase" },
       { title: "Installation & Loadstring", cat: "Get Started", href: "#installation" },
       { title: "Quickstart Example", cat: "Get Started", href: "#quickstart" },
       { title: "Window Configuration (CreateWindow)", cat: "Structure", href: "#window-config" },
@@ -1350,8 +1064,7 @@ window:<span class="hl-fn">Toast</span>({
       { title: "Color Pickers (CreateColorPicker)", cat: "Components", href: "#colorpickers" },
       { title: "Progress & Console (CreateProgress, CreateConsole)", cat: "Components", href: "#progress-console" },
       { title: "Notifications & Toasts (Notify, Toast, Popup)", cat: "Feedback", href: "#notifications" },
-      { title: "Fluent Filled Icons (1200+ Icons)", cat: "Icons", href: "#fluent-icons" },
-      { title: "Screenshots Guide & Assets", cat: "Assets", href: "#screenshots-guide" }
+      { title: "Fluent Filled Icons (1200+ Icons)", cat: "Icons", href: "#fluent-icons" }
     ];
 
     function showToast(msg) {
