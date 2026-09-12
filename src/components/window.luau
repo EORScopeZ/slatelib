@@ -287,9 +287,9 @@ function Window.new(properties)
         ZIndex = 1,
         AnchorPoint = Vector2.new(0.5, 0.5),
         Position = UDim2.new(0.5, 0, 0.5, 0),
-        Size = UDim2.fromOffset((self.size.X.Offset - 50), 0),
-        BackgroundTransparency = 1,
-        Visible = false,
+        Size = UDim2.fromOffset(200, 56),
+        BackgroundTransparency = 0,
+        Visible = true,
         Parent = self.screenGui,
     })
     self.drag = require(script.Parent.drag).new(self)
@@ -299,7 +299,7 @@ function Window.new(properties)
         CornerRadius = 'CornerRoundness',
     })
     self.windowStroke = self:Create('UIStroke', {
-        Transparency = 1,
+        Transparency = 0.95,
         Parent = self.main,
     }, {
         Color = 'SurfaceStroke',
@@ -313,6 +313,76 @@ function Window.new(properties)
             'WindowColor',
             functions.toColorSequence,
         },
+    })
+    self._splashLoader = self:Create('Frame', {
+        Name = 'SplashLoader',
+        Size = UDim2.new(1, 0, 1, 0),
+        BackgroundTransparency = 1,
+        BorderSizePixel = 0,
+        ZIndex = 20,
+        Parent = self.main,
+    })
+    self:Create('UIListLayout', {
+        FillDirection = Enum.FillDirection.Horizontal,
+        VerticalAlignment = Enum.VerticalAlignment.Center,
+        HorizontalAlignment = Enum.HorizontalAlignment.Center,
+        SortOrder = Enum.SortOrder.LayoutOrder,
+        Padding = UDim.new(0, 12),
+        Parent = self._splashLoader,
+    })
+    self._splashLogo = self:Create('ImageLabel', {
+        Name = 'SplashLogo',
+        Size = UDim2.fromOffset(30, 30),
+        BackgroundTransparency = 1,
+        BorderSizePixel = 0,
+        Image = self.icon or constants.icons.slate,
+        ScaleType = Enum.ScaleType.Fit,
+        LayoutOrder = 1,
+        ZIndex = 21,
+        Parent = self._splashLoader,
+    })
+    local splashTextGroup = self:Create('Frame', {
+        Name = 'SplashTextGroup',
+        Size = UDim2.fromOffset(96, 36),
+        BackgroundTransparency = 1,
+        BorderSizePixel = 0,
+        LayoutOrder = 2,
+        ZIndex = 21,
+        Parent = self._splashLoader,
+    })
+    self:Create('UIListLayout', {
+        FillDirection = Enum.FillDirection.Vertical,
+        SortOrder = Enum.SortOrder.LayoutOrder,
+        Padding = UDim.new(0, 2),
+        Parent = splashTextGroup,
+    })
+    self._splashTitle = self:Create('TextLabel', {
+        Name = 'SplashTitle',
+        Size = UDim2.new(1, 0, 0, 18),
+        BackgroundTransparency = 1,
+        Text = self.name or 'slate',
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextSize = 16,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        LayoutOrder = 1,
+        ZIndex = 22,
+        Parent = splashTextGroup,
+    }, {
+        FontFace = 'TitleFont',
+    })
+    self._splashSubtitle = self:Create('TextLabel', {
+        Name = 'SplashSubtitle',
+        Size = UDim2.new(1, 0, 0, 14),
+        BackgroundTransparency = 1,
+        Text = self.subheading or 'initializing...',
+        TextColor3 = Color3.fromRGB(160, 160, 165),
+        TextSize = 12,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        LayoutOrder = 2,
+        ZIndex = 22,
+        Parent = splashTextGroup,
+    }, {
+        FontFace = 'Font',
     })
     self.bottomFade = self:Create('Frame', {
         BackgroundColor3 = Color3.fromRGB(255, 255, 255),
@@ -1899,43 +1969,52 @@ function Window:_quickRestore()
     end)
 end
 function Window:_firstShow()
-    self:_setContentVisible(true)
-
     self.drag.drag.Visible = false
     self.main.Visible = true
 
-    variables.tweenService:Create(self.main, TweenInfo.new(1, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+    task.wait(0.7)
+
+    if self._splashLoader then
+        local fadeFast = TweenInfo.new(0.2, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out)
+        if self._splashLogo then variables.tweenService:Create(self._splashLogo, fadeFast, {ImageTransparency = 1}):Play() end
+        if self._splashTitle then variables.tweenService:Create(self._splashTitle, fadeFast, {TextTransparency = 1}):Play() end
+        if self._splashSubtitle then variables.tweenService:Create(self._splashSubtitle, fadeFast, {TextTransparency = 1}):Play() end
+        task.wait(0.15)
+        self._splashLoader:Destroy()
+        self._splashLoader = nil
+    end
+
+    local expandInfo = TweenInfo.new(0.65, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out)
+    local fadeInfo = TweenInfo.new(0.4, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out)
+
+    variables.tweenService:Create(self.main, expandInfo, {
         BackgroundTransparency = 0,
         Size = self.size,
     }):Play()
-    task.wait(0.85)
-    self:_fadeSurfaces(true, TweenInfo.new(0.6, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out))
-    task.wait(0.3)
 
-    if self.icon then
-        variables.tweenService:Create(self.topbarIcon, TweenInfo.new(0.6, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {ImageTransparency = 0}):Play()
+    self.topbar.Visible = true
+    self:_setContentVisible(true)
+    self:_fadeSurfaces(true, fadeInfo)
+
+    if self.icon and self.topbarIcon then
+        variables.tweenService:Create(self.topbarIcon, fadeInfo, {ImageTransparency = 0}):Play()
     end
     if self.title then
-        variables.tweenService:Create(self.title, TweenInfo.new(0.4, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
+        variables.tweenService:Create(self.title, fadeInfo, {TextTransparency = 0}):Play()
     end
-
-    task.wait(0.1)
-
     if self.subtitle then
-        variables.tweenService:Create(self.subtitle, TweenInfo.new(0.4, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {TextTransparency = 0.7}):Play()
+        variables.tweenService:Create(self.subtitle, fadeInfo, {TextTransparency = 0.7}):Play()
     end
 
     for _, action in ipairs(self.actionContainer:GetChildren())do
         if action:IsA('Frame') then
-            task.wait(0.02)
-            variables.tweenService:Create(action.ImageLabel, TweenInfo.new(0.4, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {ImageTransparency = 0.6}):Play()
+            variables.tweenService:Create(action.ImageLabel, fadeInfo, {ImageTransparency = 0.6}):Play()
         end
     end
     for _, tag in self.tags do
-        tag:_setShown(true, TweenInfo.new(0.4, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out))
+        tag:_setShown(true, fadeInfo)
     end
 
-    task.wait(0.2)
     task.spawn(function()
         local info = TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 
@@ -1959,14 +2038,14 @@ function Window:_firstShow()
             end
         end
     end)
-    self:_revealElements(0.03, 2)
-    task.wait(1)
+    self:_revealElements(0.03, 1.5)
+    task.wait(0.5)
     self:_syncDragBar()
 
     self.drag.drag.Visible = true
 
     variables.tweenService:Create(self.drag.dragCosmetic, TweenInfo.new(0.6, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {BackgroundTransparency = 0.7}):Play()
-    variables.tweenService:Create(self.drag.dragCosmetic, TweenInfo.new(1, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {
+    variables.tweenService:Create(self.drag.dragCosmetic, TweenInfo.new(0.8, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {
         Size = UDim2.fromOffset(100, 4),
     }):Play()
 
