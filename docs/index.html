@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark" style="color-scheme: dark;">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,118 +10,620 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #09090b; --bg-surface: #111114; --bg-card: #18181c;
-      --border: rgba(255, 255, 255, 0.08); --border-bright: rgba(255, 255, 255, 0.16);
-      --text: #f4f4f5; --text-muted: #a1a1aa; --text-dim: #71717a;
-      --code-bg: #0d0d10; --sidebar-w: 270px; --toc-w: 230px; --header-h: 64px;
-      --radius: 10px; --radius-sm: 6px;
+      color-scheme: dark;
+      --bg: #09090b;
+      --bg-surface: #111114;
+      --bg-card: #151518;
+      --bg-card-hover: #1c1c20;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-bright: rgba(255, 255, 255, 0.16);
+      --text: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
+      --accent: #ffffff;
+      --code-bg: #0d0d10;
+      --header-h: 60px;
+      --sidebar-w: 250px;
+      --toc-w: 220px;
+      --radius: 8px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); }
-    body { min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Force dark custom scrollbars everywhere */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scrollbar-width: thin;
+      scrollbar-color: #27272a transparent;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #27272a;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3f3f46;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      color-scheme: dark;
+      overflow-y: scroll;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+    }
+
     header {
-      position: sticky; top: 0; height: var(--header-h); background: rgba(9, 9, 11, 0.85);
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border); z-index: 100;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      height: var(--header-h);
+      background: rgba(9, 9, 11, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
     }
-    .brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text); }
-    .brand-logo { width: 32px; height: 32px; border-radius: 8px; background: #1c1c22; border: 1px solid var(--border-bright); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
-    .brand-title { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; }
-    .brand-badge { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; background: rgba(255, 255, 255, 0.1); color: #fff; padding: 2px 6px; border-radius: 999px; border: 1px solid var(--border); }
-    .header-actions { display: flex; align-items: center; gap: 0.75rem; }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .brand-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #18181b;
+      border: 1px solid var(--border-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .brand-badge {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(255, 255, 255, 0.08);
+      color: #e4e4e7;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
     .search-btn {
-      display: flex; align-items: center; gap: 0.5rem; background: var(--bg-surface);
-      border: 1px solid var(--border); padding: 0.45rem 0.9rem; border-radius: 8px;
-      color: var(--text-muted); font-size: 0.85rem; cursor: pointer; transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 0.38rem 0.75rem;
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: inherit;
     }
-    .search-btn:hover { border-color: var(--border-bright); color: var(--text); }
-    .search-kbd { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; background: rgba(255, 255, 255, 0.08); padding: 2px 5px; border-radius: 4px; border: 1px solid var(--border); }
+    .search-btn:hover {
+      border-color: var(--border-bright);
+      color: var(--text);
+    }
+    .search-kbd {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 1px 4px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+    }
+
     .action-btn {
-      display: inline-flex; align-items: center; gap: 0.4rem; background: var(--bg-surface);
-      border: 1px solid var(--border); color: var(--text); font-size: 0.82rem; font-weight: 500;
-      padding: 0.45rem 0.85rem; border-radius: 8px; cursor: pointer; text-decoration: none; transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
     }
-    .action-btn:hover { background: var(--bg-card); border-color: var(--border-bright); }
-    .action-btn.ai-btn { background: #ffffff; color: #09090b; font-weight: 600; border-color: #ffffff; }
-    .action-btn.ai-btn:hover { background: #e4e4e7; }
-    .layout-container { display: flex; max-width: 1440px; margin: 0 auto; width: 100%; flex: 1; }
+    .action-btn:hover {
+      background: var(--bg-card);
+      border-color: var(--border-bright);
+    }
+    .action-btn.primary {
+      background: #ffffff;
+      color: #09090b;
+      font-weight: 600;
+      border-color: #ffffff;
+    }
+    .action-btn.primary:hover {
+      background: #e4e4e7;
+    }
+
+    .layout-container {
+      display: flex;
+      max-width: 1360px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+    }
+
     aside.sidebar {
-      width: var(--sidebar-w); position: sticky; top: var(--header-h);
-      height: calc(100vh - var(--header-h)); overflow-y: auto;
-      padding: 1.5rem 1rem 3rem 1.5rem; border-right: 1px solid var(--border);
-      scrollbar-width: thin; scrollbar-color: var(--border) transparent; flex-shrink: 0;
+      width: var(--sidebar-w);
+      position: sticky;
+      top: var(--header-h);
+      height: calc(100vh - var(--header-h));
+      overflow-y: auto;
+      padding: 1.25rem 0.75rem 2.5rem 1rem;
+      border-right: 1px solid var(--border);
+      flex-shrink: 0;
     }
-    .nav-group { margin-bottom: 1.5rem; }
-    .nav-group-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 0.5rem; padding-left: 0.5rem; }
-    .nav-links { list-style: none; }
-    .nav-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.42rem 0.65rem; border-radius: var(--radius-sm); color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: all 0.15s ease; }
-    .nav-link:hover { background: rgba(255, 255, 255, 0.04); color: var(--text); }
-    .nav-link.active { background: rgba(255, 255, 255, 0.08); color: #ffffff; font-weight: 600; }
-    main.content { flex: 1; min-width: 0; padding: 2.5rem 3rem 5rem 3rem; line-height: 1.7; }
-    .doc-hero { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
-    .doc-breadcrumbs { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.5rem; }
-    .doc-title { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
-    .doc-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 720px; }
-    .doc-section { margin-bottom: 3.5rem; scroll-margin-top: calc(var(--header-h) + 2rem); }
-    h2.section-heading { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin: 2rem 0 1rem; }
-    p { color: var(--text-muted); margin-bottom: 1rem; font-size: 0.95rem; }
-    .code-container { background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--radius); margin: 1.25rem 0; overflow: hidden; }
-    .code-header { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid var(--border); font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; color: var(--text-dim); }
-    .code-copy-btn { background: transparent; border: 1px solid transparent; color: var(--text-muted); padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; }
-    .code-copy-btn:hover { border-color: var(--border); color: #fff; }
-    pre { padding: 1rem 1.25rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.6; color: #e4e4e7; }
-    .screenshot-card { background: var(--bg-surface); border: 1px dashed var(--border-bright); border-radius: var(--radius); padding: 1.75rem; text-align: center; margin: 1.5rem 0; }
-    .screenshot-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255, 255, 255, 0.08); color: #fff; font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; margin-bottom: 0.75rem; }
-    .screenshot-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.35rem; }
-    .screenshot-spec { font-size: 0.82rem; color: var(--text-dim); }
-    aside.toc { width: var(--toc-w); position: sticky; top: var(--header-h); height: calc(100vh - var(--header-h)); padding: 2rem 1.5rem; overflow-y: auto; flex-shrink: 0; }
-    .toc-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 0.75rem; }
-    .toc-list { list-style: none; }
-    .toc-item { margin-bottom: 0.4rem; }
-    .toc-link { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; transition: color 0.15s ease; display: block; }
-    .toc-link:hover { color: #fff; }
-    #toast { position: fixed; bottom: 2rem; right: 2rem; background: #ffffff; color: #09090b; font-weight: 600; font-size: 0.85rem; padding: 0.75rem 1.25rem; border-radius: 8px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); display: flex; align-items: center; gap: 0.5rem; transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 999; }
-    #toast.show { transform: translateY(0); opacity: 1; }
-    #searchModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); display: none; align-items: flex-start; justify-content: center; padding-top: 15vh; z-index: 200; }
-    #searchModal.open { display: flex; }
-    .search-box { width: 100%; max-width: 580px; background: var(--bg-surface); border: 1px solid var(--border-bright); border-radius: 12px; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); }
-    .search-input { width: 100%; padding: 1rem 1.25rem; background: transparent; border: none; border-bottom: 1px solid var(--border); font-size: 1rem; color: #fff; outline: none; }
-    .search-results { max-height: 360px; overflow-y: auto; padding: 0.5rem; }
-    .search-result-item { padding: 0.75rem 1rem; border-radius: 6px; color: var(--text-muted); text-decoration: none; display: block; cursor: pointer; }
-    .search-result-item:hover { background: var(--bg-card); color: #fff; }
-    @media (max-width: 1024px) { aside.toc { display: none; } }
-    @media (max-width: 768px) { aside.sidebar { display: none; } main.content { padding: 1.5rem; } header { padding: 0 1rem; } }
+
+    .nav-group {
+      margin-bottom: 1.25rem;
+    }
+    .nav-group-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      margin-bottom: 0.35rem;
+      padding-left: 0.5rem;
+    }
+    .nav-links {
+      list-style: none;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.38rem 0.55rem;
+      border-radius: 5px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.83rem;
+      font-weight: 500;
+    }
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+    }
+    .nav-link.active {
+      background: rgba(255, 255, 255, 0.07);
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    main.content {
+      flex: 1;
+      max-width: 820px;
+      padding: 2rem 2.5rem 4rem 2.5rem;
+      min-width: 0;
+    }
+
+    aside.toc {
+      width: var(--toc-w);
+      position: sticky;
+      top: var(--header-h);
+      height: calc(100vh - var(--header-h));
+      overflow-y: auto;
+      padding: 1.5rem 1rem 2.5rem 0.75rem;
+      flex-shrink: 0;
+    }
+    .toc-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+    .toc-list {
+      list-style: none;
+    }
+    .toc-item a {
+      display: block;
+      padding: 0.28rem 0;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      padding-left: 0.6rem;
+    }
+    .toc-item a:hover {
+      color: var(--text);
+    }
+    .toc-item a.active {
+      color: #ffffff;
+      font-weight: 600;
+      border-left-color: #ffffff;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-bottom: 0.75rem;
+    }
+    .breadcrumb span {
+      color: var(--text-muted);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+      line-height: 1.15;
+    }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-top: 2.5rem;
+      margin-bottom: 0.75rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    h2:first-of-type {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 1.5rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+    }
+
+    p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-size: 0.92rem;
+      margin-bottom: 1rem;
+    }
+
+    .lead {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin: 1rem 0 1.25rem 0;
+      overflow: hidden;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.85rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-dim);
+    }
+    .code-copy {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .code-copy:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+    }
+    pre {
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #d4d4d8;
+      background: var(--code-bg);
+    }
+
+    /* Clean Syntax Highlighting */
+    .hl-kw { color: #f43f5e; font-weight: 600; }
+    .hl-str { color: #34d399; }
+    .hl-fn { color: #38bdf8; }
+    .hl-num { color: #fbbf24; }
+    .hl-bool { color: #a78bfa; }
+    .hl-cmt { color: #71717a; font-style: italic; }
+    .hl-prop { color: #e4e4e7; }
+
+    .callout {
+      border-left: 3px solid #38bdf8;
+      background: rgba(56, 189, 248, 0.04);
+      padding: 0.85rem 1rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 1.25rem 0;
+      font-size: 0.88rem;
+    }
+    .callout.tip {
+      border-left-color: #34d399;
+      background: rgba(52, 211, 153, 0.04);
+    }
+    .callout.warn {
+      border-left-color: #fbbf24;
+      background: rgba(251, 191, 36, 0.04);
+    }
+    .callout-title {
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-surface);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      text-align: left;
+    }
+    th {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 0.65rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+      color: var(--text);
+    }
+    td {
+      padding: 0.65rem 0.9rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      color: #e4e4e7;
+    }
+    .badge-type {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: #a78bfa;
+      background: rgba(167, 139, 250, 0.1);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    .screenshot-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 1.25rem 0;
+      text-align: center;
+    }
+    .screenshot-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+      color: var(--text-muted);
+    }
+    .screenshot-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+    }
+    .screenshot-desc {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Search Modal */
+    #searchModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 10vh;
+    }
+    #searchModal.active {
+      display: flex;
+    }
+    .modal-box {
+      width: 100%;
+      max-width: 580px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-bright);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+    .modal-input-wrap {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      gap: 0.75rem;
+    }
+    .modal-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+    .modal-results {
+      max-height: 340px;
+      overflow-y: auto;
+      padding: 0.5rem;
+    }
+    .search-item {
+      display: block;
+      padding: 0.6rem 0.75rem;
+      border-radius: 6px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.86rem;
+    }
+    .search-item:hover {
+      background: var(--bg-card-hover);
+    }
+    .search-item-title {
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .search-item-cat {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    /* Toast notice */
+    #toastNotice {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #ffffff;
+      color: #09090b;
+      font-weight: 600;
+      font-size: 0.84rem;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+    }
+    #toastNotice.show {
+      opacity: 1;
+    }
+
+    @media (max-width: 1024px) {
+      aside.toc { display: none; }
+      main.content { max-width: 100%; padding: 1.5rem 1.5rem 3rem 1.5rem; }
+    }
+    @media (max-width: 768px) {
+      aside.sidebar { display: none; }
+      header { padding: 0 1rem; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Top Navigation Header -->
   <header>
     <a href="#" class="brand">
       <div class="brand-logo">
-        <img src="https://tr.rbxcdn.com/180DAY-eeb2c15b44f3a4e6cb2412ac02ed845a/420/420/Decal/Png/noFilter" alt="Slate Logo">
+        <img src="https://assetdelivery.roblox.com/v1/asset/?id=136661212895058" alt="Slate Logo" onerror="this.src='https://raw.githubusercontent.com/EORScopeZ/slatelib/main/assets/slate.png';">
       </div>
       <span class="brand-title">Slate UI</span>
       <span class="brand-badge">v2.0</span>
     </a>
+
     <div class="header-actions">
-      <button class="search-btn" onclick="openSearch()">
+      <button class="search-btn" id="openSearch">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <span>Search docs...</span>
         <span class="search-kbd">⌘K</span>
       </button>
-      <button class="action-btn ai-btn" onclick="copyForAI()">
+
+      <button class="action-btn primary" id="copyAiDoc">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
         <span>Copy for AI / MCP</span>
       </button>
-      <button class="action-btn" onclick="copyFullMarkdown()">
+
+      <button class="action-btn" id="copyMarkdownDoc">
         <span>Copy Markdown</span>
       </button>
+
       <a href="https://github.com/EORScopeZ/slatelib" target="_blank" class="action-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         <span>GitHub</span>
       </a>
     </div>
   </header>
 
   <div class="layout-container">
+    <!-- Left Navigation Sidebar -->
     <aside class="sidebar">
       <div class="nav-group">
         <div class="nav-group-title">Get Started</div>
@@ -131,13 +633,15 @@
           <li><a href="#quickstart" class="nav-link">Quickstart</a></li>
         </ul>
       </div>
+
       <div class="nav-group">
         <div class="nav-group-title">Structure & Layout</div>
         <ul class="nav-links">
-          <li><a href="#window" class="nav-link">Window Configuration</a></li>
-          <li><a href="#tabs" class="nav-link">Tabs & Sections</a></li>
+          <li><a href="#window-config" class="nav-link">Window Configuration</a></li>
+          <li><a href="#tabs-sections" class="nav-link">Tabs & Sections</a></li>
         </ul>
       </div>
+
       <div class="nav-group">
         <div class="nav-group-title">Components</div>
         <ul class="nav-links">
@@ -145,455 +649,644 @@
           <li><a href="#toggles" class="nav-link">Toggles</a></li>
           <li><a href="#sliders" class="nav-link">Sliders</a></li>
           <li><a href="#dropdowns" class="nav-link">Dropdowns</a></li>
+          <li><a href="#inputs" class="nav-link">Inputs & Keybinds</a></li>
           <li><a href="#colorpickers" class="nav-link">Color Pickers</a></li>
+          <li><a href="#progress-console" class="nav-link">Progress & Console</a></li>
         </ul>
       </div>
+
       <div class="nav-group">
-        <div class="nav-group-title">Dynamic API & Controls</div>
+        <div class="nav-group-title">Feedback & Utilities</div>
         <ul class="nav-links">
-          <li><a href="#dynamic-set" class="nav-link">Updating Values (:Set)</a></li>
           <li><a href="#notifications" class="nav-link">Notifications & Toasts</a></li>
-          <li><a href="#fluent-icons" class="nav-link">Fluent Filled Icons</a></li>
-          <li><a href="#screenshots-guide" class="nav-link">Screenshot Checklist</a></li>
+          <li><a href="#fluent-icons" class="nav-link">Fluent System Icons</a></li>
+          <li><a href="#screenshots-guide" class="nav-link">Screenshots Guide</a></li>
         </ul>
       </div>
     </aside>
 
+    <!-- Main Content Area -->
     <main class="content">
-      <div class="doc-hero">
-        <div class="doc-breadcrumbs">Slate UI / Documentation</div>
-        <h1 class="doc-title">Slate UI Documentation</h1>
-        <p class="doc-desc">A modern, ultra-responsive monochrome UI library for Roblox with top pill navigation, left-to-right swipe transitions, and 1,200+ solid filled Fluent icons.</p>
+      <div class="breadcrumb">
+        <span>Slate UI</span> / <span>Documentation</span>
       </div>
 
-      <section class="doc-section" id="overview">
-        <h2 class="section-heading">Overview</h2>
+      <h1>Slate UI Documentation</h1>
+      <p class="lead">A modern, ultra-responsive monochrome UI library for Roblox with top-pill navigation, left-to-right swipe transitions, and 1,200+ solid filled Fluent system icons.</p>
+
+      <!-- Overview -->
+      <section id="overview">
+        <h2>Overview</h2>
         <p>Slate provides a clean obsidian dark aesthetic with pure white accents, fluid swipe page transitions, custom icon colors, and universal executor compatibility.</p>
+        
         <div class="screenshot-card">
-          <div class="screenshot-badge">📷 SCREENSHOT 1</div>
+          <div class="screenshot-tag">Preview Placeholder</div>
           <div class="screenshot-title">Slate Main Window (Top Tab Layout)</div>
-          <div class="screenshot-spec">Capture the full Slate window with top pill tabs active (e.g. Combat, Farming, Visuals, Settings) with 740x480 resolution.</div>
+          <div class="screenshot-desc">Displaying the active topbar navigation with Slate logo, filled fluent icons, and sleek dark obsidian cards.</div>
         </div>
       </section>
 
-      <section class="doc-section" id="installation">
-        <h2 class="section-heading">Installation</h2>
+      <!-- Installation -->
+      <section id="installation">
+        <h2>Installation</h2>
         <p>Load Slate directly via HTTP using loadstring:</p>
-        <div class="code-container">
-          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
-          <pre><code>local slate = loadstring(game:HttpGet("https://raw.githubusercontent.com/EORScopeZ/slatelib/main/Slate.lua"))()</code></pre>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>LUAU</span>
+            <button class="code-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code><span class="hl-kw">local</span> slate = <span class="hl-fn">loadstring</span>(game:<span class="hl-fn">HttpGet</span>(<span class="hl-str">"https://raw.githubusercontent.com/EORScopeZ/slatelib/main/Slate.lua"</span>))()</code></pre>
         </div>
       </section>
 
-      <section class="doc-section" id="window">
-        <h2 class="section-heading">Window Configuration</h2>
-        <p>Create a master window with custom title, subtitle, icon, theme, and layout mode:</p>
-        <div class="code-container">
-          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
-          <pre><code>local window = slate:CreateWindow({
-    name = "slate",
-    subtitle = "ui library",
-    icon = 136661212895058,
-    theme = "Default",
-    sidebarLayout = false, -- false for top pill tabs, true for sidebar
-})</code></pre>
-        </div>
-        <div class="screenshot-card">
-          <div class="screenshot-badge">📷 SCREENSHOT 2</div>
-          <div class="screenshot-title">Collapsed 'Tap to show' Pill</div>
-          <div class="screenshot-spec">Capture the floating pill at top left showing the Slate logo, 'Slate' title and 'Tap to show' subtitle.</div>
-        </div>
-      </section>
+      <!-- Quickstart -->
+      <section id="quickstart">
+        <h2>Quickstart</h2>
+        <p>Here is a complete setup script demonstrating tabs, toggles, sliders, dropdowns, and notifications:</p>
 
-      <section class="doc-section" id="tabs">
-        <h2 class="section-heading">Tabs & Sections</h2>
-        <p>Organize controls cleanly using top pill navigation tabs and labeled sections. Pass solid filled Fluent icon names directly.</p>
-        <div class="code-container">
-          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
-          <pre><code>local tab = window:CreateTab({
-    name = "combat",
-    icon = "sword", -- solid filled fluent icon
-    iconColor = Color3.fromRGB(255, 255, 255),
+        <div class="code-block">
+          <div class="code-header">
+            <span>LUAU</span>
+            <button class="code-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code><span class="hl-kw">local</span> slate = <span class="hl-fn">loadstring</span>(game:<span class="hl-fn">HttpGet</span>(<span class="hl-str">"https://raw.githubusercontent.com/EORScopeZ/slatelib/main/Slate.lua"</span>))()
+
+<span class="hl-kw">local</span> window = slate:<span class="hl-fn">CreateWindow</span>({
+    name = <span class="hl-str">"slate"</span>,
+    subtitle = <span class="hl-str">"monochrome edition"</span>,
+    icon = <span class="hl-num">136661212895058</span>,
+    theme = <span class="hl-str">"Default"</span>,
+    sidebarLayout = <span class="hl-bool">false</span>,
 })
 
-local section = tab:CreateSection({
-    name = "combat controls",
-})</code></pre>
-        </div>
-      </section>
-
-      <section class="doc-section" id="buttons">
-        <h2 class="section-heading">Buttons</h2>
-        <p>Trigger actions on click with interactive feedback and custom icon colors.</p>
-        <div class="code-container">
-          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
-          <pre><code>local button = tab:CreateButton({
-    name = "kill aura",
-    description = "automatically attack targets in range",
-    icon = "crosshair",
-    iconColor = Color3.fromRGB(255, 80, 80),
-    callback = function()
-        print("kill aura executed")
-    end,
-})</code></pre>
-        </div>
-      </section>
-
-      <section class="doc-section" id="toggles">
-        <h2 class="section-heading">Toggles & Switches</h2>
-        <p>Boolean switches with smooth sliding spring animations and flag persistence.</p>
-        <div class="code-container">
-          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
-          <pre><code>local toggle = tab:CreateToggle({
-    name = "auto parry",
-    description = "automatically parries incoming projectiles",
-    icon = "shield",
-    flag = "auto_parry",
-    value = false,
-    callback = function(val)
-        print("auto parry is now:", val)
-    end,
-})</code></pre>
-        </div>
-      </section>
-
-      <section class="doc-section" id="sliders">
-        <h2 class="section-heading">Sliders</h2>
-        <p>Draggable numeric sliders with range bounds, precision increments, and custom suffixes.</p>
-        <div class="code-container">
-          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
-          <pre><code>local slider = tab:CreateSlider({
-    name = "walkspeed",
-    description = "adjust character speed",
-    icon = "flame",
-    flag = "speed_val",
-    range = {16, 250},
-    increment = 1,
-    value = 16,
-    suffix = " studs/s",
-    callback = function(val)
-        print("speed:", val)
-    end,
-})</code></pre>
-        </div>
-      </section>
-
-      <section class="doc-section" id="dropdowns">
-        <h2 class="section-heading">Dropdowns</h2>
-        <p>Single and multi-select accordion dropdowns with dynamic item insertion and removal.</p>
-        <div class="code-container">
-          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
-          <pre><code>local dropdown = tab:CreateDropdown({
-    name = "target mob",
-    description = "select enemy entity",
-    flag = "target_mob",
-    options = {"bandit", "boss", "zombie", "pirate"},
-    value = "bandit",
-    multiSelect = false,
-    callback = function(opt)
-        print("selected mob:", opt)
-    end,
-})</code></pre>
-        </div>
-      </section>
-
-      <section class="doc-section" id="colorpickers">
-        <h2 class="section-heading">Color Pickers</h2>
-        <p>Color swatch with real-time RGB, HEX, and alpha transparency adjustment.</p>
-        <div class="code-container">
-          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
-          <pre><code>local colorpicker = tab:CreateColorPicker({
-    name = "esp chams color",
-    description = "select highlight tint",
-    icon = "palette",
-    flag = "chams_color",
-    color = Color3.fromRGB(0, 170, 255),
-    alpha = 1,
-    callback = function(col, alpha)
-        print("color:", col, "alpha:", alpha)
-    end,
-})</code></pre>
-        </div>
-        <div class="screenshot-card">
-          <div class="screenshot-badge">📷 SCREENSHOT 3</div>
-          <div class="screenshot-title">Color Picker Modal</div>
-          <div class="screenshot-spec">Capture the color picker dropdown / popup palette opened showing RGB and Hex controls.</div>
-        </div>
-      </section>
-
-      <section class="doc-section" id="dynamic-set">
-        <h2 class="section-heading">Dynamic Modification API</h2>
-        <p>Update any element dynamically without recreating UI instances:</p>
-        <div class="code-container">
-          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
-          <pre><code>toggle:Set(true)
-slider:Set(120)
-dropdown:Set("boss")
-dropdown:Refresh({"mob 1", "mob 2", "mob 3"})
-dropdown:Add("mob 4")
-dropdown:Remove("mob 1")
-button:Lock("disabled during combat")
-button:Unlock()</code></pre>
-        </div>
-      </section>
-
-      <section class="doc-section" id="notifications">
-        <h2 class="section-heading">Notifications, Toasts & Popups</h2>
-        <p>Communicate events to users using cards, bottom toasts, or interactive modal dialogs.</p>
-        <div class="code-container">
-          <div class="code-header"><span>LUAU</span><button class="code-copy-btn" onclick="copyCode(this)">Copy</button></div>
-          <pre><code>window:Notify({
-    title = "slate",
-    content = "configuration applied successfully",
-    icon = "shield",
-    duration = 3,
+<span class="hl-kw">local</span> main_tab = window:<span class="hl-fn">CreateTab</span>({
+    name = <span class="hl-str">"main"</span>,
+    icon = <span class="hl-str">"home"</span>,
 })
 
-window:Toast({
-    title = "saved",
-    subtitle = "profile saved to disk",
-    duration = 2.5,
+main_tab:<span class="hl-fn">CreateSection</span>({
+    name = <span class="hl-str">"controls"</span>,
+})
+
+main_tab:<span class="hl-fn">CreateToggle</span>({
+    name = <span class="hl-str">"auto farm"</span>,
+    flag = <span class="hl-str">"auto_farm"</span>,
+    value = <span class="hl-bool">false</span>,
+    callback = <span class="hl-kw">function</span>(val)
+        <span class="hl-fn">print</span>(<span class="hl-str">"auto farm:"</span>, val)
+    <span class="hl-kw">end</span>,
+})
+
+main_tab:<span class="hl-fn">CreateSlider</span>({
+    name = <span class="hl-str">"speed"</span>,
+    range = {<span class="hl-num">16</span>, <span class="hl-num">200</span>},
+    increment = <span class="hl-num">1</span>,
+    value = <span class="hl-num">16</span>,
+    suffix = <span class="hl-str">" studs/s"</span>,
+    callback = <span class="hl-kw">function</span>(val)
+        <span class="hl-fn">print</span>(<span class="hl-str">"speed:"</span>, val)
+    <span class="hl-kw">end</span>,
 })</code></pre>
         </div>
       </section>
 
-      <section class="doc-section" id="fluent-icons">
-        <h2 class="section-heading">Fluent Filled Icons Reference</h2>
-        <p>Over 1,200+ solid filled icons are integrated. Pass the name directly to any <code>icon</code> property.</p>
-        <div style="margin: 1rem 0;">
-          <input type="text" id="iconFilterInput" placeholder="Filter icons (e.g. sword, shield, fire, eye, user)..." oninput="filterIcons()" style="width: 100%; padding: 0.75rem 1rem; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 8px; color: #fff; outline: none;">
+      <!-- Window Configuration -->
+      <section id="window-config">
+        <h2>Window Configuration</h2>
+        <p>Options available when calling <code>slate:CreateWindow(options)</code>:</p>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>name</code></td>
+                <td><span class="badge-type">string</span></td>
+                <td><code>"Slate"</code></td>
+                <td>Title displayed in topbar and minimized pill.</td>
+              </tr>
+              <tr>
+                <td><code>subtitle</code></td>
+                <td><span class="badge-type">string</span></td>
+                <td><code>nil</code></td>
+                <td>Secondary subtitle text.</td>
+              </tr>
+              <tr>
+                <td><code>icon</code></td>
+                <td><span class="badge-type">number | string</span></td>
+                <td><code>136661212895058</code></td>
+                <td>Slate logo decal ID or Fluent icon name.</td>
+              </tr>
+              <tr>
+                <td><code>sidebarLayout</code></td>
+                <td><span class="badge-type">boolean</span></td>
+                <td><code>false</code></td>
+                <td><code>false</code> for modern top tabs, <code>true</code> for vertical sidebar.</td>
+              </tr>
+              <tr>
+                <td><code>theme</code></td>
+                <td><span class="badge-type">string</span></td>
+                <td><code>"Default"</code></td>
+                <td><code>"Default"</code>, <code>"Frost"</code>, <code>"Rose"</code>, <code>"Ember"</code>, <code>"Cobalt"</code>, <code>"Amethyst"</code>.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div id="iconGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.6rem; max-height: 380px; overflow-y: auto; padding: 0.5rem; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 8px;"></div>
       </section>
 
-      <section class="doc-section" id="screenshots-guide">
-        <h2 class="section-heading">Screenshot Checklist for Docs</h2>
-        <p>To showcase Slate beautifully, take these screenshots in Roblox:</p>
-        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;">
-          <ul style="list-style: none; display: flex; flex-direction: column; gap: 1rem;">
-            <li style="display: flex; gap: 0.75rem;">
-              <span style="background: rgba(255,255,255,0.1); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 700;">1</span>
-              <div><strong>Main Window (Top Tab Layout)</strong><p style="margin:0; font-size:0.85rem;">Slate window with top pill navigation showing 'slate', tabs, and controls.</p></div>
-            </li>
-            <li style="display: flex; gap: 0.75rem;">
-              <span style="background: rgba(255,255,255,0.1); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 700;">2</span>
-              <div><strong>Collapsed 'Tap to show' Pill</strong><p style="margin:0; font-size:0.85rem;">Floating pill button in top-left showing Slate logo and 'Tap to show'.</p></div>
-            </li>
-            <li style="display: flex; gap: 0.75rem;">
-              <span style="background: rgba(255,255,255,0.1); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 700;">3</span>
-              <div><strong>Component Showcase</strong><p style="margin:0; font-size:0.85rem;">Tab showing Sliders, Dropdowns, Toggles, and filled icons.</p></div>
-            </li>
-            <li style="display: flex; gap: 0.75rem;">
-              <span style="background: rgba(255,255,255,0.1); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 700;">4</span>
-              <div><strong>Color Picker & Modal Dialog</strong><p style="margin:0; font-size:0.85rem;">Active color picker popup showing saturation/brightness canvas and RGB/Hex inputs.</p></div>
-            </li>
-          </ul>
+      <!-- Tabs & Sections -->
+      <section id="tabs-sections">
+        <h2>Tabs & Sections</h2>
+        <p>Organize controls with tabs and labeled section headers:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>LUAU</span>
+            <button class="code-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code><span class="hl-kw">local</span> combat_tab = window:<span class="hl-fn">CreateTab</span>({
+    name = <span class="hl-str">"combat"</span>,
+    icon = <span class="hl-str">"shield"</span>, <span class="hl-cmt">-- filled Fluent icon</span>
+})
+
+combat_tab:<span class="hl-fn">CreateSection</span>({
+    name = <span class="hl-str">"aimbot options"</span>,
+})</code></pre>
         </div>
       </section>
+
+      <!-- Buttons -->
+      <section id="buttons">
+        <h2>Buttons</h2>
+        <p>Trigger actions and callbacks with clickable cards:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>LUAU</span>
+            <button class="code-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>tab:<span class="hl-fn">CreateButton</span>({
+    name = <span class="hl-str">"teleport to spawn"</span>,
+    description = <span class="hl-str">"instantly teleports character to spawn point"</span>,
+    callback = <span class="hl-kw">function</span>()
+        <span class="hl-fn">print</span>(<span class="hl-str">"teleporting..."</span>)
+    <span class="hl-kw">end</span>,
+})</code></pre>
+        </div>
+      </section>
+
+      <!-- Toggles -->
+      <section id="toggles">
+        <h2>Toggles</h2>
+        <p>Boolean switches with smooth animations, persistence flags, and lockable states:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>LUAU</span>
+            <button class="code-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code><span class="hl-kw">local</span> toggle = tab:<span class="hl-fn">CreateToggle</span>({
+    name = <span class="hl-str">"kill aura"</span>,
+    description = <span class="hl-str">"automatically attacks nearby hostiles"</span>,
+    flag = <span class="hl-str">"kill_aura"</span>,
+    value = <span class="hl-bool">false</span>,
+    callback = <span class="hl-kw">function</span>(state)
+        <span class="hl-fn">print</span>(<span class="hl-str">"kill aura:"</span>, state)
+    <span class="hl-kw">end</span>,
+})
+
+<span class="hl-cmt">-- Lock or unlock dynamically:</span>
+toggle:<span class="hl-fn">Lock</span>(<span class="hl-str">"Requires premium"</span>)
+toggle:<span class="hl-fn">Unlock</span>()</code></pre>
+        </div>
+      </section>
+
+      <!-- Sliders -->
+      <section id="sliders">
+        <h2>Sliders</h2>
+        <p>Smooth numeric slider with range, precision, custom suffix, and live tooltips:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>LUAU</span>
+            <button class="code-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>tab:<span class="hl-fn">CreateSlider</span>({
+    name = <span class="hl-str">"hitbox expander"</span>,
+    description = <span class="hl-str">"adjusts enemy hitbox radius"</span>,
+    flag = <span class="hl-str">"hitbox_size"</span>,
+    range = {<span class="hl-num">2</span>, <span class="hl-num">50</span>},
+    increment = <span class="hl-num">0.5</span>,
+    value = <span class="hl-num">10</span>,
+    suffix = <span class="hl-str">" studs"</span>,
+    callback = <span class="hl-kw">function</span>(val)
+        <span class="hl-fn">print</span>(<span class="hl-str">"hitbox:"</span>, val)
+    <span class="hl-kw">end</span>,
+})</code></pre>
+        </div>
+      </section>
+
+      <!-- Dropdowns -->
+      <section id="dropdowns">
+        <h2>Dropdowns</h2>
+        <p>Supports both single-selection and multi-selection lists:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>LUAU</span>
+            <button class="code-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code><span class="hl-cmt">-- Single Select Dropdown</span>
+tab:<span class="hl-fn">CreateDropdown</span>({
+    name = <span class="hl-str">"target bone"</span>,
+    flag = <span class="hl-str">"aim_bone"</span>,
+    options = {<span class="hl-str">"Head"</span>, <span class="hl-str">"Torso"</span>, <span class="hl-str">"HumanoidRootPart"</span>},
+    value = <span class="hl-str">"Head"</span>,
+    multiSelect = <span class="hl-bool">false</span>,
+    callback = <span class="hl-kw">function</span>(selected)
+        <span class="hl-fn">print</span>(<span class="hl-str">"target bone:"</span>, selected)
+    <span class="hl-kw">end</span>,
+})
+
+<span class="hl-cmt">-- Multi Select Dropdown</span>
+tab:<span class="hl-fn">CreateDropdown</span>({
+    name = <span class="hl-str">"esp filters"</span>,
+    flag = <span class="hl-str">"esp_filters"</span>,
+    options = {<span class="hl-str">"Players"</span>, <span class="hl-str">"NPCs"</span>, <span class="hl-str">"Items"</span>, <span class="hl-str">"Chests"</span>},
+    value = {<span class="hl-str">"Players"</span>, <span class="hl-str">"Chests"</span>},
+    multiSelect = <span class="hl-bool">true</span>,
+    callback = <span class="hl-kw">function</span>(selectedTable)
+        <span class="hl-fn">print</span>(<span class="hl-str">"filters:"</span>, <span class="hl-fn">table.concat</span>(selectedTable, <span class="hl-str">", "</span>))
+    <span class="hl-kw">end</span>,
+})</code></pre>
+        </div>
+      </section>
+
+      <!-- Inputs & Keybinds -->
+      <section id="inputs">
+        <h2>Inputs & Keybinds</h2>
+        <p>Textboxes and customizable keybinding controls:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>LUAU</span>
+            <button class="code-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>tab:<span class="hl-fn">CreateInput</span>({
+    name = <span class="hl-str">"custom message"</span>,
+    placeholder = <span class="hl-str">"enter text..."</span>,
+    flag = <span class="hl-str">"custom_msg"</span>,
+    callback = <span class="hl-kw">function</span>(text)
+        <span class="hl-fn">print</span>(<span class="hl-str">"input text:"</span>, text)
+    <span class="hl-kw">end</span>,
+})
+
+tab:<span class="hl-fn">CreateKeybind</span>({
+    name = <span class="hl-str">"toggle menu"</span>,
+    flag = <span class="hl-str">"menu_key"</span>,
+    value = Enum.KeyCode.RightShift,
+    hold = <span class="hl-bool">false</span>,
+    callback = <span class="hl-kw">function</span>()
+        <span class="hl-fn">print</span>(<span class="hl-str">"keybind pressed"</span>)
+    <span class="hl-kw">end</span>,
+})</code></pre>
+        </div>
+      </section>
+
+      <!-- Color Pickers -->
+      <section id="colorpickers">
+        <h2>Color Pickers</h2>
+        <p>Full 2D gradient canvas, hue slider, and hex code support with live swatch previews:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>LUAU</span>
+            <button class="code-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>tab:<span class="hl-fn">CreateColorPicker</span>({
+    name = <span class="hl-str">"chams color"</span>,
+    flag = <span class="hl-str">"chams_col"</span>,
+    color = Color3.fromRGB(<span class="hl-num">255</span>, <span class="hl-num">255</span>, <span class="hl-num">255</span>),
+    callback = <span class="hl-kw">function</span>(col)
+        <span class="hl-fn">print</span>(<span class="hl-str">"color updated:"</span>, col)
+    <span class="hl-kw">end</span>,
+})</code></pre>
+        </div>
+      </section>
+
+      <!-- Progress & Console -->
+      <section id="progress-console">
+        <h2>Progress & Console</h2>
+        <p>Real-time visual progress bars and scrollable debug console logs:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>LUAU</span>
+            <button class="code-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code><span class="hl-kw">local</span> prog = tab:<span class="hl-fn">CreateProgress</span>({
+    name = <span class="hl-str">"level exp"</span>,
+    range = {<span class="hl-num">0</span>, <span class="hl-num">100</span>},
+    value = <span class="hl-num">45</span>,
+    showValue = <span class="hl-bool">true</span>,
+})
+
+<span class="hl-kw">local</span> console = tab:<span class="hl-fn">CreateConsole</span>({
+    name = <span class="hl-str">"execution logs"</span>,
+    text = <span class="hl-str">"slate ready"</span>,
+    height = <span class="hl-num">120</span>,
+})
+console:<span class="hl-fn">Append</span>(<span class="hl-str">"script loaded successfully"</span>)</code></pre>
+        </div>
+      </section>
+
+      <!-- Notifications & Toasts -->
+      <section id="notifications">
+        <h2>Notifications & Toasts</h2>
+        <p>Trigger non-intrusive alert toasts and popup dialogs. Notifications automatically default to the Slate logo with clean right-aligned text:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>LUAU</span>
+            <button class="code-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>window:<span class="hl-fn">Notify</span>({
+    title = <span class="hl-str">"slate"</span>,
+    content = <span class="hl-str">"notification triggered"</span>,
+    duration = <span class="hl-num">3</span>,
+})
+
+window:<span class="hl-fn">Toast</span>({
+    title = <span class="hl-str">"saved"</span>,
+    subtitle = <span class="hl-str">"settings written to disk"</span>,
+    duration = <span class="hl-num">2</span>,
+})</code></pre>
+        </div>
+      </section>
+
+      <!-- Fluent System Icons -->
+      <section id="fluent-icons">
+        <h2>Fluent System Icons</h2>
+        <p>Slate includes over 1,200+ solid filled Microsoft Fluent icons. Pass any valid icon name directly to <code>icon</code>:</p>
+
+        <div class="callout tip">
+          <div class="callout-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            Supported Icon Names
+          </div>
+          <div>Popular filled icons: <code>"home"</code>, <code>"sparkle"</code>, <code>"shield"</code>, <code>"settings"</code>, <code>"chart-multiple"</code>, <code>"folder"</code>, <code>"eye"</code>, <code>"color"</code>, <code>"lock"</code>, <code>"chat"</code>, <code>"heart"</code>, <code>"star"</code>, <code>"warning"</code>. Browse the complete collection at <a href="https://fluenticons.co/" target="_blank" style="color:#ffffff; text-decoration:underline;">fluenticons.co</a>.</div>
+        </div>
+      </section>
+
+      <!-- Screenshots Guide -->
+      <section id="screenshots-guide">
+        <h2>Screenshots Guide</h2>
+        <p>To capture screenshots for the documentation site, take high-resolution screenshots in Studio or in-game and replace the placeholders in <code>docs/assets/</code>:</p>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Screenshot</th>
+                <th>File Path</th>
+                <th>Aspect Ratio</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Main Window</strong></td>
+                <td><code>docs/assets/window-preview.png</code></td>
+                <td>16:9 (1600x900)</td>
+                <td>Full Slate window with topbar tabs and open components.</td>
+              </tr>
+              <tr>
+                <td><strong>Collapsed Pill</strong></td>
+                <td><code>docs/assets/collapsed-preview.png</code></td>
+                <td>2:1 (800x400)</td>
+                <td>Compact floating pill with "Tap to show" and Slate logo badge.</td>
+              </tr>
+              <tr>
+                <td><strong>Components</strong></td>
+                <td><code>docs/assets/components-preview.png</code></td>
+                <td>16:9 (1400x800)</td>
+                <td>Open dropdowns, sliders, and keybind chips in action.</td>
+              </tr>
+              <tr>
+                <td><strong>Color Picker</strong></td>
+                <td><code>docs/assets/colorpicker-preview.png</code></td>
+                <td>4:3 (1000x750)</td>
+                <td>RGB/HSV modal with 2D color canvas and hue slider.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
     </main>
 
+    <!-- Right On This Page TOC -->
     <aside class="toc">
-      <div class="toc-title">On This Page</div>
+      <div class="toc-title">On this page</div>
       <ul class="toc-list">
-        <li class="toc-item"><a href="#overview" class="toc-link">Overview</a></li>
-        <li class="toc-item"><a href="#installation" class="toc-link">Installation</a></li>
-        <li class="toc-item"><a href="#window" class="toc-link">Window Configuration</a></li>
-        <li class="toc-item"><a href="#tabs" class="toc-link">Tabs & Sections</a></li>
-        <li class="toc-item"><a href="#buttons" class="toc-link">Buttons</a></li>
-        <li class="toc-item"><a href="#toggles" class="toc-link">Toggles</a></li>
-        <li class="toc-item"><a href="#sliders" class="toc-link">Sliders</a></li>
-        <li class="toc-item"><a href="#dropdowns" class="toc-link">Dropdowns</a></li>
-        <li class="toc-item"><a href="#colorpickers" class="toc-link">Color Pickers</a></li>
-        <li class="toc-item"><a href="#dynamic-set" class="toc-link">Dynamic API</a></li>
-        <li class="toc-item"><a href="#notifications" class="toc-link">Notifications & Toasts</a></li>
-        <li class="toc-item"><a href="#fluent-icons" class="toc-link">Fluent Icons</a></li>
-        <li class="toc-item"><a href="#screenshots-guide" class="toc-link">Screenshot Checklist</a></li>
+        <li class="toc-item"><a href="#overview" class="active">Overview</a></li>
+        <li class="toc-item"><a href="#installation">Installation</a></li>
+        <li class="toc-item"><a href="#quickstart">Quickstart</a></li>
+        <li class="toc-item"><a href="#window-config">Window Configuration</a></li>
+        <li class="toc-item"><a href="#tabs-sections">Tabs & Sections</a></li>
+        <li class="toc-item"><a href="#buttons">Buttons</a></li>
+        <li class="toc-item"><a href="#toggles">Toggles</a></li>
+        <li class="toc-item"><a href="#sliders">Sliders</a></li>
+        <li class="toc-item"><a href="#dropdowns">Dropdowns</a></li>
+        <li class="toc-item"><a href="#inputs">Inputs & Keybinds</a></li>
+        <li class="toc-item"><a href="#colorpickers">Color Pickers</a></li>
+        <li class="toc-item"><a href="#progress-console">Progress & Console</a></li>
+        <li class="toc-item"><a href="#notifications">Notifications & Toasts</a></li>
+        <li class="toc-item"><a href="#fluent-icons">Fluent System Icons</a></li>
+        <li class="toc-item"><a href="#screenshots-guide">Screenshots Guide</a></li>
       </ul>
     </aside>
   </div>
 
-  <div id="searchModal" onclick="if(event.target===this)closeSearch()">
-    <div class="search-box">
-      <input type="text" id="modalSearchInput" class="search-input" placeholder="Search documentation..." oninput="runSearch(this.value)">
-      <div class="search-results" id="searchResults"></div>
+  <!-- Search Modal -->
+  <div id="searchModal">
+    <div class="modal-box">
+      <div class="modal-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" class="modal-input" placeholder="Search documentation, methods, properties..." autocomplete="off">
+        <span class="search-kbd">ESC</span>
+      </div>
+      <div class="modal-results" id="searchResults">
+        <!-- populated via js -->
+      </div>
     </div>
   </div>
 
-  <div id="toast">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-    <span id="toastMsg">Copied to clipboard</span>
-  </div>
+  <!-- Toast Notice -->
+  <div id="toastNotice">Copied to clipboard!</div>
 
   <script>
-    const sampleIcons = [
-      'sword', 'swords', 'shield', 'shield_check', 'zap', 'flash', 'lightning', 'flame', 'fire',
-      'eye', 'eye_closed', 'settings', 'tuning', 'sliders', 'adjust', 'user', 'users', 'target',
-      'crosshair', 'star', 'stars', 'heart', 'bell', 'notification', 'search', 'find', 'check',
-      'checkmark', 'close', 'dismiss', 'cart', 'shopping_cart', 'folder', 'file', 'document',
-      'lock', 'unlock', 'key', 'palette', 'color', 'car', 'vehicle', 'crown', 'trophy', 'magic',
-      'sun', 'moon', 'trash', 'delete', 'copy', 'download', 'upload', 'play', 'pause', 'dollar',
-      'money', 'coin', 'wallet', 'wrench', 'tool', 'hammer', 'code', 'terminal', 'cpu', 'database',
-      'server', 'cloud', 'wifi', 'bluetooth', 'battery', 'power'
+    // Search database
+    const searchDb = [
+      { title: "Overview", cat: "Get Started", href: "#overview" },
+      { title: "Installation & Loadstring", cat: "Get Started", href: "#installation" },
+      { title: "Quickstart Example", cat: "Get Started", href: "#quickstart" },
+      { title: "Window Configuration (CreateWindow)", cat: "Structure", href: "#window-config" },
+      { title: "Tabs & Sections (CreateTab, CreateSection)", cat: "Structure", href: "#tabs-sections" },
+      { title: "Buttons (CreateButton)", cat: "Components", href: "#buttons" },
+      { title: "Toggles (CreateToggle, Lock, Unlock)", cat: "Components", href: "#toggles" },
+      { title: "Sliders (CreateSlider)", cat: "Components", href: "#sliders" },
+      { title: "Dropdowns (Single & Multi-select)", cat: "Components", href: "#dropdowns" },
+      { title: "Inputs & Keybinds (CreateInput, CreateKeybind)", cat: "Components", href: "#inputs" },
+      { title: "Color Pickers (CreateColorPicker)", cat: "Components", href: "#colorpickers" },
+      { title: "Progress & Console (CreateProgress, CreateConsole)", cat: "Components", href: "#progress-console" },
+      { title: "Notifications & Toasts (Notify, Toast, Popup)", cat: "Feedback", href: "#notifications" },
+      { title: "Fluent Filled Icons (1200+ Icons)", cat: "Icons", href: "#fluent-icons" },
+      { title: "Screenshots Guide & Assets", cat: "Assets", href: "#screenshots-guide" }
     ];
 
-    function renderIcons(list) {
-      const grid = document.getElementById('iconGrid');
-      grid.innerHTML = '';
-      list.forEach(name => {
-        const item = document.createElement('div');
-        item.style.padding = '0.5rem';
-        item.style.background = 'rgba(255,255,255,0.03)';
-        item.style.border = '1px solid var(--border)';
-        item.style.borderRadius = '6px';
-        item.style.fontSize = '0.78rem';
-        item.style.textAlign = 'center';
-        item.style.cursor = 'pointer';
-        item.innerHTML = `<div style="font-weight:600; color:#fff;">${name}</div><div style="font-size:0.68rem; color:var(--text-dim);">copy name</div>`;
-        item.onclick = () => {
-          navigator.clipboard.writeText(name);
-          showToast(`Copied icon "${name}"`);
-        };
-        grid.appendChild(item);
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotice');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    function copySnippet(btn) {
+      const code = btn.closest('.code-block').querySelector('pre code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.innerText = 'Copied!';
+        setTimeout(() => btn.innerText = 'Copy', 1500);
       });
     }
 
-    function filterIcons() {
-      const q = document.getElementById('iconFilterInput').value.toLowerCase().trim();
-      const filtered = sampleIcons.filter(i => i.includes(q));
-      renderIcons(filtered);
+    // Modal Search Logic
+    const searchModal = document.getElementById('searchModal');
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const openSearch = document.getElementById('openSearch');
+
+    function renderSearchResults(q) {
+      searchResults.innerHTML = '';
+      const filtered = q.trim() === '' ? searchDb : searchDb.filter(i => i.title.toLowerCase().includes(q.toLowerCase()) || i.cat.toLowerCase().includes(q.toLowerCase()));
+      if (filtered.length === 0) {
+        searchResults.innerHTML = '<div style="padding: 1rem; color: #71717a; font-size: 0.84rem; text-align: center;">No matching documentation found.</div>';
+        return;
+      }
+      filtered.forEach(item => {
+        const a = document.createElement('a');
+        a.className = 'search-item';
+        a.href = item.href;
+        a.innerHTML = `<div class="search-item-title">${item.title}</div><div class="search-item-cat">${item.cat}</div>`;
+        a.addEventListener('click', () => searchModal.classList.remove('active'));
+        searchResults.appendChild(a);
+      });
     }
-    renderIcons(sampleIcons);
 
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      document.getElementById('toastMsg').innerText = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2400);
-    }
+    openSearch.addEventListener('click', () => {
+      searchModal.classList.add('active');
+      searchInput.value = '';
+      renderSearchResults('');
+      searchInput.focus();
+    });
 
-    function copyCode(btn) {
-      const code = btn.closest('.code-container').querySelector('code').innerText;
-      navigator.clipboard.writeText(code);
-      btn.innerText = 'Copied!';
-      setTimeout(() => btn.innerText = 'Copy', 2000);
-      showToast('Code copied to clipboard');
-    }
+    searchModal.addEventListener('click', (e) => {
+      if (e.target === searchModal) searchModal.classList.remove('active');
+    });
 
-    function copyForAI() {
-      const markdown = `# Slate UI Framework — LLM & MCP Reference Document
-## Overview
-Slate is a high-performance monochrome Roblox UI framework with top-pill tab navigation, left-to-right swipe transitions, and 1,200+ solid filled Microsoft Fluent System icons.
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        searchModal.classList.toggle('active');
+        if (searchModal.classList.contains('active')) {
+          searchInput.value = '';
+          renderSearchResults('');
+          searchInput.focus();
+        }
+      }
+      if (e.key === 'Escape' && searchModal.classList.contains('active')) {
+        searchModal.classList.remove('active');
+      }
+    });
 
-## Quick Installation
+    searchInput.addEventListener('input', (e) => renderSearchResults(e.target.value));
+
+    // Copy for AI / MCP Action
+    const aiMarkdownDoc = `# Slate UI Framework API Reference (LLM & MCP Prompt Optimized)
+
+Slate is a monochrome Roblox UI framework featuring topbar pill navigation, swipe animations, and 1200+ solid filled Fluent icons.
+
+## Loadstring
 \`\`\`lua
 local slate = loadstring(game:HttpGet("https://raw.githubusercontent.com/EORScopeZ/slatelib/main/Slate.lua"))()
 \`\`\`
 
-## Creating Window
+## Window Creation
 \`\`\`lua
 local window = slate:CreateWindow({
     name = "slate",
-    subtitle = "ui library",
-    icon = 136661212895058,
-    theme = "Default",
-    sidebarLayout = false, -- false for top tabs, true for sidebar
+    subtitle = "monochrome edition",
+    icon = 136661212895058, -- Slate logo decal ID
+    theme = "Default",      -- "Default", "Frost", "Rose", "Ember", "Cobalt", "Amethyst"
+    sidebarLayout = false,  -- false for top tabs, true for vertical sidebar
 })
 \`\`\`
 
-## Creating Tabs & Sections
-\`\`\`lua
-local tab = window:CreateTab({
-    name = "combat",
-    icon = "sword", -- Solid filled fluent icon name
-    iconColor = Color3.fromRGB(255, 255, 255),
-})
-local section = tab:CreateSection({ name = "controls" })
-\`\`\`
-
-## Complete Component API
-- **Button**: \`tab:CreateButton({ name, description, icon, iconColor, callback })\`
-- **Toggle**: \`tab:CreateToggle({ name, description, icon, flag, value, callback })\`
-- **Slider**: \`tab:CreateSlider({ name, description, icon, flag, range={min,max}, increment, value, suffix, callback })\`
-- **Dropdown**: \`tab:CreateDropdown({ name, description, icon, flag, options={}, value, multiSelect=false, callback })\`
-- **Input**: \`tab:CreateInput({ name, description, icon, flag, value, placeholder, numeric=false, clearOnFocus=false, callback })\`
-- **Keybind**: \`tab:CreateKeybind({ name, description, icon, flag, value=Enum.KeyCode.E, hold=false, callback })\`
-- **ColorPicker**: \`tab:CreateColorPicker({ name, description, icon, flag, color=Color3.fromRGB(255,255,255), alpha=1, callback })\`
-- **Stat**: \`tab:CreateStat({ name, description, prefix, suffix, value })\`
-- **Progress**: \`tab:CreateProgress({ name, range={0,100}, value=50, showValue=true })\`
-- **Console**: \`tab:CreateConsole({ name, text="logs...", height=120 })\`
-
-## Dynamic Modification Methods
-- \`toggle:Set(boolean)\`
-- \`slider:Set(number)\`
-- \`dropdown:Set(string or table)\`
-- \`dropdown:Refresh(newOptionsTable)\`
-- \`dropdown:Add(optionString)\`
-- \`dropdown:Remove(optionString)\`
-- \`button:Lock(reasonString)\`
-- \`button:Unlock()\`
-- \`button:MoveToTop() / MoveUp() / MoveDown()\`
-
-## Notifications & Popups
-- \`window:Notify({ title, content, icon, duration })\`
-- \`window:Toast({ title, subtitle, duration })\`
-- \`window:Popup({ title, subtitle, content, options={ {text="yes", style="Primary", callback=fn} } })\`
+## Components Reference
+- **Tab**: \`local tab = window:CreateTab({ name = "main", icon = "home" })\`
+- **Section**: \`tab:CreateSection({ name = "controls" })\`
+- **Toggle**: \`tab:CreateToggle({ name = "auto farm", flag = "auto_farm", value = false, callback = function(v) end })\`
+- **Slider**: \`tab:CreateSlider({ name = "speed", range = {16, 200}, increment = 1, value = 16, suffix = " studs/s", callback = function(v) end })\`
+- **Dropdown**: \`tab:CreateDropdown({ name = "target", options = {"Head", "Torso"}, value = "Head", multiSelect = false, callback = function(v) end })\`
+- **Input**: \`tab:CreateInput({ name = "player", placeholder = "enter name...", numeric = false, callback = function(t) end })\`
+- **Keybind**: \`tab:CreateKeybind({ name = "menu bind", value = Enum.KeyCode.RightShift, hold = false, callback = function() end })\`
+- **ColorPicker**: \`tab:CreateColorPicker({ name = "esp color", color = Color3.fromRGB(255, 255, 255), callback = function(c) end })\`
+- **Stat**: \`local stat = tab:CreateStat({ name = "coins", prefix = "$", value = 1000 })\`
+- **Progress**: \`local p = tab:CreateProgress({ name = "level", range = {0, 100}, value = 50 })\`
+- **Console**: \`local c = tab:CreateConsole({ name = "logs", text = "init", height = 120 }); c:Append("line")\`
+- **Notification**: \`window:Notify({ title = "slate", content = "notification triggered", duration = 3 })\`
+- **Toast**: \`window:Toast({ title = "saved", subtitle = "done", duration = 2 })\`
+- **Popup**: \`window:Popup({ title = "confirm", content = "sure?", options = {{ text = "confirm", style = "Primary", callback = function() end }} })\`
 `;
-      navigator.clipboard.writeText(markdown);
-      showToast('Copied full AI & MCP documentation markdown!');
-    }
 
-    function copyFullMarkdown() {
-      copyForAI();
-    }
-
-    function openSearch() {
-      document.getElementById('searchModal').classList.add('open');
-      document.getElementById('modalSearchInput').focus();
-    }
-    function closeSearch() {
-      document.getElementById('searchModal').classList.remove('open');
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        openSearch();
-      }
-      if (e.key === 'Escape') closeSearch();
+    document.getElementById('copyAiDoc').addEventListener('click', () => {
+      navigator.clipboard.writeText(aiMarkdownDoc).then(() => showToast('AI / MCP Documentation copied!'));
     });
 
-    const searchIndex = [
-      { title: 'Window Configuration', section: '#window', text: 'CreateWindow name subtitle icon theme sidebarLayout' },
-      { title: 'Top Pill Navigation', section: '#tabs', text: 'top pill navigation tabs horizontal swipe' },
-      { title: 'Buttons', section: '#buttons', text: 'CreateButton click callback icon iconColor' },
-      { title: 'Toggles & Switches', section: '#toggles', text: 'CreateToggle flag value switch spring' },
-      { title: 'Sliders', section: '#sliders', text: 'CreateSlider range increment suffix number' },
-      { title: 'Dropdowns', section: '#dropdowns', text: 'CreateDropdown options multiSelect add remove refresh' },
-      { title: 'Color Pickers', section: '#colorpickers', text: 'CreateColorPicker RGB Hex alpha' },
-      { title: 'Dynamic Modification (:Set)', section: '#dynamic-set', text: 'Set Lock Unlock MoveToTop' },
-      { title: 'Notifications & Popups', section: '#notifications', text: 'Notify Toast Popup modal dialog' },
-      { title: 'Fluent Filled Icons', section: '#fluent-icons', text: '1200+ solid filled icons sword shield fire eye' }
-    ];
+    document.getElementById('copyMarkdownDoc').addEventListener('click', () => {
+      navigator.clipboard.writeText(aiMarkdownDoc).then(() => showToast('Markdown Documentation copied!'));
+    });
 
-    function runSearch(query) {
-      const q = query.toLowerCase().trim();
-      const results = document.getElementById('searchResults');
-      results.innerHTML = '';
-      if (!q) return;
-      const matched = searchIndex.filter(item => item.title.toLowerCase().includes(q) || item.text.toLowerCase().includes(q));
-      if (matched.length === 0) {
-        results.innerHTML = '<div style="padding:1rem; color:var(--text-dim); text-align:center;">No matching results found</div>';
-        return;
-      }
-      matched.forEach(item => {
-        const a = document.createElement('a');
-        a.className = 'search-result-item';
-        a.href = item.section;
-        a.onclick = closeSearch;
-        a.innerHTML = `<strong>${item.title}</strong><div style="font-size:0.75rem; color:var(--text-dim);">${item.text}</div>`;
-        results.appendChild(a);
+    // Scroll spy for TOC and sidebar
+    const sections = document.querySelectorAll('main.content section');
+    const tocLinks = document.querySelectorAll('.toc-item a');
+    const sideLinks = document.querySelectorAll('.nav-link');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const top = section.offsetTop - 120;
+        if (window.scrollY >= top) current = section.getAttribute('id');
       });
-    }
+
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      });
+
+      sideLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      });
+    });
   </script>
 </body>
 </html>
