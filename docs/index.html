@@ -468,6 +468,86 @@
       padding: 1px 5px;
       border-radius: 3px;
     }
+    /* Screenshot & Preview Frames */
+    .preview-frame {
+      background: #0e0e11;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      margin: 1.25rem 0 1.75rem 0;
+      overflow: hidden;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .preview-frame:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 1rem;
+      background: #141418;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .preview-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .preview-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .preview-caption {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+    }
+    .preview-badge {
+      font-size: 0.68rem;
+      background: rgba(255, 255, 255, 0.08);
+      color: #e4e4e7;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .preview-img-wrap {
+      position: relative;
+      background: #09090b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1.25rem;
+    }
+    .preview-img-wrap img {
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    /* 2-Column Showcase Grid */
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin: 1.25rem 0 2rem 0;
+    }
+    .showcase-grid .preview-frame {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .showcase-grid .preview-img-wrap {
+      flex: 1;
+      padding: 1.75rem 1.25rem;
+    }
+
     /* Search Modal */
     #searchModal {
       display: none;
@@ -497,7 +577,6 @@
       align-items: center;
       padding: 0.75rem 1rem;
       border-bottom: 1px solid var(--border);
-      gap: 0.75rem;
     }
     .modal-input {
       flex: 1;
@@ -507,19 +586,20 @@
       color: var(--text);
       font-size: 0.95rem;
       font-family: inherit;
+      padding: 0.2rem 0.5rem;
     }
     .modal-results {
-      max-height: 340px;
+      max-height: 360px;
       overflow-y: auto;
       padding: 0.5rem;
     }
     .search-item {
       display: block;
-      padding: 0.6rem 0.75rem;
+      padding: 0.65rem 0.75rem;
       border-radius: 6px;
       color: var(--text);
       text-decoration: none;
-      font-size: 0.86rem;
+      transition: background 0.15s;
     }
     .search-item:hover {
       background: var(--bg-card-hover);
@@ -555,6 +635,7 @@
     @media (max-width: 1024px) {
       aside.toc { display: none; }
       main.content { max-width: 100%; padding: 1.5rem 1.5rem 3rem 1.5rem; }
+      .showcase-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 768px) {
       aside.sidebar { display: none; }
@@ -606,6 +687,7 @@
           <li><a href="#overview" class="nav-link active">Overview</a></li>
           <li><a href="#installation" class="nav-link">Installation</a></li>
           <li><a href="#quickstart" class="nav-link">Quickstart</a></li>
+          <li><a href="#visual-showcase" class="nav-link">UI Screenshots Gallery</a></li>
         </ul>
       </div>
 
@@ -652,6 +734,74 @@
       <section id="overview">
         <h2>Overview</h2>
         <p>Slate provides a clean obsidian dark aesthetic with pure white accents, fluid swipe page transitions, custom icon colors, and universal executor compatibility.</p>
+        
+        <!-- Main Window Preview Frame -->
+        <div class="preview-frame">
+          <div class="preview-header">
+            <div class="preview-dots">
+              <span class="preview-dot"></span>
+              <span class="preview-dot"></span>
+              <span class="preview-dot"></span>
+            </div>
+            <span class="preview-caption">Slate — Main Interface Window</span>
+            <span class="preview-badge">1600x900</span>
+          </div>
+          <div class="preview-img-wrap">
+            <img src="assets/window-preview.png" alt="Slate Main Window">
+          </div>
+        </div>
+      </section>
+
+      <!-- UI Screenshots Gallery -->
+      <section id="visual-showcase">
+        <h2>UI Screenshots Gallery</h2>
+        <p>Explore the visual hierarchy and states of Slate UI components in action:</p>
+
+        <div class="showcase-grid">
+          <!-- Card 1: Collapsed Pill -->
+          <div class="preview-frame">
+            <div class="preview-header">
+              <span class="preview-caption">Minimized Floating Pill</span>
+              <span class="preview-badge">Pill State</span>
+            </div>
+            <div class="preview-img-wrap">
+              <img src="assets/collapsed-preview.png" alt="Collapsed Pill Preview">
+            </div>
+          </div>
+
+          <!-- Card 2: Components -->
+          <div class="preview-frame">
+            <div class="preview-header">
+              <span class="preview-caption">Interactive Components</span>
+              <span class="preview-badge">Controls</span>
+            </div>
+            <div class="preview-img-wrap">
+              <img src="assets/components-preview.png" alt="Components Preview">
+            </div>
+          </div>
+
+          <!-- Card 3: Color Picker -->
+          <div class="preview-frame">
+            <div class="preview-header">
+              <span class="preview-caption">Color Picker Modal</span>
+              <span class="preview-badge">Modal</span>
+            </div>
+            <div class="preview-img-wrap">
+              <img src="assets/colorpicker-preview.png" alt="Color Picker Preview">
+            </div>
+          </div>
+
+          <!-- Card 4: Notifications -->
+          <div class="preview-frame">
+            <div class="preview-header">
+              <span class="preview-caption">Notification Banner</span>
+              <span class="preview-badge">Feedback</span>
+            </div>
+            <div class="preview-img-wrap">
+              <img src="assets/notification-preview.png" alt="Notification Banner Preview">
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- Installation -->
@@ -1018,6 +1168,7 @@ window:<span class="hl-fn">Toast</span>({
       <div class="toc-title">On this page</div>
       <ul class="toc-list">
         <li class="toc-item"><a href="#overview" class="active">Overview</a></li>
+        <li class="toc-item"><a href="#visual-showcase">UI Screenshots Gallery</a></li>
         <li class="toc-item"><a href="#installation">Installation</a></li>
         <li class="toc-item"><a href="#quickstart">Quickstart</a></li>
         <li class="toc-item"><a href="#window-config">Window Configuration</a></li>
@@ -1052,6 +1203,7 @@ window:<span class="hl-fn">Toast</span>({
   <script>
     const searchDb = [
       { title: "Overview", cat: "Get Started", href: "#overview" },
+      { title: "UI Screenshots Gallery", cat: "Get Started", href: "#visual-showcase" },
       { title: "Installation & Loadstring", cat: "Get Started", href: "#installation" },
       { title: "Quickstart Example", cat: "Get Started", href: "#quickstart" },
       { title: "Window Configuration (CreateWindow)", cat: "Structure", href: "#window-config" },
