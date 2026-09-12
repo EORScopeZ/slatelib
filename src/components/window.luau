@@ -32,7 +32,21 @@ local tabStagger = 0.04
 local maxStaggeredTabs = 8
 local viewportReconcileInterval = 2
 
-local function fitWindowSize(mode): UDim2
+local function fitWindowSize(mode, customSize): UDim2
+    if typeof(customSize) == 'UDim2' then
+        return customSize
+    elseif typeof(customSize) == 'Vector2' then
+        return UDim2.fromOffset(customSize.X, customSize.Y)
+    elseif typeof(customSize) == 'string' and (customSize:lower() == 'max' or customSize:lower() == 'maximum' or customSize:lower() == 'full') then
+        local camera = variables.workspace.CurrentCamera
+        local viewport = camera and camera.ViewportSize or Vector2.new(1920, 1080)
+        return UDim2.fromOffset(math.floor(viewport.X * 0.94), math.floor(viewport.Y * 0.88))
+    elseif typeof(customSize) == 'table' then
+        local x = customSize.X or customSize.width or customSize[1] or 740
+        local y = customSize.Y or customSize.height or customSize[2] or 480
+        return UDim2.fromOffset(x, y)
+    end
+
     local camera = variables.workspace.CurrentCamera
 
     return windowSizing.fit(camera and camera.ViewportSize, mode)
@@ -179,11 +193,12 @@ function Window.new(properties)
     end
 
     local layout = resolveLayout(properties.sidebarLayout or properties.SidebarLayout)
+    local requestedSize = properties.size or properties.Size or properties.windowSize or properties.WindowSize
     local self = setmetatable({
         name = properties.name or properties.Name or 'Slate Window',
         subheading = properties.subtitle or properties.Subtitle,
         layout = layout,
-        size = fitWindowSize(layout.mode),
+        size = fitWindowSize(layout.mode, requestedSize),
         instances = {},
         connections = {},
         icon = properties.icon or properties.Icon or constants.icons.slate,
@@ -973,6 +988,25 @@ function Window:Hide()
         self:_setContentVisible(false)
         chrome.setCollapsedShown(self, true, faceInfo)
     end)
+end
+function Window:SetSize(newSize, animate)
+    if self.unloaded then
+        return
+    end
+
+    local targetSize = fitWindowSize(self.layout.mode, newSize)
+    self.size = targetSize
+
+    if animate ~= false and not self.hidden and not self.minimised then
+        variables.tweenService:Create(self.main, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {
+            Size = targetSize,
+        }):Play()
+    elseif not self.hidden and not self.minimised then
+        self.main.Size = targetSize
+    end
+end
+function Window:Maximise(animate)
+    self:SetSize('max', animate)
 end
 function Window:ToggleHide()
     if self.animating then
