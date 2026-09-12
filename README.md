@@ -1,6 +1,5 @@
-﻿# slate ui
+﻿# slate ui lib
 
-a modern, fast, and sleek monochrome ui library for roblox.
 
 ## installation
 
