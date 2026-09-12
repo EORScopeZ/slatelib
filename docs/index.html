@@ -28,7 +28,6 @@
       --radius: 8px;
     }
 
-    /* Force dark custom scrollbars everywhere */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -380,14 +379,12 @@
       background: var(--code-bg);
     }
 
-    /* Clean Syntax Highlighting */
     .hl-kw { color: #f43f5e; font-weight: 600; }
     .hl-str { color: #34d399; }
     .hl-fn { color: #38bdf8; }
     .hl-num { color: #fbbf24; }
     .hl-bool { color: #a78bfa; }
     .hl-cmt { color: #71717a; font-style: italic; }
-    .hl-prop { color: #e4e4e7; }
 
     .callout {
       border-left: 3px solid #38bdf8;
@@ -459,37 +456,110 @@
       border-radius: 3px;
     }
 
-    .screenshot-card {
+    /* Modern Screenshot & Preview Frames */
+    .preview-frame {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.5rem;
-      margin: 1.25rem 0;
-      text-align: center;
+      margin: 1.25rem 0 1.75rem 0;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
     }
-    .screenshot-tag {
-      display: inline-block;
-      font-size: 0.68rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0.9rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border);
+    }
+    .preview-dots {
+      display: flex;
+      gap: 5px;
+    }
+    .preview-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .preview-caption {
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .preview-badge {
+      font-size: 0.65rem;
       background: rgba(255, 255, 255, 0.06);
-      padding: 3px 8px;
-      border-radius: 999px;
+      color: var(--text-muted);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+    .preview-img-wrap {
+      position: relative;
+      background: #0d0d10;
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .preview-img-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .preview-fallback {
+      display: none;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      width: 100%;
+    }
+    .preview-img-wrap.fallback-active img {
+      display: none;
+    }
+    .preview-img-wrap.fallback-active .preview-fallback {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .fallback-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 0.75rem;
       color: var(--text-muted);
     }
-    .screenshot-title {
-      font-size: 1.05rem;
+    .fallback-title {
+      font-size: 0.95rem;
       font-weight: 600;
       color: #ffffff;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.3rem;
     }
-    .screenshot-desc {
-      font-size: 0.82rem;
+    .fallback-desc {
+      font-size: 0.8rem;
       color: var(--text-dim);
-      max-width: 480px;
+      max-width: 420px;
       margin: 0 auto;
+    }
+
+    /* 2-Column Showcase Grid */
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin: 1.25rem 0 2rem 0;
+    }
+    .showcase-grid .preview-frame {
+      margin: 0;
+    }
+    .showcase-grid .preview-img-wrap {
+      min-height: 160px;
     }
 
     /* Search Modal */
@@ -557,7 +627,6 @@
       color: var(--text-dim);
     }
 
-    /* Toast notice */
     #toastNotice {
       position: fixed;
       bottom: 24px;
@@ -580,6 +649,7 @@
     @media (max-width: 1024px) {
       aside.toc { display: none; }
       main.content { max-width: 100%; padding: 1.5rem 1.5rem 3rem 1.5rem; }
+      .showcase-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 768px) {
       aside.sidebar { display: none; }
@@ -589,7 +659,7 @@
 </head>
 <body>
 
-  <!-- Top Navigation Header -->
+  <!-- Top Header -->
   <header>
     <a href="#" class="brand">
       <div class="brand-logo">
@@ -601,7 +671,7 @@
 
     <div class="header-actions">
       <button class="search-btn" id="openSearch">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <span>Search docs...</span>
         <span class="search-kbd">⌘K</span>
       </button>
@@ -623,7 +693,7 @@
   </header>
 
   <div class="layout-container">
-    <!-- Left Navigation Sidebar -->
+    <!-- Left Sidebar -->
     <aside class="sidebar">
       <div class="nav-group">
         <div class="nav-group-title">Get Started</div>
@@ -631,6 +701,7 @@
           <li><a href="#overview" class="nav-link active">Overview</a></li>
           <li><a href="#installation" class="nav-link">Installation</a></li>
           <li><a href="#quickstart" class="nav-link">Quickstart</a></li>
+          <li><a href="#visual-showcase" class="nav-link">UI Screenshots Gallery</a></li>
         </ul>
       </div>
 
@@ -665,7 +736,7 @@
       </div>
     </aside>
 
-    <!-- Main Content Area -->
+    <!-- Main Content -->
     <main class="content">
       <div class="breadcrumb">
         <span>Slate UI</span> / <span>Documentation</span>
@@ -679,10 +750,107 @@
         <h2>Overview</h2>
         <p>Slate provides a clean obsidian dark aesthetic with pure white accents, fluid swipe page transitions, custom icon colors, and universal executor compatibility.</p>
         
-        <div class="screenshot-card">
-          <div class="screenshot-tag">Preview Placeholder</div>
-          <div class="screenshot-title">Slate Main Window (Top Tab Layout)</div>
-          <div class="screenshot-desc">Displaying the active topbar navigation with Slate logo, filled fluent icons, and sleek dark obsidian cards.</div>
+        <!-- Main Window Preview Frame -->
+        <div class="preview-frame">
+          <div class="preview-header">
+            <div class="preview-dots">
+              <span class="preview-dot"></span>
+              <span class="preview-dot"></span>
+              <span class="preview-dot"></span>
+            </div>
+            <span class="preview-caption">Slate — Main Interface Window</span>
+            <span class="preview-badge">1600x900</span>
+          </div>
+          <div class="preview-img-wrap" id="wrap-window">
+            <img src="assets/window-preview.png" alt="Slate Main Window" onerror="handleImageFallback(this)">
+            <div class="preview-fallback">
+              <div class="fallback-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+              </div>
+              <div class="fallback-title">Main Window (Top Tab Layout)</div>
+              <div class="fallback-desc">Showing topbar with Slate logo, active tabs (General, Combat, Misc), and obsidian component cards.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- UI Screenshots Gallery -->
+      <section id="visual-showcase">
+        <h2>UI Screenshots Gallery</h2>
+        <p>Explore the visual hierarchy and states of Slate UI components in action:</p>
+
+        <div class="showcase-grid">
+          <!-- Card 1: Collapsed Pill -->
+          <div class="preview-frame">
+            <div class="preview-header">
+              <span class="preview-caption">Minimized Floating Pill</span>
+              <span class="preview-badge">Pill State</span>
+            </div>
+            <div class="preview-img-wrap">
+              <img src="assets/collapsed-preview.png" alt="Collapsed Pill Preview" onerror="handleImageFallback(this)">
+              <div class="preview-fallback">
+                <div class="fallback-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="9" width="12" height="6" rx="3"/></svg>
+                </div>
+                <div class="fallback-title">Collapsed "Tap to Show" Pill</div>
+                <div class="fallback-desc">Ultra-compact floating pill with glowing border and Slate logo badge.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Components -->
+          <div class="preview-frame">
+            <div class="preview-header">
+              <span class="preview-caption">Interactive Components</span>
+              <span class="preview-badge">Controls</span>
+            </div>
+            <div class="preview-img-wrap">
+              <img src="assets/components-preview.png" alt="Components Preview" onerror="handleImageFallback(this)">
+              <div class="preview-fallback">
+                <div class="fallback-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
+                </div>
+                <div class="fallback-title">Controls & Multi-Dropdowns</div>
+                <div class="fallback-desc">Smooth sliders, toggles with descriptions, and multi-select tags.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Color Picker -->
+          <div class="preview-frame">
+            <div class="preview-header">
+              <span class="preview-caption">Color Picker Modal</span>
+              <span class="preview-badge">Modal</span>
+            </div>
+            <div class="preview-img-wrap">
+              <img src="assets/colorpicker-preview.png" alt="Color Picker Preview" onerror="handleImageFallback(this)">
+              <div class="preview-fallback">
+                <div class="fallback-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+                </div>
+                <div class="fallback-title">2D Canvas Color Picker</div>
+                <div class="fallback-desc">Real-time HSV/RGB gradient selection with live swatch preview.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: Notifications -->
+          <div class="preview-frame">
+            <div class="preview-header">
+              <span class="preview-caption">Notification Banner</span>
+              <span class="preview-badge">Feedback</span>
+            </div>
+            <div class="preview-img-wrap">
+              <img src="assets/notification-preview.png" alt="Notification Banner Preview" onerror="handleImageFallback(this)">
+              <div class="preview-fallback">
+                <div class="fallback-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                </div>
+                <div class="fallback-title">Slate Logo Notifications</div>
+                <div class="fallback-desc">Sleek toast notifications with Slate logo badge on the left side.</div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -814,7 +982,7 @@ main_tab:<span class="hl-fn">CreateSlider</span>({
           </div>
           <pre><code><span class="hl-kw">local</span> combat_tab = window:<span class="hl-fn">CreateTab</span>({
     name = <span class="hl-str">"combat"</span>,
-    icon = <span class="hl-str">"shield"</span>, <span class="hl-cmt">-- filled Fluent icon</span>
+    icon = <span class="hl-str">"shield"</span>,
 })
 
 combat_tab:<span class="hl-fn">CreateSection</span>({
@@ -863,7 +1031,6 @@ combat_tab:<span class="hl-fn">CreateSection</span>({
     <span class="hl-kw">end</span>,
 })
 
-<span class="hl-cmt">-- Lock or unlock dynamically:</span>
 toggle:<span class="hl-fn">Lock</span>(<span class="hl-str">"Requires premium"</span>)
 toggle:<span class="hl-fn">Unlock</span>()</code></pre>
         </div>
@@ -904,8 +1071,7 @@ toggle:<span class="hl-fn">Unlock</span>()</code></pre>
             <span>LUAU</span>
             <button class="code-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code><span class="hl-cmt">-- Single Select Dropdown</span>
-tab:<span class="hl-fn">CreateDropdown</span>({
+          <pre><code>tab:<span class="hl-fn">CreateDropdown</span>({
     name = <span class="hl-str">"target bone"</span>,
     flag = <span class="hl-str">"aim_bone"</span>,
     options = {<span class="hl-str">"Head"</span>, <span class="hl-str">"Torso"</span>, <span class="hl-str">"HumanoidRootPart"</span>},
@@ -916,7 +1082,6 @@ tab:<span class="hl-fn">CreateDropdown</span>({
     <span class="hl-kw">end</span>,
 })
 
-<span class="hl-cmt">-- Multi Select Dropdown</span>
 tab:<span class="hl-fn">CreateDropdown</span>({
     name = <span class="hl-str">"esp filters"</span>,
     flag = <span class="hl-str">"esp_filters"</span>,
@@ -1086,6 +1251,12 @@ window:<span class="hl-fn">Toast</span>({
                 <td>4:3 (1000x750)</td>
                 <td>RGB/HSV modal with 2D color canvas and hue slider.</td>
               </tr>
+              <tr>
+                <td><strong>Notification</strong></td>
+                <td><code>docs/assets/notification-preview.png</code></td>
+                <td>3:1 (600x200)</td>
+                <td>Slate notification card with Slate logo badge.</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -1093,11 +1264,12 @@ window:<span class="hl-fn">Toast</span>({
 
     </main>
 
-    <!-- Right On This Page TOC -->
+    <!-- Right TOC -->
     <aside class="toc">
       <div class="toc-title">On this page</div>
       <ul class="toc-list">
         <li class="toc-item"><a href="#overview" class="active">Overview</a></li>
+        <li class="toc-item"><a href="#visual-showcase">UI Screenshots Gallery</a></li>
         <li class="toc-item"><a href="#installation">Installation</a></li>
         <li class="toc-item"><a href="#quickstart">Quickstart</a></li>
         <li class="toc-item"><a href="#window-config">Window Configuration</a></li>
@@ -1124,19 +1296,21 @@ window:<span class="hl-fn">Toast</span>({
         <input type="text" id="searchInput" class="modal-input" placeholder="Search documentation, methods, properties..." autocomplete="off">
         <span class="search-kbd">ESC</span>
       </div>
-      <div class="modal-results" id="searchResults">
-        <!-- populated via js -->
-      </div>
+      <div class="modal-results" id="searchResults"></div>
     </div>
   </div>
 
-  <!-- Toast Notice -->
   <div id="toastNotice">Copied to clipboard!</div>
 
   <script>
-    // Search database
+    function handleImageFallback(img) {
+      const wrap = img.closest('.preview-img-wrap');
+      if (wrap) wrap.classList.add('fallback-active');
+    }
+
     const searchDb = [
       { title: "Overview", cat: "Get Started", href: "#overview" },
+      { title: "UI Screenshots Gallery", cat: "Get Started", href: "#visual-showcase" },
       { title: "Installation & Loadstring", cat: "Get Started", href: "#installation" },
       { title: "Quickstart Example", cat: "Get Started", href: "#quickstart" },
       { title: "Window Configuration (CreateWindow)", cat: "Structure", href: "#window-config" },
@@ -1168,7 +1342,6 @@ window:<span class="hl-fn">Toast</span>({
       });
     }
 
-    // Modal Search Logic
     const searchModal = document.getElementById('searchModal');
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
@@ -1219,7 +1392,6 @@ window:<span class="hl-fn">Toast</span>({
 
     searchInput.addEventListener('input', (e) => renderSearchResults(e.target.value));
 
-    // Copy for AI / MCP Action
     const aiMarkdownDoc = `# Slate UI Framework API Reference (LLM & MCP Prompt Optimized)
 
 Slate is a monochrome Roblox UI framework featuring topbar pill navigation, swipe animations, and 1200+ solid filled Fluent icons.
@@ -1265,7 +1437,6 @@ local window = slate:CreateWindow({
       navigator.clipboard.writeText(aiMarkdownDoc).then(() => showToast('Markdown Documentation copied!'));
     });
 
-    // Scroll spy for TOC and sidebar
     const sections = document.querySelectorAll('main.content section');
     const tocLinks = document.querySelectorAll('.toc-item a');
     const sideLinks = document.querySelectorAll('.nav-link');
